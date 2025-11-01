@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Zap, Leaf, Clock, Shield } from "lucide-react";
+import ScooterViewer from "./ScooterViewer";
 
 export default function Hero() {
   const specs = [
