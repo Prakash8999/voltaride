@@ -23,14 +23,14 @@ const Hero = () => {
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5" />
 
-      <div className="container-custom relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="w-full px-8 md:px-12 lg:px-16 xl:px-24 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-16 xl:gap-24 items-center max-w-[1600px] mx-auto">
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-8"
+            className="space-y-8 lg:pr-8"
           >
             {/* Badges */}
             <div className="flex flex-wrap gap-3">
@@ -90,7 +90,7 @@ const Hero = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="relative"
+            className="relative lg:pl-8"
           >
             <div className="aspect-square rounded-2xl overflow-hidden glass animate-pulse-glow">
               <ScooterViewer3D />
@@ -100,7 +100,7 @@ const Hero = () => {
             </p>
 
             {/* Floating Spec Cards */}
-            <div className="absolute -bottom-8 left-0 right-0 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="absolute -bottom-8 left-0 right-0 grid grid-cols-2 gap-4">
               <SpecCard icon={Zap} label="Range" value="180 KM" />
               <SpecCard icon={Battery} label="Top Speed" value="120 KMPH" />
               <SpecCard icon={Shield} label="Warranty" value="8 Year" />
