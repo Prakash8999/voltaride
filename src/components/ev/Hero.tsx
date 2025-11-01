@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Zap, Leaf, Clock, Shield } from "lucide-react";
-import ScooterViewer from "./ScooterViewer";
 
 export default function Hero() {
   const specs = [
@@ -96,7 +95,6 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative"
           >
-            <ScooterViewer />
             
             {/* Floating Spec Cards */}
             <div className="absolute inset-0 pointer-events-none">
