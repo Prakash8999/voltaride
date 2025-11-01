@@ -50,8 +50,8 @@ function Scooter() {
 
 export default function ScooterViewer() {
   return (
-    <div className="w-full h-[500px] rounded-2xl overflow-hidden glass-effect">
-      <Canvas shadows>
+    <div className="w-full h-full rounded-2xl overflow-hidden glass-effect">
+      <Canvas shadows dpr={[1, 2]} gl={{ antialias: true }}>
         <PerspectiveCamera makeDefault position={[3, 2, 3]} />
         <OrbitControls 
           enableZoom={true}

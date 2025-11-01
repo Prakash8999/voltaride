@@ -94,11 +94,12 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
+            className="relative h-[500px] lg:h-[600px]"
           >
+            <ScooterViewer />
             
             {/* Floating Spec Cards */}
-            <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 pointer-events-none z-10">
               {specs.map((spec, i) => (
                 <motion.div
                   key={i}
