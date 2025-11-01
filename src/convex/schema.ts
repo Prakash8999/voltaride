@@ -32,12 +32,78 @@ const schema = defineSchema(
       role: v.optional(roleValidator), // role of the user. do not remove
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
-    // add other tables here
+    // EV Models
+    models: defineTable({
+      name: v.string(),
+      tagline: v.string(),
+      price: v.number(),
+      monthlyEmi: v.number(),
+      image: v.string(),
+      range: v.number(),
+      topSpeed: v.number(),
+      acceleration: v.string(),
+      chargingTime: v.number(),
+      warranty: v.number(),
+      featured: v.boolean(),
+    }),
 
-    // tableName: defineTable({
-    //   ...
-    //   // table fields
-    // }).index("by_field", ["field"])
+    // Testimonials
+    testimonials: defineTable({
+      name: v.string(),
+      role: v.string(),
+      image: v.string(),
+      quote: v.string(),
+      rating: v.number(),
+      videoUrl: v.optional(v.string()),
+      videoThumbnail: v.optional(v.string()),
+      videoDuration: v.optional(v.string()),
+      videoViews: v.optional(v.number()),
+      stats: v.optional(v.object({
+        kmDriven: v.number(),
+        monthsOwned: v.number(),
+      })),
+    }),
+
+    // Service Centers
+    serviceCenters: defineTable({
+      name: v.string(),
+      state: v.string(),
+      city: v.string(),
+      address: v.string(),
+      phone: v.string(),
+      latitude: v.number(),
+      longitude: v.number(),
+      services: v.array(v.string()),
+    }).index("by_state", ["state"])
+      .index("by_city", ["city"]),
+
+    // Newsletter Subscriptions
+    newsletter: defineTable({
+      email: v.string(),
+      subscribedAt: v.number(),
+    }).index("by_email", ["email"]),
+
+    // Test Ride Bookings
+    testRides: defineTable({
+      name: v.string(),
+      email: v.string(),
+      phone: v.string(),
+      modelId: v.id("models"),
+      preferredDate: v.string(),
+      city: v.string(),
+      status: v.string(),
+    }).index("by_email", ["email"])
+      .index("by_status", ["status"]),
+
+    // Dealer Inquiries
+    dealerInquiries: defineTable({
+      name: v.string(),
+      email: v.string(),
+      phone: v.string(),
+      city: v.string(),
+      message: v.string(),
+      status: v.string(),
+    }).index("by_status", ["status"]),
   },
   {
     schemaValidation: false,
