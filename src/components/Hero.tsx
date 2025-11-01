@@ -1,11 +1,8 @@
-import { Suspense } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Zap, Battery, Clock, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
-import heroScooter from "@/assets/hero-scooter.jpg";
+import ScooterViewer3D from "./ScooterViewer3D";
 
 const SpecCard = ({ icon: Icon, label, value }: { icon: any; label: string; value: string }) => (
   <motion.div
@@ -96,12 +93,11 @@ const Hero = () => {
             className="relative"
           >
             <div className="aspect-square rounded-2xl overflow-hidden glass animate-pulse-glow">
-              <img
-                src={heroScooter}
-                alt="VoltaRide Electric Scooter"
-                className="w-full h-full object-cover"
-              />
+              <ScooterViewer3D />
             </div>
+            <p className="text-center text-sm text-muted-foreground mt-4">
+              Drag to rotate • Auto-rotates when idle
+            </p>
 
             {/* Floating Spec Cards */}
             <div className="absolute -bottom-8 left-0 right-0 grid grid-cols-2 md:grid-cols-4 gap-4">

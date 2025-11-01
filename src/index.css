@@ -8,6 +8,70 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+    /* Light mode colors */
+    --background: 0 0% 100%;
+    --foreground: 228 45% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 228 45% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 228 45% 8%;
+
+    --primary: 192 100% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 82 100% 40%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 228 20% 40%;
+
+    --accent: 192 100% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 192 100% 45%;
+
+    --radius: 1rem;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(192 100% 45%) 0%, hsl(192 100% 35%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(82 100% 40%) 0%, hsl(82 100% 32%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(192 100% 45%) 0%, hsl(250 100% 50%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100% / 0.8) 0%, hsl(210 40% 98% / 0.8) 100%);
+
+    /* Glass effect */
+    --glass-bg: hsl(0 0% 100% / 0.6);
+    --glass-border: hsl(228 45% 8% / 0.1);
+
+    /* Shadows and glows */
+    --shadow-sm: 0 2px 8px hsl(228 45% 4% / 0.1);
+    --shadow-md: 0 4px 16px hsl(228 45% 4% / 0.15);
+    --shadow-lg: 0 8px 32px hsl(228 45% 4% / 0.2);
+    --glow-primary: 0 0 40px hsl(192 100% 45% / 0.2);
+    --glow-secondary: 0 0 40px hsl(82 100% 40% / 0.2);
+
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* Spacing scale (8px base) */
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2rem;
+    --space-6: 3rem;
+    --space-8: 4rem;
+    --space-12: 6rem;
+    --space-16: 8rem;
+  }
+
+  .dark {
     /* Deep space navy base */
     --background: 228 45% 8%;
     --foreground: 210 40% 98%;
@@ -41,8 +105,6 @@ All colors MUST be HSL.
     --input: 228 30% 20%;
     --ring: 192 100% 50%;
 
-    --radius: 1rem;
-
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(192 100% 50%) 0%, hsl(192 100% 35%) 100%);
     --gradient-secondary: linear-gradient(135deg, hsl(82 100% 67%) 0%, hsl(82 100% 52%) 100%);
@@ -59,20 +121,6 @@ All colors MUST be HSL.
     --shadow-lg: 0 8px 32px hsl(228 45% 4% / 0.5);
     --glow-primary: 0 0 40px hsl(192 100% 50% / 0.3);
     --glow-secondary: 0 0 40px hsl(82 100% 67% / 0.3);
-
-    /* Transitions */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-
-    /* Spacing scale (8px base) */
-    --space-1: 0.5rem;
-    --space-2: 1rem;
-    --space-3: 1.5rem;
-    --space-4: 2rem;
-    --space-6: 3rem;
-    --space-8: 4rem;
-    --space-12: 6rem;
-    --space-16: 8rem;
   }
 }
 
