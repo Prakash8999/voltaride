@@ -58,10 +58,10 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-3 lg:col-span-1">
             <a href="/" className="text-2xl font-bold gradient-text mb-4 inline-block">
-              VoltaRide
+              ElectroVive
             </a>
             <p className="text-sm text-muted-foreground mb-6">
-              Leading India's electric revolution with innovative, sustainable, and high-performance scooters.
+              ElectroVive, Bihar Jaynar - Leading India's electric revolution with innovative, sustainable, and high-performance scooters.
             </p>
             <div className="flex gap-4">
               {socialLinks.map((social) => {
@@ -103,7 +103,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} VoltaRide. All rights reserved.
+            © {new Date().getFullYear()} ElectroVive. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <span className="text-xs text-muted-foreground">Accepted Payments:</span>

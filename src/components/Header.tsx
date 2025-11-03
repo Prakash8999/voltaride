@@ -3,10 +3,14 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
+import DealershipModal from "./DealershipModal";
+import InterestModal from "./InterestModal";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dealershipModalOpen, setDealershipModalOpen] = useState(false);
+  const [interestModalOpen, setInterestModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,7 +24,6 @@ const Header = () => {
     { label: "Products", href: "#products" },
     { label: "Features", href: "#features" },
     { label: "Technology", href: "#technology" },
-    { label: "Partnership", href: "#partnership" },
     { label: "About", href: "#about" },
   ];
 
@@ -35,7 +38,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <a href="/" className="text-2xl font-bold gradient-text">
-              VoltaRide
+              ElectroVive
             </a>
           </div>
 
@@ -55,10 +58,10 @@ const Header = () => {
           {/* Desktop CTAs */}
           <div className="hidden lg:flex items-center space-x-4">
             <ThemeToggle />
-            <Button variant="ghost" size="sm">
-              Find Dealer
+            <Button variant="ghost" size="sm" onClick={() => setDealershipModalOpen(true)}>
+              Apply for Dealership
             </Button>
-            <Button size="sm">Book Test Ride</Button>
+            <Button size="sm" onClick={() => setInterestModalOpen(true)}>Book Test Ride</Button>
           </div>
 
           {/* Mobile Menu Button & Theme Toggle */}
@@ -96,15 +99,18 @@ const Header = () => {
                 </a>
               ))}
               <div className="pt-4 space-y-3">
-                <Button variant="ghost" className="w-full">
-                  Find Dealer
+                <Button variant="ghost" className="w-full" onClick={() => { setDealershipModalOpen(true); setMobileMenuOpen(false); }}>
+                  Apply for Dealership
                 </Button>
-                <Button className="w-full">Book Test Ride</Button>
+                <Button className="w-full" onClick={() => { setInterestModalOpen(true); setMobileMenuOpen(false); }}>Book Test Ride</Button>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <DealershipModal isOpen={dealershipModalOpen} onClose={() => setDealershipModalOpen(false)} />
+      <InterestModal isOpen={interestModalOpen} onClose={() => setInterestModalOpen(false)} />
     </header>
   );
 };

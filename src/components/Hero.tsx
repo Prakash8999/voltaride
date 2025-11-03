@@ -46,7 +46,7 @@ const Hero = () => {
             {/* Headline */}
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
               The Future of
-              <span className="block gradient-text">Urban Mobility</span>
+              <span className="block gradient-text">Electric Mobility</span>
             </h1>
 
             {/* Bullets */}
