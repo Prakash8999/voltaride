@@ -52,11 +52,14 @@ const Roadmap = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
+          <h3 className="text-lg font-medium text-muted-foreground mb-2">
+            Future Roadmap
+          </h3>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             The Road <span className="gradient-text">Ahead</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Our vision for the future of electric mobility
+            Exciting innovations coming to transform your electric mobility experience
           </p>
         </motion.div>
 

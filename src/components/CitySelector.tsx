@@ -10,6 +10,8 @@ const cities = [
   "Kolkata",
   "Mumbai",
   "Pune",
+  "Patna",
+  "Jaipur",
 ];
 
 const CitySelector = () => {
@@ -17,8 +19,8 @@ const CitySelector = () => {
 
   const handleCityClick = (city: string) => {
     toast({
-      title: "Coming Soon!",
-      description: `ElectroVive Store in ${city} is launching soon.`,
+      title: "Coming Soon! 🎉",
+      description: `We're excited to announce that our ELECTRO VIVE store in ${city} will be opening soon! Stay tuned for updates on our launch date and exclusive opening offers.`,
     });
   };
 
@@ -31,14 +33,14 @@ const CitySelector = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Visit Our <span className="gradient-text">Stores</span>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Come on over. Meet us
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-4">
-            Come on over. Meet us in Select City ElectroVive Stores.
+          <p className="text-xl md:text-2xl font-semibold mb-2">
+            Select City <span className="gradient-text">ELECTRO VIVE</span> Stores.
           </p>
-          <p className="text-sm text-muted-foreground">
-            Because nothing beats a one-on-one with our electric scooters.
+          <p className="text-base text-muted-foreground">
+            Because nothing beats a one on one with the S1.
           </p>
         </motion.div>
 
@@ -65,7 +67,7 @@ const CitySelector = () => {
           viewport={{ once: true }}
           className="text-center text-sm text-muted-foreground mt-8"
         >
-          More about ElectroVive Electric Stores
+          More about ELECTRO VIVE Stores
         </motion.p>
       </div>
     </section>
