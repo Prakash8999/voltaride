@@ -11,6 +11,7 @@ import Roadmap from "@/components/ev/Roadmap";
 import FAQ from "@/components/ev/FAQ";
 import Newsletter from "@/components/ev/Newsletter";
 import Footer from "@/components/ev/Footer";
+import InterestModal from "@/components/ev/InterestModal";
 
 export default function Landing() {
   return (
@@ -29,6 +30,7 @@ export default function Landing() {
         <Newsletter />
       </main>
       <Footer />
+      <InterestModal />
     </div>
   );
 }
