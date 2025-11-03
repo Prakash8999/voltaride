@@ -56,7 +56,7 @@ export default function Features() {
             Built for the <span className="gradient-text">Future</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Cutting-edge technology meets sustainable design in every VoltaRide scooter
+            Cutting-edge technology meets sustainable design in every ELECTRO VIVE scooter
           </p>
         </motion.div>
 
