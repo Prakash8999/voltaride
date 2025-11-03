@@ -10,7 +10,7 @@ import {
 export default function FAQ() {
   const faqs = [
     {
-      question: "What is the real-world range of VoltaRide scooters?",
+      question: "What is the real-world range of ELECTRO VIVE scooters?",
       answer: "Our scooters offer a real-world range of 100-180 km on a single charge, depending on the model and riding conditions. The Apex Pro delivers up to 180 km, while the Metro offers 100 km.",
     },
     {
@@ -19,7 +19,7 @@ export default function FAQ() {
     },
     {
       question: "What is the warranty coverage?",
-      answer: "All VoltaRide scooters come with an 8-year battery warranty and 3-year vehicle warranty. This covers manufacturing defects and battery degradation beyond normal wear.",
+      answer: "All ELECTRO VIVE scooters come with an 8-year battery warranty and 3-year vehicle warranty. This covers manufacturing defects and battery degradation beyond normal wear.",
     },
     {
       question: "Are there government subsidies available?",
@@ -39,7 +39,7 @@ export default function FAQ() {
     },
     {
       question: "Is it safe to ride in rain?",
-      answer: "Yes, all VoltaRide scooters have IP67 water resistance rating, making them safe to ride in heavy rain. The battery and electrical components are fully sealed and protected.",
+      answer: "Yes, all ELECTRO VIVE scooters have IP67 water resistance rating, making them safe to ride in heavy rain. The battery and electrical components are fully sealed and protected.",
     },
   ];
 
@@ -57,7 +57,7 @@ export default function FAQ() {
             Got <span className="gradient-text">Questions?</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Find answers to the most common questions about VoltaRide electric scooters
+            Find answers to the most common questions about ELECTRO VIVE electric scooters
           </p>
         </motion.div>
 

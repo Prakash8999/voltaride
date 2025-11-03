@@ -33,9 +33,9 @@ export default function ServiceMap() {
             Select <span className="gradient-text">City</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Ola Electric Stores. Because nothing beats a one on one with the S1.
+            ELECTRO VIVE Stores. Because nothing beats a one on one with the S1.
           </p>
-          <p className="text-sm text-muted-foreground mt-2">More about Ola Electric Stores</p>
+          <p className="text-sm text-muted-foreground mt-2">More about ELECTRO VIVE Stores</p>
         </motion.div>
 
         {selectedCity ? (

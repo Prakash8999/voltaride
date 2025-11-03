@@ -83,9 +83,9 @@ export default function Header() {
           {/* Logo */}
           <a href="/" className="flex items-center space-x-2 cursor-pointer">
             <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-              <span className="text-xl font-bold text-background">V</span>
+              <span className="text-xl font-bold text-background">E</span>
             </div>
-            <span className="text-xl font-bold gradient-text hidden sm:inline">VoltaRide</span>
+            <span className="text-xl font-bold gradient-text hidden sm:inline">ELECTRO VIVE</span>
           </a>
 
           {/* Desktop Navigation */}

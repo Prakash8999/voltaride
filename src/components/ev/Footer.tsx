@@ -16,9 +16,9 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
               <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-                <span className="text-xl font-bold text-background">V</span>
+                <span className="text-xl font-bold text-background">E</span>
               </div>
-              <span className="text-xl font-bold gradient-text">VoltaRide</span>
+              <span className="text-xl font-bold gradient-text">ELECTRO VIVE</span>
             </div>
             <p className="text-muted-foreground mb-6">
               Leading the electric revolution with cutting-edge technology and sustainable mobility solutions.
@@ -69,21 +69,21 @@ export default function Footer() {
             <Mail className="w-5 h-5 text-accent" />
             <div>
               <p className="text-sm text-muted-foreground">Email Us</p>
-              <p className="font-bold">support@voltaride.com</p>
+              <p className="font-bold">support@electrovive.com</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <MapPin className="w-5 h-5 text-destructive" />
             <div>
               <p className="text-sm text-muted-foreground">Visit Us</p>
-              <p className="font-bold">Mumbai, India</p>
+              <p className="font-bold">Patna, Bihar</p>
             </div>
           </div>
         </div>
 
         {/* Bottom */}
         <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          <p>© 2024 VoltaRide. All rights reserved. | Made with ⚡ in India</p>
+          <p>© 2024 ELECTRO VIVE. All rights reserved. | Made with ⚡ in India</p>
         </div>
       </div>
     </footer>
