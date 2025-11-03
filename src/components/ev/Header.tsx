@@ -1,11 +1,22 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Menu, X, MapPin, Calendar } from "lucide-react";
+import { Menu, X, Calendar } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const submitDealerInquiry = useMutation(api.bookings.submitDealerInquiry);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,9 +30,44 @@ export default function Header() {
     { label: "Products", href: "#products" },
     { label: "Features", href: "#features" },
     { label: "Technology", href: "#technology" },
-    { label: "Partnership", href: "#partnership" },
     { label: "About", href: "#about" },
   ];
+
+  const handleDealershipSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name") as string,
+      businessName: formData.get("businessName") as string,
+      businessType: formData.get("businessType") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      city: formData.get("city") as string,
+      lowSpeedEV: formData.get("lowSpeedEV") === "on",
+      highSpeedEV: formData.get("highSpeedEV") === "on",
+    };
+
+    const message = `Business: ${data.businessName} | Type: ${data.businessType} | Low-Speed: ${data.lowSpeedEV ? "Yes" : "No"} | High-Speed: ${data.highSpeedEV ? "Yes" : "No"}`;
+
+    try {
+      await submitDealerInquiry({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        city: data.city,
+        message,
+      });
+      toast.success("Application submitted successfully! We'll contact you soon.");
+      setIsDialogOpen(false);
+      (e.target as HTMLFormElement).reset();
+    } catch (error) {
+      toast.error("Failed to submit application. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <motion.header
@@ -57,10 +103,95 @@ export default function Header() {
 
           {/* Desktop CTAs */}
           <div className="hidden lg:flex items-center space-x-4">
-            <Button variant="outline" size="sm" className="cursor-pointer">
-              <MapPin className="w-4 h-4 mr-2" />
-              Find Dealer
-            </Button>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" className="cursor-pointer">
+                  Apply for Dealership
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl gradient-text">🚗 Dealership Application Form</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleDealershipSubmit} className="space-y-6 mt-4">
+                  {/* Basic Information */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-bold">1️⃣ Basic Information</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Full Name / Owner's Name</Label>
+                        <Input id="name" name="name" placeholder="e.g., Rahul Sharma" required />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="businessName">Business Name / Shop Name</Label>
+                        <Input id="businessName" name="businessName" placeholder="e.g., Sharma Motors" required />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="businessType">Business Type</Label>
+                      <Select name="businessType" required>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select business type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="ev-showroom">EV Showroom</SelectItem>
+                          <SelectItem value="multi-brand">Multi-brand Showroom</SelectItem>
+                          <SelectItem value="service-center">Service Center</SelectItem>
+                          <SelectItem value="new-business">New Business</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email Address</Label>
+                        <Input id="email" name="email" type="email" placeholder="rahulsharma@gmail.com" required />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="phone">Phone Number</Label>
+                        <Input id="phone" name="phone" type="tel" placeholder="+91 98765 43210" required />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="city">City</Label>
+                      <Input id="city" name="city" placeholder="e.g., Patna" required />
+                    </div>
+                  </div>
+
+                  {/* Vehicle Category Selection */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-bold">2️⃣ Vehicle Category Selection</h3>
+                    <p className="text-sm text-muted-foreground">Select which EV type(s) you're interested in for dealership:</p>
+                    <div className="space-y-3">
+                      <div className="flex items-start space-x-3">
+                        <Checkbox id="lowSpeedEV" name="lowSpeedEV" />
+                        <div className="space-y-1">
+                          <Label htmlFor="lowSpeedEV" className="cursor-pointer font-medium">
+                            Low-Speed EVs (≤ 25 km/h)
+                          </Label>
+                          <p className="text-xs text-muted-foreground">No license or registration required</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3">
+                        <Checkbox id="highSpeedEV" name="highSpeedEV" />
+                        <div className="space-y-1">
+                          <Label htmlFor="highSpeedEV" className="cursor-pointer font-medium">
+                            High-Speed EVs (≥ 45 km/h)
+                          </Label>
+                          <p className="text-xs text-muted-foreground">License and registration required</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Submit */}
+                  <div className="pt-4">
+                    <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-background" disabled={isLoading}>
+                      {isLoading ? "Submitting..." : "✅ Apply for Dealership"}
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
             <Button size="sm" className="bg-primary hover:bg-primary/90 text-background cursor-pointer">
               <Calendar className="w-4 h-4 mr-2" />
               Book Test Ride
@@ -86,10 +217,13 @@ export default function Header() {
                   </a>
                 ))}
                 <div className="pt-6 border-t border-border space-y-3">
-                  <Button variant="outline" className="w-full cursor-pointer">
-                    <MapPin className="w-4 h-4 mr-2" />
-                    Find Dealer
-                  </Button>
+                  <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="w-full cursor-pointer">
+                        Apply for Dealership
+                      </Button>
+                    </DialogTrigger>
+                  </Dialog>
                   <Button className="w-full bg-primary hover:bg-primary/90 text-background cursor-pointer">
                     <Calendar className="w-4 h-4 mr-2" />
                     Book Test Ride

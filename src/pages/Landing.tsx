@@ -7,6 +7,7 @@ import Calculators from "@/components/ev/Calculators";
 import Comparison from "@/components/ev/Comparison";
 import Testimonials from "@/components/ev/Testimonials";
 import ServiceMap from "@/components/ev/ServiceMap";
+import Roadmap from "@/components/ev/Roadmap";
 import FAQ from "@/components/ev/FAQ";
 import Newsletter from "@/components/ev/Newsletter";
 import Footer from "@/components/ev/Footer";
@@ -23,6 +24,7 @@ export default function Landing() {
         <Comparison />
         <Testimonials />
         <ServiceMap />
+        <Roadmap />
         <FAQ />
         <Newsletter />
       </main>
