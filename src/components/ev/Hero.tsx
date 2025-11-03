@@ -40,12 +40,12 @@ export default function Hero() {
 
             {/* Headline */}
             <div className="space-y-4">
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
                 <span className="gradient-text">The Future</span>
                 <br />
                 <span className="text-foreground">of Mobility</span>
               </h1>
-              <p className="text-xl text-muted-foreground max-w-xl">
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl">
                 Experience the perfect blend of power, range, and sustainability with India's most advanced electric scooters.
               </p>
             </div>
@@ -71,21 +71,21 @@ export default function Hero() {
             </ul>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-background cursor-pointer group">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-background cursor-pointer group w-full sm:w-auto">
                 Reserve Now
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button size="lg" variant="outline" className="cursor-pointer">
+              <Button size="lg" variant="outline" className="cursor-pointer w-full sm:w-auto">
                 Explore Models
               </Button>
             </div>
 
             {/* Price */}
             <div className="pt-4">
-              <p className="text-sm text-muted-foreground">Starting from</p>
-              <p className="text-3xl font-bold font-numbers gradient-text">₹3,999<span className="text-lg">/mo</span></p>
-              <p className="text-sm text-muted-foreground">with zero down payment</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Starting from</p>
+              <p className="text-2xl sm:text-3xl font-bold font-numbers gradient-text">₹3,999<span className="text-base sm:text-lg">/mo</span></p>
+              <p className="text-xs sm:text-sm text-muted-foreground">with zero down payment</p>
             </div>
           </motion.div>
 
@@ -94,7 +94,7 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative h-[500px] lg:h-[600px]"
+            className="relative h-[400px] sm:h-[500px] lg:h-[600px] mt-8 lg:mt-0"
           >
             <ScooterViewer />
             
@@ -106,21 +106,21 @@ export default function Hero() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 + i * 0.1 }}
-                  className={`absolute glass-effect rounded-lg p-4 pointer-events-auto ${
-                    i === 0 ? "top-10 left-0" :
-                    i === 1 ? "top-10 right-0" :
-                    i === 2 ? "bottom-10 left-0" :
-                    "bottom-10 right-0"
+                  className={`absolute glass-effect rounded-lg p-2 sm:p-3 md:p-4 pointer-events-auto ${
+                    i === 0 ? "top-4 sm:top-10 left-0" :
+                    i === 1 ? "top-4 sm:top-10 right-0" :
+                    i === 2 ? "bottom-4 sm:bottom-10 left-0" :
+                    "bottom-4 sm:bottom-10 right-0"
                   }`}
                   style={{ animationDelay: `${i * 0.5}s` }}
                 >
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
-                      <spec.icon className="w-5 h-5 text-primary" />
+                  <div className="flex items-center space-x-2 sm:space-x-3">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                      <spec.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="text-2xl font-bold font-numbers">{spec.value}</p>
-                      <p className="text-xs text-muted-foreground">{spec.label.split(' ').slice(1).join(' ')}</p>
+                      <p className="text-lg sm:text-xl md:text-2xl font-bold font-numbers">{spec.value}</p>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground">{spec.label.split(' ').slice(1).join(' ')}</p>
                     </div>
                   </div>
                 </motion.div>
