@@ -12,7 +12,11 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 
-export default function Header() {
+interface HeaderProps {
+  onBookTestRide?: () => void;
+}
+
+export default function Header({ onBookTestRide }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -192,7 +196,11 @@ export default function Header() {
                 </form>
               </DialogContent>
             </Dialog>
-            <Button size="sm" className="bg-primary hover:bg-primary/90 text-background cursor-pointer">
+            <Button 
+              size="sm" 
+              className="bg-primary hover:bg-primary/90 text-background cursor-pointer"
+              onClick={onBookTestRide}
+            >
               <Calendar className="w-4 h-4 mr-2" />
               Book Test Ride
             </Button>
@@ -224,7 +232,10 @@ export default function Header() {
                       </Button>
                     </DialogTrigger>
                   </Dialog>
-                  <Button className="w-full bg-primary hover:bg-primary/90 text-background cursor-pointer">
+                  <Button 
+                    className="w-full bg-primary hover:bg-primary/90 text-background cursor-pointer"
+                    onClick={onBookTestRide}
+                  >
                     <Calendar className="w-4 h-4 mr-2" />
                     Book Test Ride
                   </Button>

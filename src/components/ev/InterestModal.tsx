@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,7 +7,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 
-export default function InterestModal() {
+export interface InterestModalRef {
+  open: () => void;
+}
+
+const InterestModal = forwardRef<InterestModalRef>((props, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +22,10 @@ export default function InterestModal() {
     pincode: "",
     whatsappUpdates: false,
   });
+
+  useImperativeHandle(ref, () => ({
+    open: () => setIsOpen(true),
+  }));
 
   useEffect(() => {
     // Check if user has already submitted
@@ -160,4 +168,8 @@ export default function InterestModal() {
       </DialogContent>
     </Dialog>
   );
-}
+});
+
+InterestModal.displayName = "InterestModal";
+
+export default InterestModal;

@@ -11,12 +11,15 @@ import Roadmap from "@/components/ev/Roadmap";
 import FAQ from "@/components/ev/FAQ";
 import Newsletter from "@/components/ev/Newsletter";
 import Footer from "@/components/ev/Footer";
-import InterestModal from "@/components/ev/InterestModal";
+import InterestModal, { InterestModalRef } from "@/components/ev/InterestModal";
+import { useRef } from "react";
 
 export default function Landing() {
+  const interestModalRef = useRef<InterestModalRef>(null);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Header />
+      <Header onBookTestRide={() => interestModalRef.current?.open()} />
       <main>
         <Hero />
         <ProductGrid />
@@ -30,7 +33,7 @@ export default function Landing() {
         <Newsletter />
       </main>
       <Footer />
-      <InterestModal />
+      <InterestModal ref={interestModalRef} />
     </div>
   );
 }
