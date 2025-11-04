@@ -28,8 +28,15 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="py-24 relative">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-24 relative overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <img
+          src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80"
+          alt="Newsletter Background"
+          className="w-full h-full object-cover opacity-10"
+        />
+      </div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

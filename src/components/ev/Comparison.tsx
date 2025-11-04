@@ -32,6 +32,44 @@ export default function Comparison() {
           </p>
         </motion.div>
 
+        <div className="grid lg:grid-cols-2 gap-8 mb-12">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative h-64 rounded-2xl overflow-hidden"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80"
+              alt="Electric Scooter"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+            <div className="absolute bottom-6 left-6">
+              <h3 className="text-3xl font-bold gradient-text">Electric</h3>
+              <p className="text-muted-foreground">The Future is Here</p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative h-64 rounded-2xl overflow-hidden"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&q=80"
+              alt="Petrol Scooter"
+              className="w-full h-full object-cover grayscale"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+            <div className="absolute bottom-6 left-6">
+              <h3 className="text-3xl font-bold text-muted-foreground">Petrol</h3>
+              <p className="text-muted-foreground">The Old Way</p>
+            </div>
+          </motion.div>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
