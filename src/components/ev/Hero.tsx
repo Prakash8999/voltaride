@@ -4,7 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Zap, Leaf, Clock, Shield } from "lucide-react";
 import ScooterViewer from "./ScooterViewer";
 
-export default function Hero() {
+interface HeroProps {
+  onReserveNow?: () => void;
+}
+
+export default function Hero({ onReserveNow }: HeroProps) {
   const specs = [
     { icon: Zap, label: "180 KM Range", value: "180" },
     { icon: Zap, label: "120 KMPH", value: "120" },
@@ -13,9 +17,9 @@ export default function Hero() {
   ];
 
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <section className="relative min-h-screen flex items-center pt-20 pb-12 overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-secondary via-background to-background opacity-50" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -71,12 +75,16 @@ export default function Hero() {
             </ul>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-background cursor-pointer group w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+              <Button 
+                size="lg" 
+                onClick={onReserveNow}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer group w-full sm:w-auto shadow-lg shadow-primary/25"
+              >
                 Reserve Now
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button size="lg" variant="outline" className="cursor-pointer w-full sm:w-auto">
+              <Button size="lg" variant="outline" className="cursor-pointer w-full sm:w-auto border-2">
                 Explore Models
               </Button>
             </div>

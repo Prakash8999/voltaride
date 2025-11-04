@@ -21,7 +21,7 @@ export default function Landing() {
     <div className="min-h-screen bg-background text-foreground">
       <Header onBookTestRide={() => interestModalRef.current?.open()} />
       <main>
-        <Hero />
+        <Hero onReserveNow={() => interestModalRef.current?.open()} />
         <ProductGrid />
         <Features />
         <Calculators />
