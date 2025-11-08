@@ -44,12 +44,12 @@ export default function Hero({ onReserveNow }: HeroProps) {
 
             {/* Headline */}
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
                 <span className="gradient-text">The Future</span>
                 <br />
                 <span className="text-foreground">of Mobility</span>
               </h1>
-              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-xl">
                 Experience the perfect blend of power, range, and sustainability with India's most advanced electric scooters.
               </p>
             </div>

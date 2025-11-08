@@ -32,7 +32,7 @@ export default function Comparison() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-12">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -76,7 +76,7 @@ export default function Comparison() {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto glass-effect rounded-2xl overflow-hidden"
         >
-          <div className="grid grid-cols-3 bg-secondary/30 p-6 font-bold">
+          <div className="grid grid-cols-3 bg-secondary/30 p-3 sm:p-6 font-bold text-xs sm:text-base">
             <div className="text-muted-foreground">Feature</div>
             <div className="text-center text-primary">Electric</div>
             <div className="text-center text-muted-foreground">Petrol</div>
@@ -89,9 +89,9 @@ export default function Comparison() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="grid grid-cols-3 p-6 border-t border-border hover:bg-secondary/10 transition-colors"
+              className="grid grid-cols-3 p-3 sm:p-6 border-t border-border hover:bg-secondary/10 transition-colors text-xs sm:text-base"
             >
-              <div className="text-foreground">{item.feature}</div>
+              <div className="text-foreground text-left">{item.feature}</div>
               <div className="text-center font-bold text-primary">{item.electric}</div>
               <div className="text-center text-muted-foreground">{item.petrol}</div>
             </motion.div>

@@ -38,7 +38,7 @@ export default function Calculators() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
           {/* EMI Calculator */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
