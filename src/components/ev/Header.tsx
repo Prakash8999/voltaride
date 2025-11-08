@@ -87,7 +87,7 @@ export default function Header({ onBookTestRide }: HeaderProps) {
           {/* Logo */}
           <a href="/" className="flex items-center space-x-2 cursor-pointer">
             <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-              <span className="text-xl font-bold text-background">E</span>
+              <span className="text-xl font-bold text-background">⚡</span>
             </div>
             <span className="text-xl font-bold gradient-text">ELECTRO VIVE</span>
           </a>
