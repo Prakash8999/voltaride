@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import ScooterViewer3D from "./ScooterViewer3D";
 import TestRideModal from "./TestRideModal";
 import { useState } from "react";
+import image1 from "@/assets/hero.png";
 
 const SpecCard = ({ icon: Icon, label, value }: { icon: any; label: string; value: string }) => (
   <motion.div
@@ -109,7 +110,7 @@ const Hero = () => {
             <div className="aspect-square rounded-2xl overflow-hidden glass animate-pulse-glow">
               {/* <ScooterViewer3D /> */}
               <img
-                src="../src/assets/hero.png"
+                src={image1}
                 alt="ElectroVive Scooter"
                 className="w-full h-full object-cover"
               />
