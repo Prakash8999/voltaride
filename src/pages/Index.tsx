@@ -10,6 +10,7 @@ import FAQ from "@/components/FAQ";
 import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
 import InterestModal from "@/components/InterestModal";
+import ComparisonMatrix from "@/components/ComparisonMatrix";
 
 const Index = () => {
   const [showInterestModal, setShowInterestModal] = useState(false);
@@ -32,6 +33,7 @@ const Index = () => {
       <main>
         <Hero />
         <ProductGrid />
+        <ComparisonMatrix />
         <Features />
         <EMICalculator />
         <Roadmap />

@@ -1,40 +1,40 @@
 import { motion } from "framer-motion";
 import { Battery, Smartphone, Shield, Gauge, Zap, Leaf } from "lucide-react";
-
 const features = [
   {
     id: 1,
-    icon: Battery,
-    title: "Advanced Battery Technology",
+    icon: Shield,
+    title: "Smart Wireless Controller (IP64)",
     description:
-      "Industry-leading lithium-ion battery pack with 8-year warranty. Intelligent thermal management ensures optimal performance in all weather conditions.",
+      "Advanced smart wireless controller engineered for faster response, smoother acceleration, and superior durability with IP64 water resistance.",
     imagePosition: "right",
   },
   {
     id: 2,
-    icon: Smartphone,
-    title: "Smart Companion App",
+    icon: Zap,
+    title: "Regenerative Braking System",
     description:
-      "Control everything from your phone. Real-time diagnostics, ride analytics, GPS tracking, remote start, and OTA updates keep your scooter always up-to-date.",
+      "Converts braking energy back into battery power, increasing efficiency and extending overall range with smoother braking performance.",
     imagePosition: "left",
   },
   {
     id: 3,
-    icon: Shield,
-    title: "Complete Protection Package",
+    icon: Smartphone,
+    title: "Mobile App Connectivity",
     description:
-      "IP67 rated water resistance, advanced anti-theft with GPS immobilizer, and comprehensive insurance coverage. Ride with complete peace of mind.",
+      "Unlock the scooter, check battery status, track rides, get diagnostics, and manage security features directly from your phone.",
     imagePosition: "right",
   },
   {
     id: 4,
     icon: Gauge,
-    title: "AI-Powered HMI Dashboard",
+    title: "GPS Tracking & Anti-Theft Security",
     description:
-      "Full-color TFT display with voice control, navigation, music control, and call management. Stay connected without taking your eyes off the road.",
+      "Real-time GPS location, movement alerts, and remote lock system to keep your vehicle safe at all times.",
     imagePosition: "left",
   },
 ];
+
 
 const FeatureBlock = ({
   feature,
@@ -110,13 +110,14 @@ const Features = () => {
           viewport={{ once: true }}
           className="grid md:grid-cols-2 gap-6 mt-32"
         >
-          <div className="glass p-8 rounded-2xl space-y-4">
-            <Zap className="w-10 h-10 text-primary" />
-            <h4 className="text-2xl font-bold">High-Performance Motor</h4>
-            <p className="text-muted-foreground">
-              BLDC hub motor with regenerative braking. Whisper-quiet operation with maximum torque delivery.
-            </p>
-          </div>
+         <div className="glass p-8 rounded-2xl space-y-4">
+    <Gauge className="w-10 h-10 text-primary" />
+    <h4 className="text-2xl font-bold">Upslope Assistant System</h4>
+    <p className="text-muted-foreground">
+      Intelligent hill-start assist that prevents rollback on inclines and gives
+      smooth power delivery during upward climbs.
+    </p>
+  </div>
           <div className="glass p-8 rounded-2xl space-y-4">
             <Leaf className="w-10 h-10 text-secondary" />
             <h4 className="text-2xl font-bold">100% Sustainable</h4>

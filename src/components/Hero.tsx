@@ -86,27 +86,24 @@ const Hero = () => {
           </motion.div>
 
           {/* Right - 3D Viewer */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="relative lg:pl-8"
-          >
+          
             <div className="aspect-square rounded-2xl overflow-hidden glass animate-pulse-glow">
-              <ScooterViewer3D />
+              {/* <ScooterViewer3D /> */}
+              <img
+                src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=800"
+                alt="ElectroVive Scooter"
+                className="w-full h-full object-cover"
+              />
             </div>
-            <p className="text-center text-sm text-muted-foreground mt-4">
-              Drag to rotate • Auto-rotates when idle
-            </p>
-
+              
             {/* Floating Spec Cards */}
+{/*             
             <div className="absolute -bottom-8 left-0 right-0 grid grid-cols-2 gap-4">
               <SpecCard icon={Zap} label="Range" value="180 KM" />
               <SpecCard icon={Battery} label="Top Speed" value="120 KMPH" />
               <SpecCard icon={Shield} label="Warranty" value="8 Year" />
               <SpecCard icon={Clock} label="Charge Time" value="45 Min" />
-            </div>
-          </motion.div>
+            </div> */}
         </div>
       </div>
     </section>

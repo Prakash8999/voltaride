@@ -1,159 +1,235 @@
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Zap, Battery, Clock } from "lucide-react";
-import apexPro from "@/assets/apex-pro.jpg";
-import surgeX from "@/assets/surge-x.jpg";
-import flow from "@/assets/flow.jpg";
-import metro from "@/assets/metro.jpg";
+import { motion } from "framer-motion";
+import { Battery, Zap, ArrowRight, MessageSquare } from "lucide-react";
+import { useNavigate } from "react-router";
+import { useState } from "react";
+import image1 from "@/assets/apex-pro.jpg";
+import image2 from "@/assets/flow.jpg";
+import image3 from "@/assets/apex-pro.jpg";
+import image4 from "@/assets/apex-pro.jpg";
+import image5 from "@/assets/apex-pro.jpg";
+import image6 from "@/assets/apex-pro.jpg";
+import image7 from "@/assets/apex-pro.jpg";
+import image8 from "@/assets/apex-pro.jpg";
+import image9 from "@/assets/apex-pro.jpg";
+import image10 from "@/assets/apex-pro.jpg";
+import TestRideModal from "@/components/TestRideModal";
 
-const products = [
+// Mock data - replacing Convex query
+const mockModels = [
   {
-    id: 1,
-    name: "Apex Pro",
-    tagline: "Performance Redefined",
-    image: apexPro,
-    price: "₹1,89,999",
-    specs: {
-      range: "180 KM",
-      speed: "120 KMPH",
-      charge: "45 Min",
-    },
-    featured: true,
+    _id: "1",
+    name: "E-Velco Pro",
+    tagline: "BLDC Hub Motor (IP67)",
+    price: 89999,
+    monthlyEmi: 3299,
+    image: image1,
+    range: 90,
+    topSpeed: 45,
   },
   {
-    id: 2,
-    name: "Surge X",
-    tagline: "Power Meets Style",
-    image: surgeX,
-    price: "₹1,59,999",
-    specs: {
-      range: "150 KM",
-      speed: "110 KMPH",
-      charge: "50 Min",
-    },
-    featured: false,
+    _id: "2",
+    name: "Electro Vive Loader",
+    tagline: "Smart Wireless Controller (IP64)",
+    price: 94999,
+    monthlyEmi: 3499,
+    image: image2,
+    range: 90,
+    topSpeed: 45,
   },
   {
-    id: 3,
-    name: "Flow",
-    tagline: "Elegance in Motion",
-    image: flow,
-    price: "₹1,29,999",
-    specs: {
-      range: "130 KM",
-      speed: "90 KMPH",
-      charge: "55 Min",
-    },
-    featured: false,
+    _id: "3",
+    name: "Spimri",
+    tagline: "BLDC Hub Motor (IP67)",
+    price: 79999,
+    monthlyEmi: 2999,
+    image: image3,
+    range: 90,
+    topSpeed: 45,
   },
   {
-    id: 4,
-    name: "Metro",
-    tagline: "Urban Commuter",
-    image: metro,
-    price: "₹99,999",
-    specs: {
-      range: "100 KM",
-      speed: "75 KMPH",
-      charge: "60 Min",
-    },
-    featured: false,
+    _id: "4",
+    name: "Aurra Pro",
+    tagline: "Smart Wireless Controller (IP64)",
+    price: 84999,
+    monthlyEmi: 3199,
+    image: image4,
+    range: 90,
+    topSpeed: 45,
+  },
+  {
+    _id: "5",
+    name: "Cruiser",
+    tagline: "BLDC Hub Motor (IP67)",
+    price: 74999,
+    monthlyEmi: 2799,
+    image: image5,
+    range: 90,
+    topSpeed: 45,
+  },
+  {
+    _id: "6",
+    name: "Shravil",
+    tagline: "Smart Wireless Controller (IP64)",
+    price: 69999,
+    monthlyEmi: 2599,
+    image: image6,
+    range: 90,
+    topSpeed: 45,
+  },
+  {
+    _id: "7",
+    name: "Ninja Plus+",
+    tagline: "BLDC Hub Motor (IP67)",
+    price: 64999,
+    monthlyEmi: 2399,
+    image: image7,
+    range: 62,
+    topSpeed: 40,
+  },
+  {
+    _id: "8",
+    name: "GTR+",
+    tagline: "Smart Wireless Controller (IP64)",
+    price: 59999,
+    monthlyEmi: 2199,
+    image: image8,
+    range: 90,
+    topSpeed: 45,
+  },
+  {
+    _id: "9",
+    name: "Ninja Mini",
+    tagline: "BLDC Hub Motor (IP67)",
+    price: 54999,
+    monthlyEmi: 1999,
+    image: image9,
+    range: 90,
+    topSpeed: 45,
+  },
+  {
+    _id: "10",
+    name: "Ninja 2G",
+    tagline: "Smart Wireless Controller (IP64)",
+    price: 49999,
+    monthlyEmi: 1799,
+    image: image10,
+    range: 90,
+    topSpeed: 45,
   },
 ];
 
-const ProductCard = ({ product, index }: { product: typeof products[0]; index: number }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 50 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5, delay: index * 0.1 }}
-    className="group relative glass rounded-2xl overflow-hidden hover:scale-105 transition-transform duration-300"
-  >
-    {product.featured && (
-      <Badge className="absolute top-4 right-4 z-10 bg-primary">Featured</Badge>
-    )}
+export default function ProductGrid() {
+  const models = mockModels;
+  const navigate = useNavigate();
+  const [enquiryOpen, setEnquiryOpen] = useState(false);
+  const [selectedModel, setSelectedModel] = useState<string>("");
 
-    {/* Image */}
-    <div className="aspect-[4/3] overflow-hidden">
-      <img
-        src={product.image}
-        alt={product.name}
-        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-      />
-    </div>
+  const handleEnquiryClick = (modelName: string) => {
+    setSelectedModel(modelName);
+    setEnquiryOpen(true);
+  };
 
-    {/* Content */}
-    <div className="p-6 space-y-4">
-      <div>
-        <h3 className="text-2xl font-bold text-foreground">{product.name}</h3>
-        <p className="text-sm text-muted-foreground">{product.tagline}</p>
-      </div>
-
-      {/* Specs Row */}
-      <div className="flex items-center justify-between text-sm">
-        <div className="flex items-center gap-2">
-          <Zap className="w-4 h-4 text-primary" />
-          <span className="font-numeric">{product.specs.range}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Battery className="w-4 h-4 text-secondary" />
-          <span className="font-numeric">{product.specs.speed}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Clock className="w-4 h-4 text-primary" />
-          <span className="font-numeric">{product.specs.charge}</span>
-        </div>
-      </div>
-
-      {/* Price */}
-      <div className="flex items-end justify-between">
-        <div>
-          <p className="text-sm text-muted-foreground">Starting at</p>
-          <p className="font-numeric text-2xl font-bold text-foreground">{product.price}</p>
-        </div>
-      </div>
-
-      {/* Actions */}
-      <div className="flex gap-2">
-        <Button className="flex-1">Explore</Button>
-        <Button variant="outline" className="flex-1">
-          Buy Now
-        </Button>
-      </div>
-      <Button variant="ghost" className="w-full">
-        Compare
-      </Button>
-    </div>
-  </motion.div>
-);
-
-const ProductGrid = () => {
   return (
-    <section id="products" className="section-padding">
-      <div className="container-custom">
+    <section id="products" className="py-20 bg-muted/30">
+      <div className="container mx-auto px-4">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Choose Your <span className="gradient-text">Ride</span>
+          <Badge variant="secondary" className="mb-4">Our Models</Badge>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            Choose Your Perfect <span className="text-primary">Ride</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            From urban commuters to performance beasts, find the perfect electric scooter for your lifestyle.
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            From urban commuters to performance beasts, find the perfect electric scooter for your lifestyle
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product, index) => (
-            <ProductCard key={product.id} product={product} index={index} />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          {models.map((model, i) => (
+            <motion.div
+              key={model._id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <Card className="group overflow-hidden backdrop-blur-xl bg-background/50 border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10">
+                <div className="relative aspect-[4/3] overflow-hidden -m-px">
+                  <img
+                    src={model.image}
+                    alt={model.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute top-4 right-4">
+                    <Badge className="bg-primary/90 backdrop-blur-sm">
+                      ₹{model.monthlyEmi}/mo
+                    </Badge>
+                  </div>
+                </div>
+
+                <CardContent className="p-4 space-y-3">
+                  <div>
+                    <h3 className="text-2xl font-bold tracking-tight mb-1">{model.name}</h3>
+                    <p className="text-sm text-muted-foreground">{model.tagline}</p>
+                  </div>
+
+                  {/* Specs Row */}
+                  <div className="flex items-center gap-4 text-sm">
+                    <div className="flex items-center gap-1">
+                      <Battery className="h-4 w-4 text-primary" />
+                      <span className="font-mono font-semibold">{model.range}km</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Zap className="h-4 w-4 text-primary" />
+                      <span className="font-mono font-semibold">{model.topSpeed}kmph</span>
+                    </div>
+                  </div>
+
+                  {/* Price */}
+                  <div className="pt-2 border-t">
+                    <p className="text-sm text-muted-foreground">Starting at</p>
+                    <p className="text-2xl font-bold">₹{(model.price / 1000).toFixed(0)}k</p>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex gap-2">
+                    <Button 
+                      className="flex-1 gap-2" 
+                      size="sm"
+                      onClick={() => navigate(`/product/${model._id}`)}
+                    >
+                      Explore
+                      <ArrowRight className="h-3 w-3" />
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="gap-2"
+                      onClick={() => handleEnquiryClick(model.name)}
+                    >
+                      <MessageSquare className="h-3 w-3" />
+                      Enquire
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
       </div>
+
+      <TestRideModal 
+        open={enquiryOpen} 
+        onOpenChange={setEnquiryOpen}
+        preSelectedModel={selectedModel}
+        isEnquiry={true}
+      />
     </section>
   );
-};
-
-export default ProductGrid;
+}
