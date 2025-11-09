@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Battery, Zap, ArrowRight, MessageSquare } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import image1 from "@/assets/apex-pro.jpg";
 import image2 from "@/assets/flow.jpg";

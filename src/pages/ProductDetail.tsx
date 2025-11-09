@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -566,14 +566,17 @@ export default function ProductDetail() {
               <div className="flex flex-col sm:flex-row gap-4">
             
                 <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2"
+                  size="default"
+                  className="gap-2 flex-1"
                   onClick={() => handleEnquiryClick(product.name)}
                 >
                   <MessageSquare className="h-3 w-3" />
                   Enquire
                 </Button>
+                    {/* <Button size="lg" className="flex-1 py-2 text-xl" onClick={() => handleEnquiryClick(product.name)}
+                >
+                  Book Test Ride
+                </Button> */}
               </div>
             </motion.div>
           </div>
