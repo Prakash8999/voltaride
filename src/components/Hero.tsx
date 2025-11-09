@@ -1,8 +1,10 @@
-import { Zap, Battery, Clock, Shield } from "lucide-react";
+import { Zap, Battery, Clock, Shield, Gauge } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import ScooterViewer3D from "./ScooterViewer3D";
+import TestRideModal from "./TestRideModal";
+import { useState } from "react";
 
 const SpecCard = ({ icon: Icon, label, value }: { icon: any; label: string; value: string }) => (
   <motion.div
@@ -17,7 +19,17 @@ const SpecCard = ({ icon: Icon, label, value }: { icon: any; label: string; valu
   </motion.div>
 );
 
+
+
 const Hero = () => {
+  const [enquiryOpen, setEnquiryOpen] = useState(false);
+    const [selectedModel, setSelectedModel] = useState<string>("");
+  
+    const handleEnquiryClick = (modelName: string) => {
+      setSelectedModel(modelName);
+      setEnquiryOpen(true);
+    };
+  
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       {/* Background gradient */}
@@ -50,29 +62,36 @@ const Hero = () => {
             </h1>
 
             {/* Bullets */}
-            <ul className="space-y-3 text-lg text-muted-foreground">
-              <li className="flex items-start">
-                <Zap className="w-5 h-5 text-primary mr-3 mt-1 flex-shrink-0" />
-                180 KM Real-World Range on Single Charge
-              </li>
-              <li className="flex items-start">
-                <Battery className="w-5 h-5 text-secondary mr-3 mt-1 flex-shrink-0" />
-                0-40 KMPH in Just 2.9 Seconds
-              </li>
-              <li className="flex items-start">
-                <Clock className="w-5 h-5 text-primary mr-3 mt-1 flex-shrink-0" />
-                45-Minute Fast Charging
-              </li>
-            </ul>
+          <ul className="space-y-3 text-lg text-muted-foreground">
+  <li className="flex items-start">
+    <Shield className="w-5 h-5 text-primary mr-3 mt-1 flex-shrink-0" />
+    Smart Wireless Controller (IP64) for responsive and reliable performance
+  </li>
+
+  <li className="flex items-start">
+    <Zap className="w-5 h-5 text-secondary mr-3 mt-1 flex-shrink-0" />
+    Waterproof BLDC Hub Motor (IP67) engineered for all-weather efficiency
+  </li>
+
+  <li className="flex items-start">
+    <Gauge className="w-5 h-5 text-primary mr-3 mt-1 flex-shrink-0" />
+    Regenerative Braking System that recovers energy and extends range
+  </li>
+</ul>
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="text-lg px-8">
+              <Button size="lg" className="text-lg px-8"
+               onClick={() => handleEnquiryClick("E-Velco Pro")}
+              >
                 Reserve Now
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8">
+              <Button size="lg" variant="outline" className="text-lg px-8" 
+              onClick={() => window.location.href = "#products"}
+              >
                 Explore Models
               </Button>
+              
             </div>
 
             {/* Price */}
@@ -90,7 +109,7 @@ const Hero = () => {
             <div className="aspect-square rounded-2xl overflow-hidden glass animate-pulse-glow">
               {/* <ScooterViewer3D /> */}
               <img
-                src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=800"
+                src="../src/assets/hero.png"
                 alt="ElectroVive Scooter"
                 className="w-full h-full object-cover"
               />
@@ -106,6 +125,13 @@ const Hero = () => {
             </div> */}
         </div>
       </div>
+      <TestRideModal
+              open={enquiryOpen}
+              onOpenChange={setEnquiryOpen}
+              preSelectedModel={selectedModel}
+              isEnquiry={true}
+            />
+      
     </section>
   );
 };

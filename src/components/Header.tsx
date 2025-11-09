@@ -40,6 +40,9 @@ const Header = () => {
             <a href="/" className="text-2xl font-bold gradient-text">
               ElectroVive
             </a>
+            <p className="text-xs text-muted-foreground mt-1">
+              A unit of Finactics Consultants Pvt Ltd
+            </p>
           </div>
 
           {/* Desktop Navigation */}

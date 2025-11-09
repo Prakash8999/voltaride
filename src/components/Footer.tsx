@@ -57,9 +57,12 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-3 lg:col-span-1">
-            <a href="/" className="text-2xl font-bold gradient-text mb-4 inline-block">
+            <a href="/" className="text-2xl font-bold gradient-text">
               ElectroVive
             </a>
+            <p className="text-xs text-muted-foreground  mb-4">
+              A unit of Finactics Consultants Pvt Ltd
+            </p>
             <p className="text-sm text-muted-foreground mb-6">
               ElectroVive, Bihar Jaynar - Leading India's electric revolution with innovative, sustainable, and high-performance scooters.
             </p>
