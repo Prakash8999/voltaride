@@ -18,6 +18,7 @@ import image8 from "@/assets/gtr.png";
 import image9 from "@/assets/ninja_mini.png";
 import image10 from "@/assets/ninja_2g.png";
 import TestRideModal from "@/components/TestRideModal";
+import Footer from "@/components/Footer";
 
 
 const productData = [
@@ -601,6 +602,8 @@ export default function ProductDetail() {
         preSelectedModel={selectedModel}
         isEnquiry={true}
       />
+
+      <Footer />
 
     </div>
   );
