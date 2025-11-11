@@ -20,11 +20,14 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Use absolute root-hash links so that navigating from a nested route like /contact
+  // correctly leaves the page and goes back to the home sections (/#section) instead
+  // of staying on /contact#section.
   const navLinks = [
-    { label: "Products", href: "#products" },
-    { label: "Features", href: "#features" },
-    { label: "Technology", href: "#technology" },
-    { label: "About", href: "#about" },
+    { label: "Products", href: "/#products" },
+    { label: "Features", href: "/#features" },
+    { label: "Contact", href: "/contact" },
+    { label: "About", href: "/#about" },
   ];
 
   return (
