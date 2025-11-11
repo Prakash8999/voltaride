@@ -5,16 +5,16 @@ import { motion } from "framer-motion";
 import { Battery, Zap, ArrowRight, MessageSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import image1 from "@/assets/apex-pro.jpg";
-import image2 from "@/assets/flow.jpg";
-import image3 from "@/assets/apex-pro.jpg";
-import image4 from "@/assets/apex-pro.jpg";
-import image5 from "@/assets/apex-pro.jpg";
-import image6 from "@/assets/apex-pro.jpg";
-import image7 from "@/assets/apex-pro.jpg";
-import image8 from "@/assets/apex-pro.jpg";
-import image9 from "@/assets/apex-pro.jpg";
-import image10 from "@/assets/apex-pro.jpg";
+import image1 from "@/assets/velco.png";
+import image2 from "@/assets/loader.png";
+import image3 from "@/assets/spimri.png";
+import image4 from "@/assets/aurra_pro.png";
+import image5 from "@/assets/cruiser.png";
+import image6 from "@/assets/shravil.png";
+import image7 from "@/assets/ninjaplus.png";
+import image8 from "@/assets/gtr.png";
+import image9 from "@/assets/ninja_mini.png";
+import image10 from "@/assets/ninja_2g.png";
 import TestRideModal from "@/components/TestRideModal";
 
 // Mock data - replacing Convex query
@@ -159,13 +159,14 @@ export default function ProductGrid() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
-              <Card className="group overflow-hidden backdrop-blur-xl bg-background/50 border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10">
-                <div className="relative aspect-[4/3] overflow-hidden -m-px">
+              <Card className="group overflow-hidden backdrop-blur-xl bg-background/50 border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 ">
+                <div className="relative h-60 w-full flex items-center justify-center bg-white rounded-md overflow-hidden">
                   <img
                     src={model.image}
                     alt={model.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="max-h-full pt-3 max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
                   />
+
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-primary/90 backdrop-blur-sm">
                       ₹{model.monthlyEmi}/mo
@@ -199,17 +200,17 @@ export default function ProductGrid() {
 
                   {/* Actions */}
                   <div className="flex gap-2">
-                    <Button 
-                      className="flex-1 gap-2" 
+                    <Button
+                      className="flex-1 gap-2"
                       size="sm"
                       onClick={() => navigate(`/product/${model._id}`)}
                     >
                       Explore
                       <ArrowRight className="h-3 w-3" />
                     </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button
+                      variant="outline"
+                      size="sm"
                       className="gap-2"
                       onClick={() => handleEnquiryClick(model.name)}
                     >
@@ -224,8 +225,8 @@ export default function ProductGrid() {
         </div>
       </div>
 
-      <TestRideModal 
-        open={enquiryOpen} 
+      <TestRideModal
+        open={enquiryOpen}
         onOpenChange={setEnquiryOpen}
         preSelectedModel={selectedModel}
         isEnquiry={true}

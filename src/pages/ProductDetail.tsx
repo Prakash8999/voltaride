@@ -7,13 +7,24 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Battery, Zap, Shield, Check, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import DealershipModal from "@/components/DealershipModal";
+import image1 from "@/assets/velco.png";
+import image2 from "@/assets/loader.png";
+import image3 from "@/assets/spimri.png";
+import image4 from "@/assets/aurra_pro.png";
+import image5 from "@/assets/cruiser.png";
+import image6 from "@/assets/shravil.png";
+import image7 from "@/assets/ninjaplus.png";
+import image8 from "@/assets/gtr.png";
+import image9 from "@/assets/ninja_mini.png";
+import image10 from "@/assets/ninja_2g.png";
 import TestRideModal from "@/components/TestRideModal";
+
 
 const productData = [
   {
     id: "1",
     name: "E-Velco Pro",
-    image_url: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=800",
+    image_url: image1,
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
@@ -52,7 +63,7 @@ const productData = [
   {
     id: "2",
     name: "Electro Vive Loader",
-    image_url: "https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=800",
+    image_url: image2,
     range_km: "70–110",
     waterproof_motor: "12-inch Mid-Drive Smart Motor (IP67)",
     smart_wireless_controller: "60/72V Smart Wireless (IP64)",
@@ -84,7 +95,7 @@ const productData = [
   {
     id: "3",
     name: "Spimri",
-    image_url: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800",
+    image_url: image3,
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "72V Smart Wireless (IP64)",
@@ -123,7 +134,7 @@ const productData = [
   {
     id: "4",
     name: "Aurra Pro",
-    image_url: "https://images.unsplash.com/photo-1558980664-769d59546b3d?w=800",
+    image_url: image4,
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
@@ -161,7 +172,7 @@ const productData = [
   {
     id: "5",
     name: "Cruiser",
-    image_url: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=800",
+    image_url: image5,
     range_km: "70–110",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
@@ -201,7 +212,7 @@ const productData = [
   {
     id: "6",
     name: "Shravil",
-    image_url: "https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=800",
+    image_url: image6,
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "60/72V Smart Wireless (IP64)",
@@ -239,7 +250,7 @@ const productData = [
   {
     id: "7",
     name: "Ninja Plus+",
-    image_url: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800",
+    image_url: image7,
     range_km: "50–75",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
@@ -277,7 +288,7 @@ const productData = [
   {
     id: "8",
     name: "GTR+",
-    image_url: "https://images.unsplash.com/photo-1558980664-769d59546b3d?w=800",
+    image_url: image8,
     range_km: "70–110",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
@@ -317,7 +328,7 @@ const productData = [
   {
     id: "9",
     name: "Ninja Mini",
-    image_url: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=800",
+    image_url: image9,
     range_km: "70–110",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
@@ -352,7 +363,7 @@ const productData = [
   {
     id: "10",
     name: "Ninja 2G",
-    image_url: "https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=800",
+    image_url: image10,
     range_km: "70–110",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
@@ -452,6 +463,15 @@ export default function ProductDetail() {
               </Badge>
               <p className="text-2xl font-bold">₹{(product.price / 1000).toFixed(0)}k</p>
               <p className="text-muted-foreground">or ₹{product.monthlyEmi}/month</p>
+
+                <Button
+                  size="default"
+                  className="gap-2 w-fit text-lg px-6 rounded-lg py-2"
+                  onClick={() => handleEnquiryClick(product.name)}
+                >
+                  <MessageSquare className="h-3 w-3" />
+                  Enquire
+                </Button>
             </div>
           </motion.div>
 
@@ -463,7 +483,7 @@ export default function ProductDetail() {
               transition={{ delay: 0.2 }}
             >
               <Card className="overflow-hidden">
-                <div className="aspect-square">
+                <div className="">
                   <img
                     src={product.image_url}
                     alt={product.name}
@@ -565,14 +585,7 @@ export default function ProductDetail() {
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
             
-                <Button
-                  size="default"
-                  className="gap-2 flex-1"
-                  onClick={() => handleEnquiryClick(product.name)}
-                >
-                  <MessageSquare className="h-3 w-3" />
-                  Enquire
-                </Button>
+              
                     {/* <Button size="lg" className="flex-1 py-2 text-xl" onClick={() => handleEnquiryClick(product.name)}
                 >
                   Book Test Ride

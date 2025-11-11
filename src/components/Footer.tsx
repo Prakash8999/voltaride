@@ -1,25 +1,34 @@
 import { Facebook, Twitter, Instagram, Youtube, Linkedin } from "lucide-react";
+import { useState } from "react";
+import DealershipModal from "./DealershipModal";
+import TestRideModal from "./TestRideModal";
+import ServiceCentersModal from "./ServiceCentersModal";
+import ContactUsModal from "./ContactUsModal";
 
 const Footer = () => {
+  const [dealershipModalOpen, setDealershipModalOpen] = useState(false);
+  const [testRideModalOpen, setTestRideModalOpen] = useState(false);
+  const [serviceCentersModalOpen, setServiceCentersModalOpen] = useState(false);
+  const [contactUsModalOpen, setContactUsModalOpen] = useState(false);
   const footerSections = [
     {
       title: "Products",
       links: [
-        { label: "Apex Pro", href: "#" },
-        { label: "Surge X", href: "#" },
-        { label: "Flow", href: "#" },
-        { label: "Metro", href: "#" },
-        { label: "Compare Models", href: "#" },
+        { label: "E-Velco Pro", href: "#products" },
+        { label: "Electro Vive Loader", href: "#products" },
+        { label: "Spimri", href: "#products" },
+        { label: "Aurra Pro", href: "#products" },
+        { label: "Cruiser", href: "#products" },
       ],
     },
     {
       title: "Support",
       links: [
-        { label: "Find a Dealer", href: "#" },
-        { label: "Book Test Ride", href: "#" },
-        { label: "Service Centers", href: "#" },
+        { label: "Apply For Dealership", href: "#", action: () => setDealershipModalOpen(true) },
+        { label: "Book Test Ride", href: "#", action: () => setTestRideModalOpen(true) },
+        { label: "Service Centers", href: "#", action: () => setServiceCentersModalOpen(true) },
+        { label: "Contact Us", href: "#", action: () => setContactUsModalOpen(true) },
         { label: "Warranty", href: "#" },
-        { label: "Contact Us", href: "#" },
       ],
     },
     {
@@ -58,15 +67,16 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-3 lg:col-span-1">
             <a href="/" className="text-2xl font-bold gradient-text">
-              ElectroVive
+              Electro Vive
             </a>
             <p className="text-xs text-muted-foreground  mb-4">
               A unit of Finactics Consultants Pvt Ltd
             </p>
             <p className="text-sm text-muted-foreground mb-6">
-              ElectroVive, Bihar Jaynar - Leading India's electric revolution with innovative, sustainable, and high-performance scooters.
+Shop No 545, Main Road, O.T Section, OPP Geeta Medical, Ulhasnagar - 421004, Maharashtra.
+
             </p>
-            <div className="flex gap-4">
+            {/* <div className="flex gap-4">
               {socialLinks.map((social) => {
                 const Icon = social.icon;
                 return (
@@ -80,7 +90,7 @@ const Footer = () => {
                   </a>
                 );
               })}
-            </div>
+            </div> */}
           </div>
 
           {/* Link Columns */}
@@ -92,7 +102,13 @@ const Footer = () => {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                      onClick={(e) => {
+                        if (link.action) {
+                          e.preventDefault();
+                          link.action();
+                        }
+                      }}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer"
                     >
                       {link.label}
                     </a>
@@ -123,6 +139,11 @@ const Footer = () => {
           </div>
         </div>
       </div>
+
+      <DealershipModal isOpen={dealershipModalOpen} onClose={() => setDealershipModalOpen(false)} />
+      <TestRideModal open={testRideModalOpen} onOpenChange={setTestRideModalOpen} isEnquiry={true} />
+      <ServiceCentersModal isOpen={serviceCentersModalOpen} onClose={() => setServiceCentersModalOpen(false)} />
+      <ContactUsModal isOpen={contactUsModalOpen} onClose={() => setContactUsModalOpen(false)} />
     </footer>
   );
 };

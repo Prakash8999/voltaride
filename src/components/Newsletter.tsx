@@ -20,7 +20,7 @@ const Newsletter = () => {
   };
 
   return (
-    <section className="section-padding">
+    <section className="">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

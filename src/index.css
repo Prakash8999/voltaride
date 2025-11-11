@@ -163,7 +163,7 @@ All colors MUST be HSL.
 
   /* Section padding */
   .section-padding {
-    @apply py-16 md:py-24 lg:py-32;
+    @apply py-16 md:py-16 lg:py-16;
   }
 
   /* Container */

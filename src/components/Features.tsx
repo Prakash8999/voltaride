@@ -87,7 +87,7 @@ const Features = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-14"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             Technology That <span className="gradient-text">Empowers</span>
@@ -108,7 +108,7 @@ const Features = () => {
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="grid md:grid-cols-2 gap-6 mt-32"
+          className="grid md:grid-cols-2 gap-6 mt-16"
         >
          <div className="glass p-8 rounded-2xl space-y-4">
     <Gauge className="w-10 h-10 text-primary" />

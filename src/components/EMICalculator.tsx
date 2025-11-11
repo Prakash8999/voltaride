@@ -42,7 +42,7 @@ const EMICalculator = () => {
   };
 
   return (
-    <section className="section-padding bg-muted/30">
+    <section className=" bg-muted/30">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -10,7 +10,7 @@ const faqs = [
   {
     question: "What is the real-world range of ElectroVive scooters?",
     answer:
-      "Our scooters offer 180 KM real-world range on a single charge under normal riding conditions. Range may vary based on riding style, terrain, weather, and load.",
+      "Our scooters offer 110 KM real-world range on a single charge under normal riding conditions. Range may vary based on riding style, terrain, weather, and load.",
   },
   {
     question: "How long does it take to charge the battery?",
@@ -20,7 +20,7 @@ const faqs = [
   {
     question: "What warranty do you offer?",
     answer:
-      "We offer an industry-leading 8-year/80,000 km warranty on the battery pack and 3 years on the vehicle. Extended warranty options are also available.",
+      "We offer an industry-leading 1-year/80,000 km warranty on the battery pack and 3 years on the vehicle. Extended warranty options are also available.",
   },
   {
     question: "Are there any government subsidies available?",

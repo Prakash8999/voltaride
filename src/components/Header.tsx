@@ -38,7 +38,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <a href="/" className="text-2xl font-bold gradient-text">
-              ElectroVive
+              Electro Vive
             </a>
             <p className="text-xs text-muted-foreground mt-1">
               A unit of Finactics Consultants Pvt Ltd
