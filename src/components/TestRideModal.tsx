@@ -82,14 +82,23 @@ export default function TestRideModal({
 
     if (open) {
       document.addEventListener("keydown", handleKeyDown);
-      // Prevent body scroll
-      document.body.style.overflow = "hidden";
+      // Store current scroll position and prevent body scroll
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
     }
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      // Restore body scroll
-      document.body.style.overflow = "unset";
+      // Restore body scroll and position
+      if (open) {
+        const scrollY = document.body.style.top;
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
     };
   }, [open, onOpenChange]);
 

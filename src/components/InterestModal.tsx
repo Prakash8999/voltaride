@@ -120,7 +120,7 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
     }
   };
 
-  // ESC close and body scroll lock
+  // ESC close and body scroll lock with position preservation
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
@@ -128,14 +128,23 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
 
     if (isOpen) {
       document.addEventListener("keydown", handleKeyDown);
-      // Prevent body scroll
-      document.body.style.overflow = "hidden";
+      // Store current scroll position and prevent body scroll
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
     }
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      // Restore body scroll
-      document.body.style.overflow = "unset";
+      // Restore body scroll and position
+      if (isOpen) {
+        const scrollY = document.body.style.top;
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
     };
   }, [isOpen, onClose]);
 

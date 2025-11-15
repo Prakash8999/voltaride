@@ -78,7 +78,7 @@ const Header = () => {
 
           {/* Mobile Menu Button & Theme Toggle */}
           <div className="lg:hidden flex items-center gap-2">
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
             <button
               className="p-2 text-foreground"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

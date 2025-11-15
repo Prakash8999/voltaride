@@ -21,11 +21,11 @@ const EMICalculator = () => {
   const [tenure, setTenure] = useState(36);
   const [interestRate] = useState(9.5);
 
-  // EMI Calculation
   const monthlyRate = interestRate / 12 / 100;
   const emi =
     (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, tenure)) /
     (Math.pow(1 + monthlyRate, tenure) - 1);
+
   const totalAmount = emi * tenure;
   const totalInterest = totalAmount - loanAmount;
 
@@ -42,30 +42,35 @@ const EMICalculator = () => {
   };
 
   return (
-    <section className=" bg-muted/30">
-      <div className="container-custom">
+    <section className="bg-muted/30 py-20">
+      <div className="container mx-auto px-4">
+
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
             Affordable <span className="gradient-text">Ownership</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             Calculate your monthly EMI and own your dream electric scooter today.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        {/* GRID FIXED */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+
           {/* Calculator */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <Card className="glass p-8 space-y-8">
+            <Card className="glass p-6 sm:p-8 space-y-6 rounded-xl overflow-hidden">
+
               <div className="flex items-center gap-3">
                 <Calculator className="w-6 h-6 text-primary" />
                 <h3 className="text-2xl font-bold">EMI Calculator</h3>
@@ -81,11 +86,10 @@ const EMICalculator = () => {
                 </div>
                 <Slider
                   value={[loanAmount]}
-                  onValueChange={(value) => setLoanAmount(value[0])}
+                  onValueChange={(v) => setLoanAmount(v[0])}
                   min={50000}
                   max={200000}
                   step={5000}
-                  className="w-full"
                 />
               </div>
 
@@ -97,15 +101,14 @@ const EMICalculator = () => {
                 </div>
                 <Slider
                   value={[tenure]}
-                  onValueChange={(value) => setTenure(value[0])}
+                  onValueChange={(v) => setTenure(v[0])}
                   min={12}
                   max={60}
                   step={6}
-                  className="w-full"
                 />
               </div>
 
-              {/* Interest Rate */}
+              {/* Interest */}
               <div className="flex justify-between items-center">
                 <label className="text-sm font-medium">Interest Rate</label>
                 <span className="font-numeric text-lg font-bold">{interestRate}%</span>
@@ -119,15 +122,17 @@ const EMICalculator = () => {
                     ₹{Math.round(emi).toLocaleString("en-IN")}
                   </span>
                 </div>
+
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Total Interest</span>
-                  <span className="font-numeric font-medium">
+                  <span className="font-numeric">
                     ₹{Math.round(totalInterest).toLocaleString("en-IN")}
                   </span>
                 </div>
+
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Total Amount</span>
-                  <span className="font-numeric font-medium">
+                  <span className="font-numeric">
                     ₹{Math.round(totalAmount).toLocaleString("en-IN")}
                   </span>
                 </div>
@@ -146,22 +151,23 @@ const EMICalculator = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <Card className="glass p-8 h-full flex flex-col justify-center">
-              <h3 className="text-2xl font-bold mb-8 text-center">
+            <Card className="glass p-6 sm:p-8 rounded-xl overflow-hidden flex flex-col items-center justify-center">
+              <h3 className="text-2xl font-bold mb-6 text-center">
                 Payment Breakdown
               </h3>
-              <div className="max-w-sm mx-auto">
+
+              {/* FIX: Chart scales on all screens */}
+              <div className="w-full max-w-[260px] sm:max-w-[300px] mx-auto">
                 <Doughnut
                   data={chartData}
                   options={{
+                    maintainAspectRatio: false,
                     plugins: {
                       legend: {
                         position: "bottom",
                         labels: {
                           color: "hsl(210, 40%, 98%)",
-                          font: {
-                            size: 14,
-                          },
+                          font: { size: 12 }, // smaller for mobile
                         },
                       },
                     },
@@ -170,6 +176,7 @@ const EMICalculator = () => {
               </div>
             </Card>
           </motion.div>
+
         </div>
       </div>
     </section>

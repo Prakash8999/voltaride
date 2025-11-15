@@ -452,32 +452,39 @@ export default function ProductDetail() {
             </Button>
           </motion.div>
 
-          {/* Product Header */}
+          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">{product.name}</h1>
-            
-            {/* Premium Badge Row */}
-            <div className="flex flex-wrap gap-3 mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+              {product.name}
+            </h1>
+
+            <div className="flex flex-wrap gap-3 mb-6 max-w-full">
               <Badge variant="secondary" className="text-base px-4 py-2">
                 <Battery className="h-4 w-4 mr-2" />
                 Range: {product.range_km} km
               </Badge>
-              <Badge variant="outline" className="text-base px-4 py-2 border-green-200 text-green-700 bg-green-50">
+
+              <Badge
+                variant="outline"
+                className="text-base px-4 py-2 border-green-200 text-green-700 bg-green-50"
+              >
                 <Shield className="h-4 w-4 mr-2" />
                 No License Required
               </Badge>
             </div>
 
-            {/* Premium Price Section */}
+            {/* Price */}
             <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl p-6 border border-primary/10 mb-6">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
                 <p className="text-lg font-medium text-muted-foreground">Starting at</p>
+
                 <div className="flex items-center gap-3">
                   <span className="text-sm text-muted-foreground">Show Monthly</span>
+
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
@@ -485,23 +492,25 @@ export default function ProductDetail() {
                       onChange={() => setShowMonthly(!showMonthly)}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:h-5 after:w-5 after:rounded-full after:transition-all peer-checked:after:translate-x-full"></div>
                   </label>
                 </div>
               </div>
-              <div className="flex items-center gap-6">
+
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
                 <div className="flex items-baseline gap-2">
-                  <p className="text-4xl font-bold text-muted-foreground bg-clip-text ">
+                  <p className="text-4xl font-bold text-muted-foreground">
                     {showMonthly ? `₹${product.monthlyEmi}` : `₹${(product.price / 1000).toFixed(0)}k`}
                   </p>
                   <span className="text-lg text-muted-foreground">
-                    {showMonthly ? '/month' : 'total'}
+                    {showMonthly ? "/month" : "total"}
                   </span>
                 </div>
+
                 <Button
                   size="lg"
                   variant="secondary"
-                  className="gap-2 hover:to-secondary/90 text-white font-semibold px-8 py-3"
+                  className="gap-2 text-white font-semibold px-8 py-3"
                   onClick={() => handleEnquiryClick(product.name)}
                 >
                   <MessageSquare className="h-5 w-5" />
