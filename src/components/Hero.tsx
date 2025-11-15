@@ -78,6 +78,11 @@ const Hero = () => {
     <Gauge className="w-5 h-5 text-primary mr-3 mt-1 flex-shrink-0" />
     Regenerative Braking System that recovers energy and extends range
   </li>
+  <li className="flex items-start">
+  <Shield className="w-5 h-5 text-secondary mr-3 mt-1 flex-shrink-0" />
+  No License Required — Ride Freely Without Any Paperwork
+</li>
+
 </ul>
 
             {/* CTAs */}
@@ -106,7 +111,7 @@ const Hero = () => {
           </motion.div>
 
           {/* Right - 3D Viewer */}
-          
+          <div className="relative">
             <div className="aspect-square rounded-2xl overflow-hidden glass animate-pulse-glow">
               {/* <ScooterViewer3D /> */}
               <img
@@ -116,15 +121,36 @@ const Hero = () => {
               />
             </div>
               
-            {/* Floating Spec Cards */}
-{/*             
-            <div className="absolute -bottom-8 left-0 right-0 grid grid-cols-2 gap-4">
-              <SpecCard icon={Zap} label="Range" value="180 KM" />
-              <SpecCard icon={Battery} label="Top Speed" value="120 KMPH" />
-              <SpecCard icon={Shield} label="Warranty" value="8 Year" />
-              <SpecCard icon={Clock} label="Charge Time" value="45 Min" />
-            </div> */}
-        </div>
+            {/* Floating Spec Cards positioned at 4 edges of the image */}
+            <div className="pointer-events-none">
+
+              {/* TOP LEFT */}
+              <div className="absolute -top-4 -left-4">
+                <SpecCard icon={Zap} label="Range" value="110 KM" />
+              </div>
+
+              {/* TOP RIGHT */}
+              <div className="absolute -top-4 -right-4">
+                <SpecCard icon={Clock} label="Charge Time" value="45 Min" />
+              </div>
+
+              {/* BOTTOM LEFT */}
+              <div className="absolute -bottom-4 -left-4">
+                <SpecCard icon={Shield} label="Warranty" value="3 Year" />
+              </div>
+
+              {/* BOTTOM RIGHT */}
+              <div className="absolute -bottom-4 -right-4">
+                <SpecCard icon={Gauge} label="No License Required" value="Ride Free" />
+              </div>
+
+            </div>
+          </div>
+
+
+
+
+              </div>
       </div>
       <TestRideModal
               open={enquiryOpen}

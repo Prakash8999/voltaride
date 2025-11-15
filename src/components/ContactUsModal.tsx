@@ -65,9 +65,7 @@ const ContactUsModal = ({ isOpen, onClose }: ContactUsModalProps) => {
                 <h3 className="font-semibold text-lg">Service Information</h3>
               </div>
               <p className="text-sm text-muted-foreground">
-                Service for any electric bike is available here. We provide comprehensive maintenance,
-                repairs, and support for all electric vehicles, not just ElectroVive models.
-              </p>
+              Service for any electric bike is available here. We provide comprehensive maintenance, repairs, and support for all electric vehicles, not just ElectroVive models. We also supply high-quality spare parts for all types of e-bikes.</p>
               <div className="flex flex-wrap gap-2">
                 <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
                   Battery Replacement
@@ -80,6 +78,9 @@ const ContactUsModal = ({ isOpen, onClose }: ContactUsModalProps) => {
                 </span>
                 <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
                   General Maintenance
+                </span>
+                <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
+                  Spare Parts for All E-Bike Brands
                 </span>
               </div>
             </div>

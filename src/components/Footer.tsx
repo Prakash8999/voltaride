@@ -4,21 +4,27 @@ import DealershipModal from "./DealershipModal";
 import TestRideModal from "./TestRideModal";
 import ServiceCentersModal from "./ServiceCentersModal";
 import ContactUsModal from "./ContactUsModal";
+import WarrantyModal from "./WarrantyModal";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const [dealershipModalOpen, setDealershipModalOpen] = useState(false);
   const [testRideModalOpen, setTestRideModalOpen] = useState(false);
   const [serviceCentersModalOpen, setServiceCentersModalOpen] = useState(false);
   const [contactUsModalOpen, setContactUsModalOpen] = useState(false);
+  const [warrantyModalOpen, setWarrantyModalOpen] = useState(false);
+    const navigate = useNavigate();
+  
+  
   const footerSections = [
     {
       title: "Products",
       links: [
-        { label: "E-Velco Pro", href: "#products" },
-        { label: "Electro Vive Loader", href: "#products" },
-        { label: "Spimri", href: "#products" },
-        { label: "Aurra Pro", href: "#products" },
-        { label: "Cruiser", href: "#products" },
+        { label: "E-Velco Pro", action: () => navigate("/product/1") },
+        { label: "Electro Vive Loader", action: () => navigate("/product/2") },
+        { label: "Spimri", action: () => navigate("/product/3") },
+        { label: "Aurra Pro", action: () => navigate("/product/4") },
+        { label: "Cruiser", action: () => navigate("/product/5") },
       ],
     },
     {
@@ -27,29 +33,29 @@ const Footer = () => {
         { label: "Apply For Dealership", href: "#", action: () => setDealershipModalOpen(true) },
         { label: "Book Test Ride", href: "#", action: () => setTestRideModalOpen(true) },
         { label: "Service Centers", href: "#", action: () => setServiceCentersModalOpen(true) },
-        { label: "Contact Us", href: "#", action: () => setContactUsModalOpen(true) },
-        { label: "Warranty", href: "#" },
+            { label: "Contact Us", href: "#", action: () => setContactUsModalOpen(true) },
+            { label: "Warranty", href: "#", action: () => setWarrantyModalOpen(true) },
       ],
     },
-    {
-      title: "Company",
-      links: [
-        { label: "About Us", href: "#" },
-        { label: "Careers", href: "#" },
-        { label: "Press Kit", href: "#" },
-        { label: "Blog", href: "#" },
-        { label: "Investors", href: "#" },
-      ],
-    },
-    {
-      title: "Legal",
-      links: [
-        { label: "Privacy Policy", href: "#" },
-        { label: "Terms of Service", href: "#" },
-        { label: "Cookie Policy", href: "#" },
-        { label: "Refund Policy", href: "#" },
-      ],
-    },
+    // {
+    //   title: "Company",
+    //   links: [
+    //     { label: "About Us", href: "#" },
+    //     { label: "Careers", href: "#" },
+    //     { label: "Press Kit", href: "#" },
+    //     { label: "Blog", href: "#" },
+    //     { label: "Investors", href: "#" },
+    //   ],
+    // },
+    // {
+    //   title: "Legal",
+    //   links: [
+    //     { label: "Privacy Policy", href: "#" },
+    //     { label: "Terms of Service", href: "#" },
+    //     { label: "Cookie Policy", href: "#" },
+    //     { label: "Refund Policy", href: "#" },
+    //   ],
+    // },
   ];
 
   const socialLinks = [
@@ -144,6 +150,7 @@ Shop No 545, Main Road, O.T Section, OPP Geeta Medical, Ulhasnagar - 421004, Mah
       <TestRideModal open={testRideModalOpen} onOpenChange={setTestRideModalOpen} isEnquiry={true} />
       <ServiceCentersModal isOpen={serviceCentersModalOpen} onClose={() => setServiceCentersModalOpen(false)} />
       <ContactUsModal isOpen={contactUsModalOpen} onClose={() => setContactUsModalOpen(false)} />
+      <WarrantyModal isOpen={warrantyModalOpen} onClose={() => setWarrantyModalOpen(false)} />
     </footer>
   );
 };

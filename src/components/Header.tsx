@@ -25,9 +25,10 @@ const Header = () => {
   // of staying on /contact#section.
   const navLinks = [
     { label: "Products", href: "/#products" },
+    { label: "Parts", href: "/parts" },
     { label: "Features", href: "/#features" },
     { label: "Contact", href: "/contact" },
-    { label: "About", href: "/#about" },
+    { label: "About", href: "/about" },
   ];
 
   return (

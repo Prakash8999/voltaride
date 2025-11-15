@@ -126,6 +126,7 @@ export default function ProductGrid() {
   const navigate = useNavigate();
   const [enquiryOpen, setEnquiryOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string>("");
+  const [showMonthly, setShowMonthly] = useState<Record<string, boolean>>({});
 
   const handleEnquiryClick = (modelName: string) => {
     setSelectedModel(modelName);
@@ -177,11 +178,11 @@ export default function ProductGrid() {
                 <CardContent className="p-4 space-y-3">
                   <div>
                     <h3 className="text-2xl font-bold tracking-tight mb-1">{model.name}</h3>
-                    <p className="text-sm text-muted-foreground">{model.tagline}</p>
+                    {/* <p className="text-sm text-muted-foreground">{model.tagline}</p> */}
                   </div>
 
                   {/* Specs Row */}
-                  <div className="flex items-center gap-4 text-sm">
+                  {/* <div className="flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1">
                       <Battery className="h-4 w-4 text-primary" />
                       <span className="font-mono font-semibold">{model.range}km</span>
@@ -190,12 +191,18 @@ export default function ProductGrid() {
                       <Zap className="h-4 w-4 text-primary" />
                       <span className="font-mono font-semibold">{model.topSpeed}kmph</span>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Price */}
                   <div className="pt-2 border-t">
                     <p className="text-sm text-muted-foreground">Starting at</p>
-                    <p className="text-2xl font-bold">₹{(model.price / 1000).toFixed(0)}k</p>
+                    <div className="flex items-center justify-between gap-4">
+                      <p className="text-2xl font-bold">{showMonthly[model._id] ? `₹${model.monthlyEmi}/mo` : `₹${(model.price / 1000).toFixed(0)}k`}</p>
+                      
+                    </div>
+                    <div className="mt-2">
+                      <Badge variant="outline">No License Required</Badge>
+                    </div>
                   </div>
 
                   {/* Actions */}
