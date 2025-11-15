@@ -80,10 +80,16 @@ export default function TestRideModal({
       if (event.key === "Escape") onOpenChange(false);
     };
 
-    if (open) document.addEventListener("keydown", handleKeyDown);
+    if (open) {
+      document.addEventListener("keydown", handleKeyDown);
+      // Prevent body scroll
+      document.body.style.overflow = "hidden";
+    }
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      // Restore body scroll
+      document.body.style.overflow = "unset";
     };
   }, [open, onOpenChange]);
 
@@ -149,7 +155,7 @@ export default function TestRideModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm overflow-hidden">
       <div className="glass rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl">
         <div className="sticky top-0 glass border-b border-border px-6 py-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold gradient-text">

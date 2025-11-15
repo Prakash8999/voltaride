@@ -120,20 +120,29 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
     }
   };
 
-  // ESC close
+  // ESC close and body scroll lock
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
     };
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+    if (isOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+      // Prevent body scroll
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      // Restore body scroll
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm overflow-hidden">
       <div className="glass rounded-2xl w-full max-w-md">
         <div className="glass border-b border-border px-6 py-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">
