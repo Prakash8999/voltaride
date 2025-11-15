@@ -41,12 +41,17 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="text-2xl font-bold gradient-text">
-              Electro Vive
+            <a href="/" className="flex items-center">
+              <img src="/logo.png" alt="Electro Vive" className="h-24 w-auto mr-3" />
+              <div>
+                <div className="text-2xl font-bold gradient-text">
+                  Electro Vive
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  A unit of Finactics Consultants Pvt Ltd
+                </p>
+              </div>
             </a>
-            <p className="text-xs text-muted-foreground mt-1">
-              A unit of Finactics Consultants Pvt Ltd
-            </p>
           </div>
 
           {/* Desktop Navigation */}
