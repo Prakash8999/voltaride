@@ -21,7 +21,7 @@ const Index = () => {
     if (!hasSubmitted) {
       const timer = setTimeout(() => {
         setShowInterestModal(true);
-      }, 60000); // 1 minute
+      }, 10000); // 1 minute
 
       return () => clearTimeout(timer);
     }

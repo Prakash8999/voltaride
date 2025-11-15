@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,60 +20,123 @@ interface DealershipModalProps {
 
 const DealershipModal = ({ isOpen, onClose }: DealershipModalProps) => {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     businessName: "",
     businessType: "",
     email: "",
     phone: "",
     lowSpeed: false,
     highSpeed: false,
+    honeypot: "",
   });
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown);
+  // Validation
+  const validate = () => {
+    if (formData.name.trim().length < 2) {
+      toast({ title: "Invalid Name", description: "Enter a valid full name" });
+      return false;
     }
 
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen, onClose]);
+    if (formData.businessName.trim().length < 2) {
+      toast({ title: "Invalid Business Name", description: "Enter a valid business name" });
+      return false;
+    }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
+    if (!formData.businessType) {
+      toast({ title: "Business Type Required", description: "Select a business type" });
+      return false;
+    }
+
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      toast({ title: "Invalid Email", description: "Enter a valid email" });
+      return false;
+    }
+
+    if (!/^[\+]?[1-9][\d]{9,14}$/.test(formData.phone)) {
+      toast({ title: "Invalid Phone Number", description: "Enter a valid phone number" });
+      return false;
+    }
+
     if (!formData.lowSpeed && !formData.highSpeed) {
       toast({
         title: "Selection Required",
-        description: "Please select at least one vehicle category",
+        description: "Select at least one vehicle category",
         variant: "destructive",
       });
-      return;
+      return false;
     }
 
-    toast({
-      title: "Application Submitted!",
-      description: "We'll contact you within 24-48 hours.",
-    });
-    
-    setFormData({
-      fullName: "",
-      businessName: "",
-      businessType: "",
-      email: "",
-      phone: "",
-      lowSpeed: false,
-      highSpeed: false,
-    });
-    onClose();
+    return true;
   };
+
+  // Submit Handler
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    setLoading(true);
+
+    try {
+      const payload = {
+        type: "dealership",
+        name: formData.name,
+        businessName: formData.businessName,
+        businessType: formData.businessType,
+        email: formData.email,
+        phone: formData.phone,
+        lowSpeed: formData.lowSpeed,
+        highSpeed: formData.highSpeed,
+        honeypot: formData.honeypot,
+      };
+
+      const res = await fetch(`${import.meta.env.VITE_EMAIL_API}/api/email/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        toast({ title: "Failed", description: data.message || "An error occurred" });
+        setLoading(false);
+        return;
+      }
+
+      toast({
+        title: "Application Submitted!",
+        description: "We’ve sent a confirmation email. Our team will contact you shortly.",
+      });
+
+      setFormData({
+        name: "",
+        businessName: "",
+        businessType: "",
+        email: "",
+        phone: "",
+        lowSpeed: false,
+        highSpeed: false,
+        honeypot: "",
+      });
+
+      onClose();
+    } catch (error) {
+      toast({ title: "Error", description: "Something went wrong. Try again." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ESC key
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    if (isOpen) document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -88,35 +151,51 @@ const DealershipModal = ({ isOpen, onClose }: DealershipModalProps) => {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Honeypot */}
+          <input
+            type="text"
+            value={formData.honeypot}
+            onChange={(e) => setFormData({ ...formData, honeypot: e.target.value })}
+            className="hidden"
+            autoComplete="off"
+            tabIndex={-1}
+          />
+
           {/* Basic Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">1️⃣ Basic Information</h3>
-            
+
             <div>
-              <Label htmlFor="fullName">Full Name / Owner's Name</Label>
+              <Label>Full Name / Owner's Name</Label>
               <Input
-                id="fullName"
                 placeholder="e.g., Rahul Sharma"
-                value={formData.fullName}
-                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
               />
             </div>
 
             <div>
-              <Label htmlFor="businessName">Business Name / Shop Name</Label>
+              <Label>Business Name / Shop Name</Label>
               <Input
-                id="businessName"
                 placeholder="e.g., Sharma Motors"
                 value={formData.businessName}
-                onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, businessName: e.target.value })
+                }
                 required
               />
             </div>
 
             <div>
-              <Label htmlFor="businessType">Business Type</Label>
-              <Select value={formData.businessType} onValueChange={(value) => setFormData({ ...formData, businessType: value })}>
+              <Label>Business Type</Label>
+              <Select
+                value={formData.businessType}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, businessType: value })
+                }
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select business type" />
                 </SelectTrigger>
@@ -130,9 +209,8 @@ const DealershipModal = ({ isOpen, onClose }: DealershipModalProps) => {
             </div>
 
             <div>
-              <Label htmlFor="email">Email Address</Label>
+              <Label>Email Address</Label>
               <Input
-                id="email"
                 type="email"
                 placeholder="e.g., rahulsharma@gmail.com"
                 value={formData.email}
@@ -142,9 +220,8 @@ const DealershipModal = ({ isOpen, onClose }: DealershipModalProps) => {
             </div>
 
             <div>
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label>Phone Number</Label>
               <Input
-                id="phone"
                 type="tel"
                 placeholder="e.g., +91 98765 43210"
                 value={formData.phone}
@@ -157,34 +234,35 @@ const DealershipModal = ({ isOpen, onClose }: DealershipModalProps) => {
           {/* Vehicle Category */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">2️⃣ Vehicle Category Selection</h3>
-            <p className="text-sm text-muted-foreground">Select which EV type(s) you're interested in for dealership:</p>
-            
+
             <div className="space-y-3">
               <div className="flex items-start space-x-3 p-4 rounded-lg border border-border hover:border-primary transition-colors">
                 <Checkbox
-                  id="lowSpeed"
                   checked={formData.lowSpeed}
-                  onCheckedChange={(checked) => setFormData({ ...formData, lowSpeed: checked as boolean })}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, lowSpeed: checked as boolean })
+                  }
                 />
                 <div className="flex-1">
-                  <Label htmlFor="lowSpeed" className="font-medium cursor-pointer">
-                    Low-Speed EVs (≤ 25 km/h)
-                  </Label>
-                  <p className="text-sm text-muted-foreground">No license or registration required</p>
+                  <Label className="font-medium cursor-pointer">Low-Speed EVs (≤ 25 km/h)</Label>
+                  <p className="text-sm text-muted-foreground">
+                    No license or registration required
+                  </p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3 p-4 rounded-lg border border-border hover:border-primary transition-colors">
                 <Checkbox
-                  id="highSpeed"
                   checked={formData.highSpeed}
-                  onCheckedChange={(checked) => setFormData({ ...formData, highSpeed: checked as boolean })}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, highSpeed: checked as boolean })
+                  }
                 />
                 <div className="flex-1">
-                  <Label htmlFor="highSpeed" className="font-medium cursor-pointer">
-                    High-Speed EVs (≥ 45 km/h)
-                  </Label>
-                  <p className="text-sm text-muted-foreground">License and registration required</p>
+                  <Label className="font-medium cursor-pointer">High-Speed EVs (≥ 45 km/h)</Label>
+                  <p className="text-sm text-muted-foreground">
+                    License and registration required
+                  </p>
                 </div>
               </div>
             </div>
@@ -192,8 +270,14 @@ const DealershipModal = ({ isOpen, onClose }: DealershipModalProps) => {
 
           {/* Submit */}
           <div className="pt-4">
-            <Button type="submit" size="lg" className="w-full">
-              ✅ Apply for Dealership
+            <Button type="submit" size="lg" className="w-full" disabled={loading}>
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...
+                </>
+              ) : (
+                "✅ Apply for Dealership"
+              )}
             </Button>
           </div>
         </form>

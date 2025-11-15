@@ -27,6 +27,7 @@ export default function TestRideModal({
   isEnquiry = false,
 }: TestRideModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -34,9 +35,41 @@ export default function TestRideModal({
     product: preSelectedModel,
     pincode: "",
     whatsappUpdates: false,
+    honeypot: "", // anti-bot hidden field
   });
 
-  React.useEffect(() => {
+  const validateForm = () => {
+    if (formData.name.trim().length < 2) {
+      toast.error("Please enter a valid name.");
+      return false;
+    }
+
+    if (!/^[\+]?[1-9][\d]{9,14}$/.test(formData.phone)) {
+      toast.error("Enter a valid phone number.");
+      return false;
+    }
+
+    if (isEnquiry && formData.email.trim() !== "") {
+      if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+        toast.error("Enter a valid email.");
+        return false;
+      }
+    }
+
+    if (!formData.product) {
+      toast.error("Please select a vehicle model.");
+      return false;
+    }
+
+    if (!/^\d{5,6}$/.test(formData.pincode)) {
+      toast.error("Enter a valid pincode.");
+      return false;
+    }
+
+    return true;
+  };
+
+  useEffect(() => {
     if (preSelectedModel) {
       setFormData((prev) => ({ ...prev, product: preSelectedModel }));
     }
@@ -44,54 +77,80 @@ export default function TestRideModal({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onOpenChange(false);
-      }
+      if (event.key === "Escape") onOpenChange(false);
     };
 
-    if (open) {
-      document.addEventListener('keydown', handleKeyDown);
-    }
+    if (open) document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [open, onOpenChange]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!validateForm()) return;
+
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    localStorage.setItem("electro-vive-interest-submitted", "true");
+    try {
+      const payload = {
+        type: "testride",
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email || undefined,
+        product: formData.product,
+        pincode: formData.pincode,
+        whatsappUpdates: formData.whatsappUpdates,
+        isEnquiry,
+        honeypot: formData.honeypot,
+      };
 
-    const successMessage = isEnquiry
-      ? "Thank you for your enquiry! Our sales team will contact you soon."
-      : "Thank you! We'll contact you soon to schedule your test ride.";
+      const res = await fetch(`${import.meta.env.VITE_EMAIL_API}/api/email/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    toast.success(successMessage);
-    onOpenChange(false);
-    setIsSubmitting(false);
+      const data = await res.json();
 
-    setFormData({
-      name: "",
-      phone: "",
-      email: "",
-      product: preSelectedModel,
-      pincode: "",
-      whatsappUpdates: false,
-    });
+      if (!res.ok) {
+        toast.error(data.message || "Something went wrong.");
+        return;
+      }
+
+      toast.success(
+        isEnquiry
+          ? "Thank you! Our team will contact you soon."
+          : "Your test ride request has been submitted!"
+      );
+
+      localStorage.setItem("electro-vive-interest-submitted", "true");
+
+      onOpenChange(false);
+
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        product: preSelectedModel,
+        pincode: "",
+        whatsappUpdates: false,
+        honeypot: "",
+      });
+    } catch (err) {
+      toast.error("Failed to submit. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
-      {/* Modal Container */}
       <div className="glass rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl">
-
-        {/* Sticky Header */}
         <div className="sticky top-0 glass border-b border-border px-6 py-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold gradient-text">
             {isEnquiry ? "Enquire Now" : "Book Your Test Ride"}
@@ -104,8 +163,18 @@ export default function TestRideModal({
           </button>
         </div>
 
-        {/* Content */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <input
+            type="text"
+            value={formData.honeypot}
+            onChange={(e) =>
+              setFormData({ ...formData, honeypot: e.target.value })
+            }
+            className="hidden"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+
           <p className="text-muted-foreground">
             {isEnquiry
               ? "Fill in your details and our sales team will get back to you"
@@ -114,9 +183,8 @@ export default function TestRideModal({
 
           {/* Name */}
           <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
+            <Label>Name</Label>
             <Input
-              id="name"
               placeholder="Your full name"
               value={formData.name}
               onChange={(e) =>
@@ -128,9 +196,8 @@ export default function TestRideModal({
 
           {/* Phone */}
           <div className="space-y-2">
-            <Label htmlFor="phone">Phone Number</Label>
+            <Label>Phone Number</Label>
             <Input
-              id="phone"
               type="tel"
               placeholder="+91 98765 43210"
               value={formData.phone}
@@ -144,9 +211,8 @@ export default function TestRideModal({
           {/* Email (only for enquiry) */}
           {isEnquiry && (
             <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
+              <Label>Email Address</Label>
               <Input
-                id="email"
                 type="email"
                 placeholder="your.email@example.com"
                 value={formData.email}
@@ -160,15 +226,13 @@ export default function TestRideModal({
 
           {/* Model Select */}
           <div className="space-y-2">
-            <Label htmlFor="product">Vehicle Model</Label>
+            <Label>Vehicle Model</Label>
             <Select
               value={formData.product}
-              onValueChange={(value) =>
-                setFormData({ ...formData, product: value })
-              }
+              onValueChange={(v) => setFormData({ ...formData, product: v })}
               required
             >
-              <SelectTrigger id="product">
+              <SelectTrigger>
                 <SelectValue placeholder="Select a model" />
               </SelectTrigger>
               <SelectContent>
@@ -188,9 +252,8 @@ export default function TestRideModal({
 
           {/* Pincode */}
           <div className="space-y-2">
-            <Label htmlFor="pincode">Pincode</Label>
+            <Label>Pincode</Label>
             <Input
-              id="pincode"
               placeholder="Enter your pincode"
               value={formData.pincode}
               onChange={(e) =>
@@ -200,10 +263,9 @@ export default function TestRideModal({
             />
           </div>
 
-          {/* WhatsApp Updates */}
+          {/* WhatsApp */}
           <div className="flex items-center gap-2">
             <Checkbox
-              id="whatsapp"
               checked={formData.whatsappUpdates}
               onCheckedChange={(checked) =>
                 setFormData({
@@ -212,18 +274,11 @@ export default function TestRideModal({
                 })
               }
             />
-            <Label htmlFor="whatsapp" className="cursor-pointer">
-              Get updates on WhatsApp
-            </Label>
+            <Label className="cursor-pointer">Get updates on WhatsApp</Label>
           </div>
 
           {/* Submit */}
-          <Button
-            type="submit"
-            className="w-full"
-            size="lg"
-            disabled={isSubmitting}
-          >
+          <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

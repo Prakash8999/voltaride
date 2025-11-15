@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,47 +20,115 @@ interface InterestModalProps {
 
 const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
+    email: "",
     product: "",
     pincode: "",
     whatsapp: false,
+    honeypot: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    localStorage.setItem("electro-vive-interest-submitted", "true");
-    
-    toast({
-      title: "Thank you for your interest!",
-      description: "We'll get in touch with you soon.",
-    });
-    
-    setFormData({
-      name: "",
-      phone: "",
-      product: "",
-      pincode: "",
-      whatsapp: false,
-    });
-    onClose();
+  // ------------ VALIDATION ------------
+  const validate = () => {
+    if (formData.name.trim().length < 2) {
+      toast({ title: "Invalid Name", description: "Please enter your full name." });
+      return false;
+    }
+
+    if (!/^[\+]?[1-9][\d]{9,14}$/.test(formData.phone)) {
+      toast({ title: "Invalid Phone Number", description: "Enter a valid phone number." });
+      return false;
+    }
+
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      toast({ title: "Invalid Email", description: "Please enter a valid email address." });
+      return false;
+    }
+
+    if (!formData.product) {
+      toast({ title: "Select Product", description: "Please choose a vehicle category." });
+      return false;
+    }
+
+    if (!/^\d{5,6}$/.test(formData.pincode)) {
+      toast({ title: "Invalid Pincode", description: "Please enter a valid pincode." });
+      return false;
+    }
+
+    return true;
   };
+
+  // ------------ FORM SUBMIT ------------
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    setLoading(true);
+
+    try {
+      const payload = {
+        type: "interest",
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        product: formData.product,
+        pincode: formData.pincode,
+        whatsapp: formData.whatsapp,
+        honeypot: formData.honeypot,
+      };
+
+      const res = await fetch(`${import.meta.env.VITE_EMAIL_API}/api/email/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast({ title: "Failed", description: data.message || "Unable to submit." });
+        setLoading(false);
+        return;
+      }
+
+      toast({
+        title: "Thank you for your interest!",
+        description: "We have emailed you the confirmation.",
+      });
+
+      localStorage.setItem("electro-vive-interest-submitted", "true");
+
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        product: "",
+        pincode: "",
+        whatsapp: false,
+        honeypot: "",
+      });
+
+      onClose();
+    } catch (err) {
+      toast({ title: "Error", description: "Something went wrong. Try again." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ESC close
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
+      if (event.key === "Escape") onClose();
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
-
 
   if (!isOpen) return null;
 
@@ -68,17 +136,29 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
       <div className="glass rounded-2xl w-full max-w-md">
         <div className="glass border-b border-border px-6 py-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold">Are you interested in getting an ElectroVive Product?</h2>
+          <h2 className="text-xl font-bold">
+            Are you interested in getting an ElectroVive Product?
+          </h2>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
             <X size={24} />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {/* Honeypot */}
+          <input
+            type="text"
+            value={formData.honeypot}
+            onChange={(e) => setFormData({ ...formData, honeypot: e.target.value })}
+            className="hidden"
+            autoComplete="off"
+            tabIndex={-1}
+          />
+
+          {/* Name */}
           <div>
-            <Label htmlFor="name">Name</Label>
+            <Label>Name</Label>
             <Input
-              id="name"
               placeholder="Your name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -86,10 +166,10 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
             />
           </div>
 
+          {/* Phone */}
           <div>
-            <Label htmlFor="phone">Phone Number</Label>
+            <Label>Phone Number</Label>
             <Input
-              id="phone"
               type="tel"
               placeholder="+91 98765 43210"
               value={formData.phone}
@@ -98,9 +178,26 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
             />
           </div>
 
+          {/* Email */}
           <div>
-            <Label htmlFor="product">Product interested in</Label>
-            <Select value={formData.product} onValueChange={(value) => setFormData({ ...formData, product: value })} required>
+            <Label>Email</Label>
+            <Input
+              type="email"
+              placeholder="your.email@example.com"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+            />
+          </div>
+
+          {/* Product */}
+          <div>
+            <Label>Product interested in</Label>
+            <Select
+              value={formData.product}
+              onValueChange={(value) => setFormData({ ...formData, product: value })}
+              required
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select speed category" />
               </SelectTrigger>
@@ -111,10 +208,10 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
             </Select>
           </div>
 
+          {/* Pincode */}
           <div>
-            <Label htmlFor="pincode">Pincode</Label>
+            <Label>Pincode</Label>
             <Input
-              id="pincode"
               placeholder="Enter your pincode"
               value={formData.pincode}
               onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
@@ -122,19 +219,27 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
             />
           </div>
 
+          {/* WhatsApp */}
           <div className="flex items-center space-x-2">
             <Checkbox
-              id="whatsapp"
               checked={formData.whatsapp}
-              onCheckedChange={(checked) => setFormData({ ...formData, whatsapp: checked as boolean })}
+              onCheckedChange={(checked) =>
+                setFormData({ ...formData, whatsapp: checked as boolean })
+              }
             />
-            <Label htmlFor="whatsapp" className="cursor-pointer">
-              Get updates on WhatsApp
-            </Label>
+            <Label className="cursor-pointer">Get updates on WhatsApp</Label>
           </div>
 
-          <Button type="submit" size="lg" className="w-full">
-            Proceed
+          {/* Submit */}
+          <Button type="submit" size="lg" className="w-full" disabled={loading}>
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Submitting...
+              </>
+            ) : (
+              "Proceed"
+            )}
           </Button>
         </form>
       </div>
