@@ -42,7 +42,7 @@ const EMICalculator = () => {
   };
 
   return (
-    <section className="bg-muted/30 py-20">
+    <section className="bg-muted/30 ">
       <div className="container mx-auto px-4">
 
         {/* Section Header */}

@@ -32,7 +32,6 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden pt-24 px-4 sm:px-6 lg:px-12">
-      {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">
@@ -87,7 +86,7 @@ const Hero = () => {
               </li>
             </ul>
 
-            {/* CTA BUTTONS */}
+            {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 size="lg"
@@ -107,7 +106,6 @@ const Hero = () => {
               </Button>
             </div>
 
-            {/* PRICE */}
             <p className="text-sm text-muted-foreground">
               Starting at{" "}
               <span className="font-numeric text-2xl font-bold text-foreground">
@@ -117,34 +115,34 @@ const Hero = () => {
             </p>
           </motion.div>
 
-          {/* RIGHT SIDE: IMAGE + SPECS */}
+          {/* RIGHT SIDE */}
           <div className="relative flex justify-center lg:justify-end">
-            <div className="aspect-square w-72 sm:w-96 lg:w-[420px] rounded-2xl overflow-hidden glass">
-              <img src={image1} alt="Scooter" className="w-full h-full object-cover" />
-            </div>
+            <div className="relative">
 
-            {/* FLOATING SPEC CARDS */}
-            <div className="pointer-events-none">
-
-              {/* TOP LEFT */}
-              <div className="hidden sm:block absolute -top-6 -left-6">
-                <SpecCard icon={Zap} label="Range" value="110 KM" />
+              {/* Bigger Image */}
+              <div className="aspect-[4/3] w-80 sm:w-[420px] lg:w-[520px] xl:w-[560px] rounded-2xl overflow-hidden glass">
+                <img src={image1} alt="Scooter" className="w-full h-full object-cover" />
               </div>
 
-              {/* TOP RIGHT */}
-              <div className="hidden sm:block absolute -top-6 -right-6">
-                <SpecCard icon={Clock} label="Charge Time" value="45 Min" />
+              {/* FLOATING SPEC CARDS */}
+              <div className="pointer-events-none">
+                <div className="hidden sm:block absolute -top-6 -left-6">
+                  <SpecCard icon={Zap} label="Range" value="110 KM" />
+                </div>
+
+                <div className="hidden sm:block absolute -top-6 -right-6">
+                  <SpecCard icon={Clock} label="Charge Time" value="45 Min" />
+                </div>
+
+                <div className="hidden sm:block absolute -bottom-6 -left-6">
+                  <SpecCard icon={Shield} label="Warranty" value="3 Year" />
+                </div>
+
+                <div className="hidden sm:block absolute -bottom-6 -right-6">
+                  <SpecCard icon={Gauge} label="License" value="Not Required" />
+                </div>
               </div>
 
-              {/* BOTTOM LEFT */}
-              <div className="hidden sm:block absolute -bottom-6 -left-6">
-                <SpecCard icon={Shield} label="Warranty" value="3 Year" />
-              </div>
-
-              {/* BOTTOM RIGHT */}
-              <div className="hidden sm:block absolute -bottom-6 -right-6">
-                <SpecCard icon={Gauge} label="License" value="Not Required" />
-              </div>
             </div>
           </div>
 

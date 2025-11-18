@@ -51,34 +51,17 @@ export default function ComparisonMatrix() {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
+    visible: { opacity: 1 },
   };
 
   const rowVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
+    hidden: { opacity: 0, x: -8 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.12 } },
   };
 
   const cellVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.3,
-      },
-    },
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.08 } },
   };
 
   return (
@@ -88,7 +71,6 @@ export default function ComparisonMatrix() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.1 }}
           className="text-center"
         >
           <Badge variant="secondary" className="mb-4">
@@ -154,11 +136,7 @@ export default function ComparisonMatrix() {
                                   initial={{ scale: 0 }}
                                   whileInView={{ scale: 1 }}
                                   viewport={{ once: true }}
-                                  transition={{
-                                    delay: rowIndex * 0.05,
-                                    type: "spring",
-                                    stiffness: 200,
-                                  }}
+                                  transition={{ type: "spring", stiffness: 300, damping: 18 }}
                                   className="flex justify-center"
                                 >
                                   <div className="h-5 w-5 rounded-full bg-primary/20 flex items-center justify-center">
@@ -173,7 +151,7 @@ export default function ComparisonMatrix() {
                                 initial={{ opacity: 0, y: 10 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: rowIndex * 0.05 }}
+                                transition={{ duration: 0.05 }}
                                 className="text-sm"
                               >
                                 {value}

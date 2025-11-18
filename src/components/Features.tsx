@@ -52,12 +52,12 @@ const FeatureBlock = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.2 }}
-      className={`grid md:grid-cols-2 gap-12 items-center ${
-        isReversed ? "md:flex-row-reverse" : ""
-      }`}
+      className={`grid md:grid-cols-2 gap-8 items-center ${
+          isReversed ? "md:flex-row-reverse" : ""
+        }`}
     >
       {/* Content */}
-      <div className={`space-y-6 ${isReversed ? "md:order-2" : ""}`}>
+      <div className={`space-y-4 ${isReversed ? "md:order-2" : ""}`}>
         <div className="inline-flex p-3 rounded-lg glass">
           <Icon className="w-8 h-8 text-primary" />
         </div>
@@ -71,8 +71,8 @@ const FeatureBlock = ({
 
       {/* Visual/Placeholder */}
       <div className={`${isReversed ? "md:order-1" : ""}`}>
-        <div className="aspect-[4/3] rounded-2xl glass flex items-center justify-center animate-pulse-glow">
-          <Icon className="w-24 h-24 text-primary/30" />
+        <div className="aspect-[4/3] rounded-2xl glass flex items-center justify-center animate-pulse-glow p-4">
+          <Icon className="w-20 h-20 text-primary/30" />
         </div>
       </div>
     </motion.div>
@@ -97,7 +97,7 @@ const Features = () => {
           </p>
         </motion.div>
 
-        <div className="space-y-32">
+        <div className="space-y-12">
           {features.map((feature, index) => (
             <FeatureBlock key={feature.id} feature={feature} index={index} />
           ))}
@@ -108,7 +108,7 @@ const Features = () => {
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="grid md:grid-cols-2 gap-6 mt-16"
+          className="grid md:grid-cols-2 gap-6 mt-14"
         >
          <div className="glass p-8 rounded-2xl space-y-4">
     <Gauge className="w-10 h-10 text-primary" />
