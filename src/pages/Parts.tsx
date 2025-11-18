@@ -146,8 +146,8 @@ const Parts = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <Card className="h-full group hover:shadow-lg transition-all duration-300 border-0 glass overflow-hidden">
-                  <div className="relative w-full h-48 flex items-center justify-center bg-white">
+                <Card className="h-full group overflow-hidden backdrop-blur-xl bg-background/50 border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10">
+                  <div className="relative w-full h-48 flex items-center justify-center bg-white rounded-md overflow-hidden">
   <img
     src={part.image}
     alt={part.name}
