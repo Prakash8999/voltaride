@@ -109,9 +109,9 @@ const Hero = () => {
             <p className="text-sm text-muted-foreground">
               Starting at{" "}
               <span className="font-numeric text-2xl font-bold text-foreground">
-                ₹3,999
+                ₹45,000
               </span>
-              /month
+              
             </p>
           </motion.div>
 

@@ -29,11 +29,17 @@ const productData = [
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
-    battery_options: [
-      "72V 32Ah VRLA",
-      "72V 23Ah VRLA",
-      "72V 23Ah Li-ion NMC"
-    ],
+battery_options: [
+  {
+    type: "Lead Acid Battery 72V 32Ah",
+    warranty: "1 Year"
+  },
+  {
+    type: "Lithium Battery 60V 45Ah",
+    warranty: "3 Years"
+  }
+],
+
     braking_system: "Front Disc / Rear Disc",
     key_features: [
       "Waterproof throttle",
@@ -68,12 +74,17 @@ const productData = [
     range_km: "70–110",
     waterproof_motor: "12-inch Mid-Drive Smart Motor (IP67)",
     smart_wireless_controller: "60/72V Smart Wireless (IP64)",
-    battery_options: [
-      "60V 32Ah VRLA",
-      "60V 45Ah VRLA",
-      "72V 32Ah VRLA",
-      "72V 45Ah VRLA"
-    ],
+  battery_options: [
+  {
+    type: "Lead Acid Battery 72V 32Ah",
+    warranty: "1 Year"
+  },
+  {
+    type: "Lithium Battery 60V 45Ah",
+    warranty: "3 Years"
+  }
+],
+
     braking_system: "Front Disc / Rear Drum",
     key_features: [
       "Waterproof throttle",
@@ -100,11 +111,17 @@ const productData = [
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "72V Smart Wireless (IP64)",
-    battery_options: [
-      "72V 32Ah VRLA",
-      "72V 26Ah Li-ion NMC",
-      "72V 32Ah Li-ion NMC"
-    ],
+  battery_options: [
+  {
+    type: "Lead Acid Battery 72V 32Ah",
+    warranty: "1 Year"
+  },
+  {
+    type: "Lithium Battery 60V 45Ah",
+    warranty: "3 Years"
+  }
+],
+
     braking_system: "Front Disc / Rear Drum",
     key_features: [
       "Waterproof throttle",
@@ -139,10 +156,17 @@ const productData = [
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
-    battery_options: [
-      "72V 32Ah VRLA",
-      "72V 32Ah Li-ion NMC"
-    ],
+  battery_options: [
+  {
+    type: "Lead Acid Battery 72V 32Ah",
+    warranty: "1 Year"
+  },
+  {
+    type: "Lithium Battery 60V 45Ah",
+    warranty: "3 Years"
+  }
+],
+
     braking_system: "Front Disc / Rear Drum",
     key_features: [
       "Waterproof throttle",
@@ -178,10 +202,14 @@ const productData = [
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
     battery_options: [
-      "60V 32Ah VRLA",
-      "60V 45Ah VRLA",
-      "60V 25Ah Li-ion NMC",
-      "60V 30Ah Li-ion NMC"
+      {
+        type: "Lead Acid Battery 72V 32Ah",
+        warranty: "1 Year"
+      },
+      {
+        type: "Lithium Battery 60V 45Ah",
+        warranty: "3 Years"
+      }
     ],
     braking_system: "Front Disc / Rear Drum",
     key_features: [
@@ -217,10 +245,17 @@ const productData = [
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "60/72V Smart Wireless (IP64)",
-    battery_options: [
-      "72V 32Ah VRLA",
-      "60V 45Ah VRLA"
-    ],
+  battery_options: [
+  {
+    type: "Lead Acid Battery 72V 32Ah",
+    warranty: "1 Year"
+  },
+  {
+    type: "Lithium Battery 60V 45Ah",
+    warranty: "3 Years"
+  }
+],
+
     braking_system: "Front Disc / Rear Drum",
     key_features: [
       "Waterproof throttle",
@@ -256,9 +291,16 @@ const productData = [
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
     battery_options: [
-      "48V 32Ah VRLA",
-      "60V 32Ah VRLA"
-    ],
+  {
+    type: "Lead Acid Battery 72V 32Ah",
+    warranty: "1 Year"
+  },
+  {
+    type: "Lithium Battery 60V 45Ah",
+    warranty: "3 Years"
+  }
+],
+
     braking_system: "Front Drum / Rear Drum",
     key_features: [
       "Waterproof throttle",
@@ -293,12 +335,17 @@ const productData = [
     range_km: "70–110",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
-    battery_options: [
-      "60V 32Ah VRLA",
-      "60V 45Ah VRLA",
-      "60V 25Ah Li-ion NMC",
-      "60V 30Ah Li-ion NMC"
-    ],
+  battery_options: [
+  {
+    type: "Lead Acid Battery 72V 32Ah",
+    warranty: "1 Year"
+  },
+  {
+    type: "Lithium Battery 60V 45Ah",
+    warranty: "3 Years"
+  }
+],
+
     braking_system: "Front Disc / Rear Drum",
     key_features: [
       "Waterproof throttle",
@@ -333,10 +380,17 @@ const productData = [
     range_km: "70–110",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
-    battery_options: [
-      "48V 32Ah VRLA",
-      "60V 32Ah VRLA"
-    ],
+  battery_options: [
+  {
+    type: "Lead Acid Battery 72V 32Ah",
+    warranty: "1 Year"
+  },
+  {
+    type: "Lithium Battery 60V 45Ah",
+    warranty: "3 Years"
+  }
+],
+
     braking_system: "Front Drum / Rear Drum",
     key_features: [
       "Waterproof throttle",
@@ -369,9 +423,16 @@ const productData = [
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
     battery_options: [
-      "48V 32Ah VRLA",
-      "60V 32Ah VRLA"
+      {
+        type: "Lead Acid Battery 72V 32Ah",
+        warranty: "1 Year"
+      },
+      {
+        type: "Lithium Battery 60V 45Ah",
+        warranty: "3 Years"
+      }
     ],
+
     braking_system: "Front Drum / Rear Drum",
     key_features: [
       "Waterproof throttle",
@@ -599,18 +660,28 @@ export default function ProductDetail() {
 
               {/* Battery Options */}
               <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-3">Battery Options</h3>
-                  <div className="space-y-2">
-                    {product.battery_options.map((battery, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-primary" />
-                        <span className="text-sm">{battery}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+  <CardContent className="p-6">
+    <h3 className="text-xl font-bold mb-3">Battery Options</h3>
+
+    <div className="space-y-3">
+      {product.battery_options.map((battery, idx) => (
+        <div
+          key={idx}
+          className="flex items-start gap-3 p-3 border rounded-lg bg-muted/20"
+        >
+          <Check className="h-4 w-4 text-primary mt-1" />
+
+          <div>
+            <p className="font-semibold">{battery.type}</p>
+            <p className="text-sm text-muted-foreground">
+              Warranty: {battery.warranty}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </CardContent>
+</Card>
 
               {/* Key Features */}
               <Card>
@@ -629,9 +700,9 @@ export default function ProductDetail() {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-            
-              
-                    {/* <Button size="lg" className="flex-1 py-2 text-xl" onClick={() => handleEnquiryClick(product.name)}
+
+
+                {/* <Button size="lg" className="flex-1 py-2 text-xl" onClick={() => handleEnquiryClick(product.name)}
                 >
                   Book Test Ride
                 </Button> */}

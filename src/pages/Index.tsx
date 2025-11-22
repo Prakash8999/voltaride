@@ -35,7 +35,7 @@ const Index = () => {
         <ProductGrid />
         <ComparisonMatrix />
         <Features />
-        <EMICalculator />
+        {/* <EMICalculator /> */}
         <Roadmap />
         <CitySelector />
         <FAQ />
