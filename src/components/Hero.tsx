@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import TestRideModal from "./TestRideModal";
-import image1 from "@/assets/hero.png";
 
 const SpecCard = ({ icon: Icon, label, value }) => (
   <motion.div
@@ -121,7 +120,7 @@ const Hero = () => {
 
               {/* Bigger Image */}
               <div className="aspect-[4/3] w-80 sm:w-[420px] lg:w-[520px] xl:w-[560px] rounded-2xl overflow-hidden glass">
-                <img src={image1} alt="Scooter" className="w-full h-full object-cover" />
+                <img src={'https://i.ibb.co/0pdzf2qH/hero.png'} alt="Scooter" className="w-full h-full object-cover" />
               </div>
 
               {/* FLOATING SPEC CARDS */}

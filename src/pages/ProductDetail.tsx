@@ -7,25 +7,14 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Battery, Zap, Shield, Check, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import DealershipModal from "@/components/DealershipModal";
-import image1 from "@/assets/velco.png";
-import image2 from "@/assets/loader.png";
-import image3 from "@/assets/spimri.png";
-import image4 from "@/assets/aurra_pro.png";
-import image5 from "@/assets/cruiser.png";
-import image6 from "@/assets/shravil.png";
-import image7 from "@/assets/ninjaplus.png";
-import image8 from "@/assets/gtr.png";
-import image9 from "@/assets/ninja_mini.png";
-import image10 from "@/assets/ninja_2g.png";
 import TestRideModal from "@/components/TestRideModal";
 import Footer from "@/components/Footer";
-
 
 const productData = [
   {
     id: "1",
     name: "E-Velco Pro",
-    image_url: image1,
+    image_url: "https://i.ibb.co/RkVZSKVG/velco.png",
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
@@ -70,7 +59,7 @@ battery_options: [
   {
     id: "2",
     name: "Electro Vive Loader",
-    image_url: image2,
+    image_url: "https://i.ibb.co/0jMsSWn3/loader.png",
     range_km: "70–110",
     waterproof_motor: "12-inch Mid-Drive Smart Motor (IP67)",
     smart_wireless_controller: "60/72V Smart Wireless (IP64)",
@@ -107,7 +96,7 @@ battery_options: [
   {
     id: "3",
     name: "Spimri",
-    image_url: image3,
+    image_url: "https://i.ibb.co/RkwzC5zx/spimri.png",
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "72V Smart Wireless (IP64)",
@@ -152,7 +141,7 @@ battery_options: [
   {
     id: "4",
     name: "Aurra Pro",
-    image_url: image4,
+    image_url: "https://i.ibb.co/7dYJmTsy/aurra-pro.png",
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
@@ -197,7 +186,7 @@ battery_options: [
   {
     id: "5",
     name: "Cruiser",
-    image_url: image5,
+    image_url: "https://i.ibb.co/FkDgWfCg/cruiser.png",
     range_km: "70–110",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
@@ -241,7 +230,7 @@ battery_options: [
   {
     id: "6",
     name: "Shravil",
-    image_url: image6,
+    image_url: "https://i.ibb.co/twnXPwFD/shravil.png",
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "60/72V Smart Wireless (IP64)",
@@ -286,7 +275,7 @@ battery_options: [
   {
     id: "7",
     name: "Ninja Plus+",
-    image_url: image7,
+    image_url: "https://i.ibb.co/jvj50j7N/ninjaplus.png",
     range_km: "50–75",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
@@ -331,7 +320,7 @@ battery_options: [
   {
     id: "8",
     name: "GTR+",
-    image_url: image8,
+    image_url: "https://i.ibb.co/DD9W8yNQ/gtr.png",
     range_km: "70–110",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
@@ -376,7 +365,7 @@ battery_options: [
   {
     id: "9",
     name: "Ninja Mini",
-    image_url: image9,
+    image_url: "https://i.ibb.co/nsFF1mZN/ninja-mini.png",
     range_km: "70–110",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
@@ -418,7 +407,7 @@ battery_options: [
   {
     id: "10",
     name: "Ninja 2G",
-    image_url: image10,
+    image_url: "https://i.ibb.co/84N622kS/ninja-2g.png",
     range_km: "70–110",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",

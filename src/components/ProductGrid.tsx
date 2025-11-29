@@ -5,16 +5,6 @@ import { motion } from "framer-motion";
 import { Battery, Zap, ArrowRight, MessageSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import image1 from "@/assets/velco.png";
-import image2 from "@/assets/loader.png";
-import image3 from "@/assets/spimri.png";
-import image4 from "@/assets/aurra_pro.png";
-import image5 from "@/assets/cruiser.png";
-import image6 from "@/assets/shravil.png";
-import image7 from "@/assets/ninjaplus.png";
-import image8 from "@/assets/gtr.png";
-import image9 from "@/assets/ninja_mini.png";
-import image10 from "@/assets/ninja_2g.png";
 import TestRideModal from "@/components/TestRideModal";
 
 // Mock data - replacing Convex query
@@ -25,7 +15,7 @@ const mockModels = [
     tagline: "BLDC Hub Motor (IP67)",
     price: 64000,
     monthlyEmi: 3299,
-    image: image1,
+    image: "https://i.ibb.co/RkVZSKVG/velco.png",
     range: 90,
     topSpeed: 45,
   },
@@ -35,7 +25,7 @@ const mockModels = [
     tagline: "Smart Wireless Controller (IP64)",
     price: 94999,
     monthlyEmi: 3499,
-    image: image2,
+    image: "https://i.ibb.co/0jMsSWn3/loader.png",
     range: 90,
     topSpeed: 45,
   },
@@ -45,7 +35,7 @@ const mockModels = [
     tagline: "BLDC Hub Motor (IP67)",
     price: 60000,
     monthlyEmi: 2999,
-    image: image3,
+    image: "https://i.ibb.co/RkwzC5zx/spimri.png",
     range: 90,
     topSpeed: 45,
   },
@@ -55,7 +45,7 @@ const mockModels = [
     tagline: "Smart Wireless Controller (IP64)",
     price: 64000,
     monthlyEmi: 3199,
-    image: image4,
+    image: "https://i.ibb.co/7dYJmTsy/aurra-pro.png",
     range: 90,
     topSpeed: 45,
   },
@@ -65,7 +55,7 @@ const mockModels = [
     tagline: "BLDC Hub Motor (IP67)",
     price: 56000,
     monthlyEmi: 2799,
-    image: image5,
+    image: "https://i.ibb.co/FkDgWfCg/cruiser.png",
     range: 90,
     topSpeed: 45,
   },
@@ -75,7 +65,7 @@ const mockModels = [
     tagline: "Smart Wireless Controller (IP64)",
     price: 58000,
     monthlyEmi: 2599,
-    image: image6,
+    image: "https://i.ibb.co/twnXPwFD/shravil.png",
     range: 90,
     topSpeed: 45,
   },
@@ -85,7 +75,7 @@ const mockModels = [
     tagline: "BLDC Hub Motor (IP67)",
     price: 48000,
     monthlyEmi: 2399,
-    image: image7,
+    image: "https://i.ibb.co/jvj50j7N/ninjaplus.png",
     range: 62,
     topSpeed: 40,
   },
@@ -95,7 +85,7 @@ const mockModels = [
     tagline: "Smart Wireless Controller (IP64)",
     price: 50000,
     monthlyEmi: 2199,
-    image: image8,
+    image: "https://i.ibb.co/DD9W8yNQ/gtr.png",
     range: 90,
     topSpeed: 45,
   },
@@ -105,7 +95,7 @@ const mockModels = [
     tagline: "BLDC Hub Motor (IP67)",
     price: 45000,
     monthlyEmi: 1999,
-    image: image9,
+    image: "https://i.ibb.co/nsFF1mZN/ninja-mini.png",
     range: 90,
     topSpeed: 45,
   },
@@ -115,7 +105,7 @@ const mockModels = [
     tagline: "Smart Wireless Controller (IP64)",
     price: 47500,
     monthlyEmi: 1799,
-    image: image10,
+    image: "https://i.ibb.co/84N622kS/ninja-2g.png",
     range: 90,
     topSpeed: 45,
   },

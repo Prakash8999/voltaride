@@ -9,7 +9,7 @@ import NotFound from "./pages/NotFound";
 import ProductDetail from "./pages/ProductDetail";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
-import Parts from "./pages/Parts";
+// import Parts from "./pages/Parts";
 
 const queryClient = new QueryClient();
 
