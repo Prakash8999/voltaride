@@ -12,7 +12,7 @@ import Footer from "@/components/Footer";
 
 const productData = [
   {
-    id: "1",
+    id: "8",
     name: "E-Velco Pro",
     image_url: "https://i.ibb.co/RkVZSKVG/velco.png",
     range_km: "70–110",
@@ -53,11 +53,11 @@ battery_options: [
       "Mobile app connectivity"
     ],
     colors: ["Red", "White", "Grey", "Peacock Blue", "Black"],
-    price: 89999,
-    monthlyEmi: 3299
+    price: "64,000",
+    monthlyEmi: "3,199"
   },
   {
-    id: "2",
+    id: "10",
     name: "Electro Vive Loader",
     image_url: "https://i.ibb.co/0jMsSWn3/loader.png",
     range_km: "70–110",
@@ -90,11 +90,11 @@ battery_options: [
       "Tubeless tyres"
     ],
     colors: ["Black"],
-    price: 94999,
+    price: "75,000",
     monthlyEmi: 3499
   },
   {
-    id: "3",
+    id: "7",
     name: "Spimri",
     image_url: "https://i.ibb.co/RkwzC5zx/spimri.png",
     range_km: "70–110",
@@ -135,11 +135,11 @@ battery_options: [
       "Mobile app connectivity"
     ],
     colors: ["Red", "White", "Dark Grey", "Peacock Blue", "Green"],
-    price: 79999,
-    monthlyEmi: 2999
+    price: "60,000",
+    monthlyEmi: "2,999"
   },
   {
-    id: "4",
+    id: "9",
     name: "Aurra Pro",
     image_url: "https://i.ibb.co/7dYJmTsy/aurra-pro.png",
     range_km: "70–110",
@@ -180,8 +180,8 @@ battery_options: [
       "Mobile app connectivity"
     ],
     colors: ["Ferrari Red", "White", "Black", "Cyan Blue", "Metallic Gold"],
-    price: 84999,
-    monthlyEmi: 3199
+    price: "64,000",
+    monthlyEmi: "3,299"
   },
   {
     id: "5",
@@ -224,12 +224,12 @@ battery_options: [
       "Mobile app connectivity"
     ],
     colors: ["Ferrari Red", "Chameleon", "White", "Grey", "Black"],
-    price: 74999,
-    monthlyEmi: 2799
+    price: "56,000",
+    monthlyEmi: "2,599"
   },
   {
     id: "6",
-    name: "Shravil",
+    name: "Sharvil",
     image_url: "https://i.ibb.co/twnXPwFD/shravil.png",
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
@@ -269,11 +269,11 @@ battery_options: [
       "Mobile app connectivity"
     ],
     colors: ["Red", "White", "Grey", "Black", "Peacock Blue"],
-    price: 69999,
-    monthlyEmi: 2599
+    price: "58,000",
+    monthlyEmi: "2,799"
   },
   {
-    id: "7",
+    id: "3",
     name: "Ninja Plus+",
     image_url: "https://i.ibb.co/jvj50j7N/ninjaplus.png",
     range_km: "50–75",
@@ -314,11 +314,11 @@ battery_options: [
       "Mobile app connectivity"
     ],
     colors: ["Red", "White", "Grey", "Peacock Blue", "Black"],
-    price: 64999,
-    monthlyEmi: 2399
+    price: "48,000",
+    monthlyEmi: "2,199"
   },
   {
-    id: "8",
+    id: "4",
     name: "GTR+",
     image_url: "https://i.ibb.co/DD9W8yNQ/gtr.png",
     range_km: "70–110",
@@ -359,11 +359,11 @@ battery_options: [
       "Mobile app connectivity"
     ],
     colors: ["Red", "Black", "White", "Grey", "Peacock Blue"],
-    price: 59999,
-    monthlyEmi: 2199
+    price: "50,000",
+    monthlyEmi: "2,399"
   },
   {
-    id: "9",
+    id: "1",
     name: "Ninja Mini",
     image_url: "https://i.ibb.co/nsFF1mZN/ninja-mini.png",
     range_km: "70–110",
@@ -401,11 +401,11 @@ battery_options: [
       "Mobile app connectivity"
     ],
     colors: ["Ferrari Red", "White", "Peacock Blue", "Grey", "Black"],
-    price: 54999,
-    monthlyEmi: 1999
+    price: "45,000",
+    monthlyEmi: "1,777"
   },
   {
-    id: "10",
+    id: "2",
     name: "Ninja 2G",
     image_url: "https://i.ibb.co/84N622kS/ninja-2g.png",
     range_km: "70–110",
@@ -444,8 +444,8 @@ battery_options: [
       "Mobile app connectivity"
     ],
     colors: ["Red", "White", "Grey", "Peacock Blue", "Black"],
-    price: 49999,
-    monthlyEmi: 1799
+    price: "47,500",
+    monthlyEmi: "1,999"
   }
 ];
 
@@ -550,7 +550,7 @@ export default function ProductDetail() {
               <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
                 <div className="flex items-baseline gap-2">
                   <p className="text-4xl font-bold text-muted-foreground">
-                    {showMonthly ? `₹${product.monthlyEmi}` : `₹${(product.price / 1000).toFixed(0)}k`}
+                    {showMonthly ? `₹${product.monthlyEmi}` : `₹ ${product.price}`}
                   </p>
                   <span className="text-lg text-muted-foreground">
                     {showMonthly ? "/month" : "total"}
