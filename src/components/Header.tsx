@@ -42,10 +42,10 @@ const Header = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <a href="/" className="flex items-center">
-              <img src="/logo.png" alt="Electro Vive" className="h-24 w-auto mr-3" />
+              <img src="/logo.jpg" alt="Aerix Energy" className="h-14 w-14  mr-3 rounded-full" />
               <div>
                 <div className="text-2xl font-bold gradient-text">
-                  Electro Vive
+                  Aerix Energy
                 </div>
                 <p className="text-xs text-muted-foreground">
                   A unit of Finactics Consultants Pvt Ltd

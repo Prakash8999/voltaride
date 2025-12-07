@@ -8,7 +8,7 @@ import {
 
 const faqs = [
   {
-    question: "What is the real-world range of ElectroVive scooters?",
+    question: "What is the real-world range of Aerix scooters?",
     answer:
       "Our scooters offer 110 KM real-world range on a single charge under normal riding conditions. Range may vary based on riding style, terrain, weather, and load.",
   },
@@ -53,7 +53,7 @@ const FAQ = () => {
             Frequently Asked <span className="gradient-text">Questions</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Everything you need to know about ElectroVive electric scooters
+            Everything you need to know about Aerix electric scooters
           </p>
         </motion.div>
 

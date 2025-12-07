@@ -12,19 +12,19 @@ const ServiceCentersModal = ({ isOpen, onClose }: ServiceCentersModalProps) => {
 
   const serviceCenters = [
     {
-      name: "ElectroVive Service Center - Mumbai",
+      name: "Aerix Energy Service Center - Mumbai",
       address: "Shop No 545, Main Road, O.T Section, OPP Geeta Medical, Ulhasnagar - 421004, Maharashtra",
       phone: "+91 98765 43210",
       hours: "Mon-Sat: 9:00 AM - 7:00 PM"
     },
     {
-      name: "ElectroVive Service Center - Delhi",
+      name: "Aerix Energy Service Center - Delhi",
       address: "456 Electric Avenue, Connaught Place, New Delhi - 110001",
       phone: "+91 98765 43211",
       hours: "Mon-Sat: 9:00 AM - 7:00 PM"
     },
     {
-      name: "ElectroVive Service Center - Bangalore",
+      name: "Aerix Energy Service Center - Bangalore",
       address: "789 Battery Street, Koramangala, Bangalore - 560034",
       phone: "+91 98765 43212",
       hours: "Mon-Sat: 9:00 AM - 7:00 PM"
@@ -57,7 +57,7 @@ const ServiceCentersModal = ({ isOpen, onClose }: ServiceCentersModalProps) => {
 
         <div className="p-6 space-y-6">
           <p className="text-muted-foreground">
-            Visit our authorized service centers for maintenance, repairs, and support for all ElectroVive electric vehicles.
+            Visit our authorized service centers for maintenance, repairs, and support for all Aerix Energy electric vehicles.
           </p>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

@@ -20,7 +20,7 @@ const CitySelector = () => {
   const handleCityClick = (city: string) => {
     toast({
       title: "Coming Soon! 🎉",
-      description: `We're excited to announce that our ELECTRO VIVE store in ${city} will be opening soon! Stay tuned for updates on our launch date and exclusive opening offers.`,
+      description: `We're excited to announce that our AERIX ENERGY store in ${city} will be opening soon! Stay tuned for updates on our launch date and exclusive opening offers.`,
     });
   };
 
@@ -37,7 +37,7 @@ const CitySelector = () => {
             Come on over. Meet us
           </h2>
           <p className="text-xl md:text-2xl font-semibold mb-2">
-            Select City <span className="gradient-text">ELECTRO VIVE</span> Stores.
+            Select City <span className="gradient-text">AERIX ENERGY</span> Stores.
           </p>
           <p className="text-base text-muted-foreground">
             Because nothing beats a one on one with the S1.
@@ -67,7 +67,7 @@ const CitySelector = () => {
           viewport={{ once: true }}
           className="text-center text-sm text-muted-foreground mt-8"
         >
-          More about ELECTRO VIVE Stores
+          More about AERIX ENERGY Stores
         </motion.p>
       </div>
     </section>

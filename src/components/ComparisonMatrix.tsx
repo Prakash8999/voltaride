@@ -14,31 +14,31 @@ import { Check, X, ArrowRight } from "lucide-react";
 
 export default function ComparisonMatrix() {
   const comparisonData = [
-    { feature: "Range (km)", eVelcoPro: "70-110", electroViveLoader: "70-110", spimri: "70-110", aurraPro: "70-110", cruiser: "70-110", shravil: "70-110", ninjaPlus: "50-75", gtrPlus: "70-110", ninjaMini: "70-110", ninja2G: "70-110" },
-    { feature: "Waterproof Motor (IP67)", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "Smart Controller (IP64)", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "Front Disc Brake", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: false, gtrPlus: true, ninjaMini: false, ninja2G: false },
-    { feature: "Rear Disc Brake", eVelcoPro: true, electroViveLoader: false, spimri: false, aurraPro: false, cruiser: false, shravil: false, ninjaPlus: false, gtrPlus: false, ninjaMini: false, ninja2G: false },
-    { feature: "Cruise Control", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "NFC Lock", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "Reverse Gear", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "Anti-Theft Alarm", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "Keyless Entry", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "Regenerative Braking", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "Calling Feature", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "Bluetooth Mode", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "GPS Tracking", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "Navigation", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "USB Charging", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "Anti-Fire Fuse", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "Tubeless Tyres", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "Proximity Unlock", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
-    { feature: "App Connectivity", eVelcoPro: true, electroViveLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "Range (km)", eVelcoPro: "70-110", aerixLoader: "70-110", spimri: "70-110", aurraPro: "70-110", cruiser: "70-110", shravil: "70-110", ninjaPlus: "50-75", gtrPlus: "70-110", ninjaMini: "70-110", ninja2G: "70-110" },
+    { feature: "Waterproof Motor (IP67)", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "Smart Controller (IP64)", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "Front Disc Brake", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: false, gtrPlus: true, ninjaMini: false, ninja2G: false },
+    { feature: "Rear Disc Brake", eVelcoPro: true, aerixLoader: false, spimri: false, aurraPro: false, cruiser: false, shravil: false, ninjaPlus: false, gtrPlus: false, ninjaMini: false, ninja2G: false },
+    { feature: "Cruise Control", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "NFC Lock", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "Reverse Gear", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "Anti-Theft Alarm", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "Keyless Entry", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "Regenerative Braking", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "Calling Feature", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "Bluetooth Mode", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "GPS Tracking", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "Navigation", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "USB Charging", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "Anti-Fire Fuse", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "Tubeless Tyres", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "Proximity Unlock", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
+    { feature: "App Connectivity", eVelcoPro: true, aerixLoader: true, spimri: true, aurraPro: true, cruiser: true, shravil: true, ninjaPlus: true, gtrPlus: true, ninjaMini: true, ninja2G: true },
   ];
 
   const models = [
     { name: "E-Velco Pro", key: "eVelcoPro" },
-    { name: "Electro Vive Loader", key: "electroViveLoader" },
+    { name: "Aerix Energy Loader", key: "aerixLoader" },
     { name: "Spimri", key: "spimri" },
     { name: "Aurra Pro", key: "aurraPro" },
     { name: "Cruiser", key: "cruiser" },
@@ -78,11 +78,11 @@ export default function ComparisonMatrix() {
           </Badge>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
             Compare All 
-               <span className="block gradient-text">ElectroVive Models</span>
+               <span className="block gradient-text">Aerix Models</span>
   
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Find the perfect ElectroVive model with the features you need
+            Find the perfect Aerix model with the features you need
           </p>
         </motion.div>
 

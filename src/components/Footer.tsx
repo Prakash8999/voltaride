@@ -21,7 +21,7 @@ const Footer = () => {
       title: "Products",
       links: [
         { label: "E-Velco Pro", action: () => navigate("/product/1") },
-        { label: "Electro Vive Loader", action: () => navigate("/product/2") },
+        { label: "Aerix Energy Loader", action: () => navigate("/product/2") },
         { label: "Spimri", action: () => navigate("/product/3") },
         { label: "Aurra Pro", action: () => navigate("/product/4") },
         { label: "Cruiser", action: () => navigate("/product/5") },
@@ -73,7 +73,7 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-3 lg:col-span-1">
             <a href="/" className="text-2xl font-bold gradient-text">
-              Electro Vive
+              Aerix Energy
             </a>
             <p className="text-xs text-muted-foreground  mb-4">
               A unit of Finactics Consultants Pvt Ltd
@@ -128,7 +128,7 @@ Shop No 545, Main Road, O.T Section, OPP Geeta Medical, Ulhasnagar - 421004, Mah
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} ElectroVive. All rights reserved.
+            © {new Date().getFullYear()} Aerix Energy. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <span className="text-xs text-muted-foreground">Accepted Payments:</span>

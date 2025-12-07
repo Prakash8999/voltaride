@@ -141,7 +141,7 @@ export default function TestRideModal({
           : "Your test ride request has been submitted!"
       );
 
-      localStorage.setItem("electro-vive-interest-submitted", "true");
+      localStorage.setItem("aerixenergy-interest-submitted", "true");
 
       onOpenChange(false);
 
@@ -193,7 +193,7 @@ export default function TestRideModal({
           <p className="text-muted-foreground">
             {isEnquiry
               ? "Fill in your details and our sales team will get back to you"
-              : "Are you interested in getting an ElectroVive Product?"}
+              : "Are you interested in getting an Aerix Energy Product?"}
           </p>
 
           {/* Name */}
@@ -252,7 +252,7 @@ export default function TestRideModal({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="E-Velco Pro">E-Velco Pro</SelectItem>
-                <SelectItem value="Electro Vive Loader">Electro Vive Loader</SelectItem>
+                <SelectItem value="Aerix Energy Loader">Aerix Energy Loader</SelectItem>
                 <SelectItem value="Spimri">Spimri</SelectItem>
                 <SelectItem value="Aurra Pro">Aurra Pro</SelectItem>
                 <SelectItem value="Cruiser">Cruiser</SelectItem>

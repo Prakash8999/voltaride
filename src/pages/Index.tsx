@@ -16,7 +16,7 @@ const Index = () => {
   const [showInterestModal, setShowInterestModal] = useState(false);
 
   useEffect(() => {
-    const hasSubmitted = localStorage.getItem("electro-vive-interest-submitted") === "true";
+    const hasSubmitted = localStorage.getItem("aerix-energy-interest-submitted") === "true";
     
     if (!hasSubmitted) {
       const timer = setTimeout(() => {

@@ -101,7 +101,7 @@ const mockModels = [
   },
   {
     _id: "10",
-    name: "Electro Vive Loader",
+    name: "Aerix Loader",
     tagline: "Smart Wireless Controller (IP64)",
     price: "75,000",
     monthlyEmi: "3,499",

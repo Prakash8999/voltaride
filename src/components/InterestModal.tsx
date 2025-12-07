@@ -100,7 +100,7 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
         description: "We have emailed you the confirmation.",
       });
 
-      localStorage.setItem("electro-vive-interest-submitted", "true");
+      localStorage.setItem("aerixenergy-interest-submitted", "true");
 
       setFormData({
         name: "",
@@ -155,7 +155,7 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
       <div className="glass rounded-2xl w-full max-w-md">
         <div className="glass border-b border-border px-6 py-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">
-            Are you interested in getting an ElectroVive Product?
+            Are you interested in getting an Aerix Energy Product?
           </h2>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
             <X size={24} />

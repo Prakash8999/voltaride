@@ -58,7 +58,7 @@ battery_options: [
   },
   {
     id: "10",
-    name: "Electro Vive Loader",
+    name: "Aerix Loader",
     image_url: "https://i.ibb.co/0jMsSWn3/loader.png",
     range_km: "70–110",
     waterproof_motor: "12-inch Mid-Drive Smart Motor (IP67)",

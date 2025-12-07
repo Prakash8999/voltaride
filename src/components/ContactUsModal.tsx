@@ -36,7 +36,7 @@ const ContactUsModal = ({ isOpen, onClose }: ContactUsModalProps) => {
 
         <div className="p-6 space-y-6">
           <p className="text-muted-foreground">
-            Get in touch with our sales and service team for all your ElectroVive needs.
+            Get in touch with our sales and service team for all your Aerix Energy needs.
           </p>
 
           <div className="space-y-6">
@@ -49,7 +49,7 @@ const ContactUsModal = ({ isOpen, onClose }: ContactUsModalProps) => {
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <Mail className="w-5 h-5 text-muted-foreground" />
-                  <span className="text-sm">Sales@electrovive.in</span>
+                  <span className="text-sm">Sales@aerixenergy.in</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="w-5 h-5 text-muted-foreground" />
@@ -65,7 +65,7 @@ const ContactUsModal = ({ isOpen, onClose }: ContactUsModalProps) => {
                 <h3 className="font-semibold text-lg">Service Information</h3>
               </div>
               <p className="text-sm text-muted-foreground">
-              Service for any electric bike is available here. We provide comprehensive maintenance, repairs, and support for all electric vehicles, not just ElectroVive models. We also supply high-quality spare parts for all types of e-bikes.</p>
+              Service for any electric bike is available here. We provide comprehensive maintenance, repairs, and support for all electric vehicles, not just Aerix Energy models. We also supply high-quality spare parts for all types of e-bikes.</p>
               <div className="flex flex-wrap gap-2">
                 <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
                   Battery Replacement

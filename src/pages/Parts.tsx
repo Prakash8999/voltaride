@@ -44,7 +44,7 @@
 //   {
 //     "id": 4,
 //     "name": "Waterproof Battery Charger (3A / 5A / 6A / 8A)",
-//     "info": "Fast and efficient waterproof charger compatible with all Electro Vive scooter models.",
+//     "info": "Fast and efficient waterproof charger compatible with all Aerix Energy scooter models.",
 //     "price": "₹2,999",
 //     "warranty_years": 1,
 //     "image": charger
