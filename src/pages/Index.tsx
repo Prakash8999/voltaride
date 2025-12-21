@@ -17,7 +17,7 @@ const Index = () => {
 
   useEffect(() => {
     const hasSubmitted = localStorage.getItem("aerix-energy-interest-submitted") === "true";
-    
+
     if (!hasSubmitted) {
       const timer = setTimeout(() => {
         setShowInterestModal(true);
@@ -28,7 +28,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#F5F5F5]">
       <Header />
       <main>
         <Hero />
@@ -42,9 +42,9 @@ const Index = () => {
         <Newsletter />
       </main>
       <Footer />
-      <InterestModal 
-        isOpen={showInterestModal} 
-        onClose={() => setShowInterestModal(false)} 
+      <InterestModal
+        isOpen={showInterestModal}
+        onClose={() => setShowInterestModal(false)}
       />
     </div>
   );

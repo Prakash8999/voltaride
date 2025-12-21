@@ -62,6 +62,9 @@ const SLIDE_DATA = [
 // Linear interpolation for smooth inertia
 const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
 
+// Easing function for premium feel
+const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -78,6 +81,15 @@ const Hero = () => {
   const wheelTimeout = useRef<NodeJS.Timeout>();
   const initialized = useRef(false);
   const verticalScroll = useRef(0);
+  const heroWrapperRef = useRef<HTMLDivElement>(null);
+
+  // Scroll transformation state (for container effect)
+  const scrollTransform = useRef({
+    inset: 0,        // 0 -> maxInset (px)
+    borderRadius: 0, // 0 -> 32px
+    scale: 1,        // 1 -> 0.97
+    verticalCrop: 0  // 0 -> maxCrop (percentage)
+  });
 
   // Configuration
   const DRAG_MULTIPLIER = 2.0;
@@ -118,9 +130,38 @@ const Hero = () => {
 
     // 2. Interpolate Vertical Scroll for Hero Effect
     const targetScrollY = window.scrollY;
-    verticalScroll.current = lerp(verticalScroll.current, targetScrollY, 0.05);
+    verticalScroll.current = lerp(verticalScroll.current, targetScrollY, 0.12); // Faster response
 
-    // 2. Infinite Loop Jumping logic (Warp)
+    // 3. Calculate Scroll-Based Hero Transformation
+    const vh = window.innerHeight;
+    const scrollRange = vh * 0.15; // Transform completes faster - within 15% of viewport height
+    const rawProgress = Math.min(Math.max(verticalScroll.current / scrollRange, 0), 1);
+    const progress = easeOutCubic(rawProgress); // Apply easing for premium feel
+
+    // Target values for transformation (LEFT/RIGHT ONLY - no vertical crop)
+    const maxInset = Math.min(60, window.innerWidth * 0.04); // Increased inset (max 60px or 4vw)
+    const maxBorderRadius = 28;
+    const minScale = 0.97;
+
+    // Lerp towards target values for smooth animation (faster lerp factor)
+    scrollTransform.current.inset = lerp(scrollTransform.current.inset, progress * maxInset, 0.15);
+    scrollTransform.current.borderRadius = lerp(scrollTransform.current.borderRadius, progress * maxBorderRadius, 0.15);
+    scrollTransform.current.scale = lerp(scrollTransform.current.scale, 1 - (progress * (1 - minScale)), 0.15);
+    scrollTransform.current.verticalCrop = 0; // No vertical crop
+
+    // Apply wrapper transformations
+    if (heroWrapperRef.current) {
+      const { inset, borderRadius, scale } = scrollTransform.current;
+
+      // Clip-path for LEFT/RIGHT inset only (no top/bottom crop)
+      const clipLeft = (inset / window.innerWidth) * 100;
+      const clipRight = 100 - clipLeft;
+
+      heroWrapperRef.current.style.clipPath = `inset(0% ${100 - clipRight}% 0% ${clipLeft}% round ${borderRadius}px)`;
+      heroWrapperRef.current.style.transform = `scale(${scale})`;
+    }
+
+    // 4. Infinite Loop Jumping logic (Warp)
     const width = getSlideWidth();
     const x = position.current.current;
 
@@ -182,9 +223,8 @@ const Hero = () => {
 
       // Parallax & Vertical Crop
       const images = trackRef.current.querySelectorAll('.hero-image');
-      const vh = window.innerHeight;
-      const scrollProgress = Math.min(Math.max(verticalScroll.current / vh, 0), 1);
-      const objectPositionY = 45 - (scrollProgress * 20); // 45% -> 25%
+      const scrollProgress = Math.min(Math.max(verticalScroll.current / window.innerHeight, 0), 1);
+      const objectPositionY = 45 - (scrollProgress * 15); // 45% -> 30% (reduced for container effect)
 
       images.forEach((img, index) => {
         const slideX = (index * width) + finalX;
@@ -276,118 +316,126 @@ const Hero = () => {
   }, [snapToNearestSlide]);
 
   return (
-    <section
-      ref={containerRef}
-      className="relative h-screen w-full overflow-hidden bg-background select-none cursor-grab active:cursor-grabbing"
-    >
+    <section className="relative h-screen w-full bg-[#F5F5F5]">
       <div
-        ref={trackRef}
-        className="flex h-full will-change-transform"
-        // Width = (Originals + 2) * 100vw
-        style={{ width: `${(IMAGES.length) * 100}vw` }}
+        ref={heroWrapperRef}
+        className="absolute inset-0 will-change-transform origin-center"
+        style={{ clipPath: 'inset(0% 0% 0% 0% round 0px)' }}
       >
-        {IMAGES.map((src, idx) => {
-          // Determine if we need to hide the text/metric for the clone while it's "inactive" to prevent duplicates flashing?
-          // Actually, we want them visible so the loop looks seamless. 
-          // The key prop must be unique, so use index.
+        <div
+          ref={containerRef}
+          className="relative h-full w-full overflow-hidden bg-background select-none cursor-grab active:cursor-grabbing"
+        >
+          <div
+            ref={trackRef}
+            className="flex h-full will-change-transform"
+            // Width = (Originals + 2) * 100vw
+            style={{ width: `${(IMAGES.length) * 100}vw` }}
+          >
+            {IMAGES.map((src, idx) => {
+              // Determine if we need to hide the text/metric for the clone while it's "inactive" to prevent duplicates flashing?
+              // Actually, we want them visible so the loop looks seamless. 
+              // The key prop must be unique, so use index.
 
-          return (
-            <div
-              key={idx}
-              className="flex-shrink-0 w-screen h-full relative overflow-hidden flex items-center justify-center border-r border-white/5 bg-[#0a0a0a]"
-            >
-              <div className="absolute inset-0 w-full h-full overflow-hidden">
-                <img
-                  src={src}
-                  alt={SLIDE_DATA[idx].title}
-                  className="hero-image w-full h-full object-cover will-change-transform scale-105"
-                  draggable={false}
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/20 z-10 pointer-events-none" />
-              </div>
-
-              <div className={`absolute top-28 left-0 w-full px-6 sm:px-12 md:px-24 text-left z-20 transition-opacity duration-1000 ${
-                // We show text if this slide is roughly the active one visually.
-                // Since activeIndex is the REAL index (0-5), we need to map idx to real.
-                // Map idx 0 -> Real 5. idx 1 -> Real 0.
-                // BUT, simply relying on activeIndex might flicker during the warp.
-                // Let's use logic: if activeIndex matches the 'content' of this slide.
-                // Slide 0 has content of Last (5). Slide 1 has content of First (0).
-                (idx === 0 && activeIndex === ORIG_IMAGES.length - 1) ||
-                  (idx === IMAGES.length - 1 && activeIndex === 0) ||
-                  (idx === activeIndex + 1)
-                  ? "opacity-100 delay-300" : "opacity-0"
-                }`}>
-                <div className="max-w-xl">
-                  <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-[#F2F2F2]">
-                    {SLIDE_DATA[idx].title}
-                  </h2>
-                  <p className="text-lg md:text-xl font-medium text-[#F2F2F2]/80 tracking-wide mt-3 max-w-lg">
-                    {SLIDE_DATA[idx].subtitle}
-                  </p>
-
-                  <div className="flex items-center gap-4 pt-8">
-                    <Button
-                      size="lg"
-                      className="rounded-full px-8 h-12 text-base bg-[#F2F2F2] text-black hover:bg-white transition-all font-semibold shadow-none border-none"
-                      onClick={() => {
-                        setSelectedModel("E-Velco Pro");
-                        setEnquiryOpen(true);
-                      }}
-                    >
-                      Reserve Now
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="link"
-                      className="px-0 text-[#F2F2F2] hover:text-white transition-all text-base h-12 decoration-transparent"
-                      onClick={() => {
-                        const productsSection = document.getElementById('products');
-                        if (productsSection) productsSection.scrollIntoView({ behavior: 'smooth' });
-                      }}
-                    >
-                      Explore Models &rarr;
-                    </Button>
+              return (
+                <div
+                  key={idx}
+                  className="flex-shrink-0 w-screen h-full relative overflow-hidden flex items-center justify-center border-r border-white/5 bg-[#0a0a0a]"
+                >
+                  <div className="absolute inset-0 w-full h-full overflow-hidden">
+                    <img
+                      src={src}
+                      alt={SLIDE_DATA[idx].title}
+                      className="hero-image w-full h-full object-cover will-change-transform scale-105"
+                      draggable={false}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/20 z-10 pointer-events-none" />
                   </div>
+
+                  <div className={`absolute top-28 left-0 w-full px-6 sm:px-12 md:px-24 text-left z-20 transition-opacity duration-1000 ${
+                    // We show text if this slide is roughly the active one visually.
+                    // Since activeIndex is the REAL index (0-5), we need to map idx to real.
+                    // Map idx 0 -> Real 5. idx 1 -> Real 0.
+                    // BUT, simply relying on activeIndex might flicker during the warp.
+                    // Let's use logic: if activeIndex matches the 'content' of this slide.
+                    // Slide 0 has content of Last (5). Slide 1 has content of First (0).
+                    (idx === 0 && activeIndex === ORIG_IMAGES.length - 1) ||
+                      (idx === IMAGES.length - 1 && activeIndex === 0) ||
+                      (idx === activeIndex + 1)
+                      ? "opacity-100 delay-300" : "opacity-0"
+                    }`}>
+                    <div className="max-w-xl">
+                      <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-[#F2F2F2]">
+                        {SLIDE_DATA[idx].title}
+                      </h2>
+                      <p className="text-lg md:text-xl font-medium text-[#F2F2F2]/80 tracking-wide mt-3 max-w-lg">
+                        {SLIDE_DATA[idx].subtitle}
+                      </p>
+
+                      <div className="flex items-center gap-4 pt-8">
+                        <Button
+                          size="lg"
+                          className="rounded-full px-8 h-12 text-base bg-[#F2F2F2] text-black hover:bg-white transition-all font-semibold shadow-none border-none"
+                          onClick={() => {
+                            setSelectedModel("E-Velco Pro");
+                            setEnquiryOpen(true);
+                          }}
+                        >
+                          Reserve Now
+                        </Button>
+                        <Button
+                          size="lg"
+                          variant="link"
+                          className="px-0 text-[#F2F2F2] hover:text-white transition-all text-base h-12 decoration-transparent"
+                          onClick={() => {
+                            const productsSection = document.getElementById('products');
+                            if (productsSection) productsSection.scrollIntoView({ behavior: 'smooth' });
+                          }}
+                        >
+                          Explore Models &rarr;
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`absolute bottom-32 right-6 sm:right-12 md:right-24 z-20 text-right transition-all duration-1000 ease-out ${(idx === 0 && activeIndex === ORIG_IMAGES.length - 1) ||
+                    (idx === IMAGES.length - 1 && activeIndex === 0) ||
+                    (idx === activeIndex + 1)
+                    ? "opacity-100 translate-y-0 delay-500" : "opacity-0 translate-y-8"}`}>
+                    <div className="flex flex-col items-end">
+                      <span className="text-4xl md:text-6xl font-normal tracking-tighter text-[#F2F2F2] tabular-nums leading-none">
+                        {SLIDE_DATA[idx].metric.value}
+                      </span>
+                      <span className="text-sm font-medium tracking-[0.2em] text-[#F2F2F2]/60 uppercase mt-2">
+                        {SLIDE_DATA[idx].metric.label}
+                      </span>
+                    </div>
+                  </div>
+
                 </div>
-              </div>
+              )
+            })}
+          </div>
 
-              <div className={`absolute bottom-32 right-6 sm:right-12 md:right-24 z-20 text-right transition-all duration-1000 ease-out ${(idx === 0 && activeIndex === ORIG_IMAGES.length - 1) ||
-                (idx === IMAGES.length - 1 && activeIndex === 0) ||
-                (idx === activeIndex + 1)
-                ? "opacity-100 translate-y-0 delay-500" : "opacity-0 translate-y-8"}`}>
-                <div className="flex flex-col items-end">
-                  <span className="text-4xl md:text-6xl font-normal tracking-tighter text-[#F2F2F2] tabular-nums leading-none">
-                    {SLIDE_DATA[idx].metric.value}
-                  </span>
-                  <span className="text-sm font-medium tracking-[0.2em] text-[#F2F2F2]/60 uppercase mt-2">
-                    {SLIDE_DATA[idx].metric.label}
-                  </span>
-                </div>
-              </div>
+          <div className="absolute bottom-12 left-6 sm:left-12 z-20 flex gap-3">
+            {ORIG_IMAGES.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => goToSlide(idx)}
+                className={`h-2 rounded-full transition-all duration-500 shadow-sm ${idx === activeIndex ? "w-8 bg-[#F2F2F2]" : "w-2 bg-[#F2F2F2]/40 hover:bg-[#F2F2F2]/60"}`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
 
-            </div>
-          )
-        })}
-      </div>
-
-      <div className="absolute bottom-12 left-6 sm:left-12 z-20 flex gap-3">
-        {ORIG_IMAGES.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => goToSlide(idx)}
-            className={`h-2 rounded-full transition-all duration-500 shadow-sm ${idx === activeIndex ? "w-8 bg-[#F2F2F2]" : "w-2 bg-[#F2F2F2]/40 hover:bg-[#F2F2F2]/60"}`}
-            aria-label={`Go to slide ${idx + 1}`}
+          <TestRideModal
+            open={enquiryOpen}
+            onOpenChange={setEnquiryOpen}
+            preSelectedModel={selectedModel}
+            isEnquiry={true}
           />
-        ))}
+        </div>
       </div>
-
-      <TestRideModal
-        open={enquiryOpen}
-        onOpenChange={setEnquiryOpen}
-        preSelectedModel={selectedModel}
-        isEnquiry={true}
-      />
     </section>
   );
 };
