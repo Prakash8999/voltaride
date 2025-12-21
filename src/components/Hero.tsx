@@ -77,6 +77,7 @@ const Hero = () => {
   const animationFrameId = useRef<number>();
   const wheelTimeout = useRef<NodeJS.Timeout>();
   const initialized = useRef(false);
+  const verticalScroll = useRef(0);
 
   // Configuration
   const DRAG_MULTIPLIER = 2.0;
@@ -112,8 +113,12 @@ const Hero = () => {
 
   // Animation Loop
   const animate = useCallback(() => {
-    // 1. Interpolate
+    // 1. Interpolate Horizontal
     position.current.current = lerp(position.current.current, position.current.target, EASE);
+
+    // 2. Interpolate Vertical Scroll for Hero Effect
+    const targetScrollY = window.scrollY;
+    verticalScroll.current = lerp(verticalScroll.current, targetScrollY, 0.05);
 
     // 2. Infinite Loop Jumping logic (Warp)
     const width = getSlideWidth();
@@ -175,12 +180,25 @@ const Hero = () => {
         setActiveIndex(realIndex);
       }
 
-      // Parallax
+      // Parallax & Vertical Crop
       const images = trackRef.current.querySelectorAll('.hero-image');
+      const vh = window.innerHeight;
+      const scrollProgress = Math.min(Math.max(verticalScroll.current / vh, 0), 1);
+      const objectPositionY = 45 - (scrollProgress * 20); // 45% -> 25%
+
       images.forEach((img, index) => {
         const slideX = (index * width) + finalX;
-        const parallaxX = slideX * 0.2;
-        (img as HTMLElement).style.transform = `translate3d(${-parallaxX}px, 0, 0) scale(1.05)`;
+        const normalizedOffset = slideX / width;
+        const parallaxX = slideX * 0.25;
+
+        // Horizontal Crop/Rotation Effect
+        // As slide moves away, shift object-position to look at the "inner" side
+        // Reduced sensitivity from 45 to 25 for smoother visual feel
+        const positionX = Math.max(15, Math.min(85, 50 - (normalizedOffset * 25)));
+
+        const resultImg = img as HTMLElement;
+        resultImg.style.transform = `translate3d(${-parallaxX}px, 0, 0) scale(1.05)`;
+        resultImg.style.objectPosition = `${positionX}% ${objectPositionY}%`;
       });
     }
 
