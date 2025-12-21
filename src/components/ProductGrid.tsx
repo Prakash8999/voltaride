@@ -63,7 +63,7 @@ const mockModels = [
     _id: "6",
     name: "Sharvil",
     tagline: "Smart Wireless Controller (IP64)",
-    price: "58,000",
+    price: "60,000",
     monthlyEmi: "2,799",
     image: "https://i.ibb.co/twnXPwFD/shravil.png",
     range: 90,
@@ -73,7 +73,7 @@ const mockModels = [
     _id: "7",
     name: "Spimri",
     tagline: "BLDC Hub Motor (IP67)",
-    price: "60,000",
+    price: "65,000",
     monthlyEmi: "2,999",
     image: "https://i.ibb.co/RkwzC5zx/spimri.png",
     range: 90,
@@ -93,7 +93,7 @@ const mockModels = [
     _id: "9",
     name: "Aurra Pro",
     tagline: "Smart Wireless Controller (IP64)",
-    price: "64,000",
+    price: "70,000",
     monthlyEmi: "3,299",
     image: "https://i.ibb.co/7dYJmTsy/aurra-pro.png",
     range: 90,
@@ -188,7 +188,7 @@ export default function ProductGrid() {
                     <p className="text-sm text-muted-foreground">Starting at</p>
                     <div className="flex items-center justify-between gap-4">
                       <p className="text-2xl font-bold">{showMonthly[model._id] ? `₹ {model.monthlyEmi}/mo` : `₹ ${model.price}`}</p>
-                      
+
                     </div>
                     <div className="mt-2">
                       <Badge variant="outline">No License Required</Badge>

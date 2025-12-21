@@ -6,7 +6,7 @@ const About = () => {
   const short = "Aerix Energy builds smart, made-in-India electric scooters with IP67 motors and advanced lithium batteries — no license required for riders.";
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#F5F5F5]">
       <Header />
 
       <main className="pt-24 pb-16">

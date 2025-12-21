@@ -13,7 +13,7 @@ const ServiceCentersModal = ({ isOpen, onClose }: ServiceCentersModalProps) => {
   const serviceCenters = [
     {
       name: "Aerix Energy Service Center - Mumbai",
-      address: "Shop No 545, Main Road, O.T Section, OPP Geeta Medical, Ulhasnagar - 421004, Maharashtra",
+      address: "Office Number 205, Regency Plaza,Shanti Nagar, Nr Waldhuni Bridge,Ulhasnagar Mumbai 421004",
       phone: "+91 98765 43210",
       hours: "Mon-Sat: 9:00 AM - 7:00 PM"
     },

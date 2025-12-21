@@ -104,7 +104,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#F5F5F5]">
       <Header />
 
       <main className="pt-24 pb-16">

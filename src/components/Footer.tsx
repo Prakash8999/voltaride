@@ -13,9 +13,9 @@ const Footer = () => {
   const [serviceCentersModalOpen, setServiceCentersModalOpen] = useState(false);
   const [contactUsModalOpen, setContactUsModalOpen] = useState(false);
   const [warrantyModalOpen, setWarrantyModalOpen] = useState(false);
-    const navigate = useNavigate();
-  
-  
+  const navigate = useNavigate();
+
+
   const footerSections = [
     {
       title: "Products",
@@ -33,8 +33,8 @@ const Footer = () => {
         { label: "Apply For Dealership", href: "#", action: () => setDealershipModalOpen(true) },
         { label: "Book Test Ride", href: "#", action: () => setTestRideModalOpen(true) },
         { label: "Service Centers", href: "#", action: () => setServiceCentersModalOpen(true) },
-            { label: "Contact Us", href: "#", action: () => setContactUsModalOpen(true) },
-            { label: "Warranty", href: "#", action: () => setWarrantyModalOpen(true) },
+        { label: "Contact Us", href: "#", action: () => setContactUsModalOpen(true) },
+        { label: "Warranty", href: "#", action: () => setWarrantyModalOpen(true) },
       ],
     },
     // {
@@ -79,8 +79,7 @@ const Footer = () => {
               A unit of Finactics Consultants Pvt Ltd
             </p>
             <p className="text-sm text-muted-foreground mb-6">
-Shop No 545, Main Road, O.T Section, OPP Geeta Medical, Ulhasnagar - 421004, Maharashtra.
-
+              Office Number 205, Regency Plaza,Shanti Nagar, Nr Waldhuni Bridge,Ulhasnagar Mumbai 421004
             </p>
             {/* <div className="flex gap-4">
               {socialLinks.map((social) => {

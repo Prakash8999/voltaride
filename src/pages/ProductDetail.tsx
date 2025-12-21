@@ -18,16 +18,16 @@ const productData = [
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
-battery_options: [
-  {
-    type: "Lead Acid Battery 72V 32Ah",
-    warranty: "1 Year"
-  },
-  {
-    type: "Lithium Battery 60V 45Ah",
-    warranty: "3 Years"
-  }
-],
+    battery_options: [
+      {
+        type: "Lead Acid Battery 72V 32Ah",
+        warranty: "1 Year"
+      },
+      {
+        type: "Lithium Battery 60V 45Ah",
+        warranty: "3 Years"
+      }
+    ],
 
     braking_system: "Front Disc / Rear Disc",
     key_features: [
@@ -63,16 +63,16 @@ battery_options: [
     range_km: "70–110",
     waterproof_motor: "12-inch Mid-Drive Smart Motor (IP67)",
     smart_wireless_controller: "60/72V Smart Wireless (IP64)",
-  battery_options: [
-  {
-    type: "Lead Acid Battery 72V 32Ah",
-    warranty: "1 Year"
-  },
-  {
-    type: "Lithium Battery 60V 45Ah",
-    warranty: "3 Years"
-  }
-],
+    battery_options: [
+      {
+        type: "Lead Acid Battery 72V 32Ah",
+        warranty: "1 Year"
+      },
+      {
+        type: "Lithium Battery 60V 45Ah",
+        warranty: "3 Years"
+      }
+    ],
 
     braking_system: "Front Disc / Rear Drum",
     key_features: [
@@ -100,16 +100,16 @@ battery_options: [
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "72V Smart Wireless (IP64)",
-  battery_options: [
-  {
-    type: "Lead Acid Battery 72V 32Ah",
-    warranty: "1 Year"
-  },
-  {
-    type: "Lithium Battery 60V 45Ah",
-    warranty: "3 Years"
-  }
-],
+    battery_options: [
+      {
+        type: "Lead Acid Battery 72V 32Ah",
+        warranty: "1 Year"
+      },
+      {
+        type: "Lithium Battery 60V 45Ah",
+        warranty: "3 Years"
+      }
+    ],
 
     braking_system: "Front Disc / Rear Drum",
     key_features: [
@@ -135,7 +135,7 @@ battery_options: [
       "Mobile app connectivity"
     ],
     colors: ["Red", "White", "Dark Grey", "Peacock Blue", "Green"],
-    price: "60,000",
+    price: "65,000",
     monthlyEmi: "2,999"
   },
   {
@@ -145,16 +145,16 @@ battery_options: [
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
-  battery_options: [
-  {
-    type: "Lead Acid Battery 72V 32Ah",
-    warranty: "1 Year"
-  },
-  {
-    type: "Lithium Battery 60V 45Ah",
-    warranty: "3 Years"
-  }
-],
+    battery_options: [
+      {
+        type: "Lead Acid Battery 72V 32Ah",
+        warranty: "1 Year"
+      },
+      {
+        type: "Lithium Battery 60V 45Ah",
+        warranty: "3 Years"
+      }
+    ],
 
     braking_system: "Front Disc / Rear Drum",
     key_features: [
@@ -180,7 +180,7 @@ battery_options: [
       "Mobile app connectivity"
     ],
     colors: ["Ferrari Red", "White", "Black", "Cyan Blue", "Metallic Gold"],
-    price: "64,000",
+    price: "70,000",
     monthlyEmi: "3,299"
   },
   {
@@ -234,16 +234,16 @@ battery_options: [
     range_km: "70–110",
     waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "60/72V Smart Wireless (IP64)",
-  battery_options: [
-  {
-    type: "Lead Acid Battery 72V 32Ah",
-    warranty: "1 Year"
-  },
-  {
-    type: "Lithium Battery 60V 45Ah",
-    warranty: "3 Years"
-  }
-],
+    battery_options: [
+      {
+        type: "Lead Acid Battery 72V 32Ah",
+        warranty: "1 Year"
+      },
+      {
+        type: "Lithium Battery 60V 45Ah",
+        warranty: "3 Years"
+      }
+    ],
 
     braking_system: "Front Disc / Rear Drum",
     key_features: [
@@ -269,7 +269,7 @@ battery_options: [
       "Mobile app connectivity"
     ],
     colors: ["Red", "White", "Grey", "Black", "Peacock Blue"],
-    price: "58,000",
+    price: "60,000",
     monthlyEmi: "2,799"
   },
   {
@@ -280,15 +280,15 @@ battery_options: [
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
     battery_options: [
-  {
-    type: "Lead Acid Battery 72V 32Ah",
-    warranty: "1 Year"
-  },
-  {
-    type: "Lithium Battery 60V 45Ah",
-    warranty: "3 Years"
-  }
-],
+      {
+        type: "Lead Acid Battery 72V 32Ah",
+        warranty: "1 Year"
+      },
+      {
+        type: "Lithium Battery 60V 45Ah",
+        warranty: "3 Years"
+      }
+    ],
 
     braking_system: "Front Drum / Rear Drum",
     key_features: [
@@ -324,16 +324,16 @@ battery_options: [
     range_km: "70–110",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
-  battery_options: [
-  {
-    type: "Lead Acid Battery 72V 32Ah",
-    warranty: "1 Year"
-  },
-  {
-    type: "Lithium Battery 60V 45Ah",
-    warranty: "3 Years"
-  }
-],
+    battery_options: [
+      {
+        type: "Lead Acid Battery 72V 32Ah",
+        warranty: "1 Year"
+      },
+      {
+        type: "Lithium Battery 60V 45Ah",
+        warranty: "3 Years"
+      }
+    ],
 
     braking_system: "Front Disc / Rear Drum",
     key_features: [
@@ -369,16 +369,16 @@ battery_options: [
     range_km: "70–110",
     waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
     smart_wireless_controller: "Smart Wireless Controller (IP64)",
-  battery_options: [
-  {
-    type: "Lead Acid Battery 72V 32Ah",
-    warranty: "1 Year"
-  },
-  {
-    type: "Lithium Battery 60V 45Ah",
-    warranty: "3 Years"
-  }
-],
+    battery_options: [
+      {
+        type: "Lead Acid Battery 72V 32Ah",
+        warranty: "1 Year"
+      },
+      {
+        type: "Lithium Battery 60V 45Ah",
+        warranty: "3 Years"
+      }
+    ],
 
     braking_system: "Front Drum / Rear Drum",
     key_features: [
@@ -484,7 +484,7 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#F5F5F5]">
       <Header
       />
 
@@ -649,28 +649,28 @@ export default function ProductDetail() {
 
               {/* Battery Options */}
               <Card>
-  <CardContent className="p-6">
-    <h3 className="text-xl font-bold mb-3">Battery Options</h3>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-3">Battery Options</h3>
 
-    <div className="space-y-3">
-      {product.battery_options.map((battery, idx) => (
-        <div
-          key={idx}
-          className="flex items-start gap-3 p-3 border rounded-lg bg-muted/20"
-        >
-          <Check className="h-4 w-4 text-primary mt-1" />
+                  <div className="space-y-3">
+                    {product.battery_options.map((battery, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-3 p-3 border rounded-lg bg-muted/20"
+                      >
+                        <Check className="h-4 w-4 text-primary mt-1" />
 
-          <div>
-            <p className="font-semibold">{battery.type}</p>
-            <p className="text-sm text-muted-foreground">
-              Warranty: {battery.warranty}
-            </p>
-          </div>
-        </div>
-      ))}
-    </div>
-  </CardContent>
-</Card>
+                        <div>
+                          <p className="font-semibold">{battery.type}</p>
+                          <p className="text-sm text-muted-foreground">
+                            Warranty: {battery.warranty}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
 
               {/* Key Features */}
               <Card>

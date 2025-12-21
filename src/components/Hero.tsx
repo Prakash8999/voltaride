@@ -5,10 +5,10 @@ import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ORIG_IMAGES = [
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/11.png", // 0
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/12.png", // 1
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/13.png", // 2
   "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/16.png", // 5
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/12.png", // 1
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/11.png", // 0
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/13.png", // 2
   "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/15.png", // 4
   "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/14.png", // 3
 ];

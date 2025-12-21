@@ -33,7 +33,7 @@ const Index = () => {
       <main>
         <Hero />
         <ProductGrid />
-        <ComparisonMatrix />
+        {/* <ComparisonMatrix /> */}
         <Features />
         {/* <EMICalculator /> */}
         <Roadmap />
