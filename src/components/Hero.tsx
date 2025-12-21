@@ -1,151 +1,309 @@
-import { Zap, Shield, Gauge, Clock } from "lucide-react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { motion } from "framer-motion";
-import { useState } from "react";
 import TestRideModal from "./TestRideModal";
+import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
-const SpecCard = ({ icon: Icon, label, value }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-    className="glass p-3 sm:p-4 rounded-lg hover:bg-card/50 transition-colors w-32 sm:w-36"
-  >
-    <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary mb-1 sm:mb-2" />
-    <div className="font-numeric text-xl sm:text-2xl font-bold text-foreground">
-      {value}
+const IMAGES = [
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/11.png",
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/12.png",
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/13.png",
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/14.png",
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/15.png",
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/16.png",
+];
+
+const SLIDE_DATA = [
+  {
+    title: "Pure Performance",
+    subtitle: "Instant torque. 0-40 in 3.3s.",
+    metric: { value: "3.3s", label: "0-40 km/h" }
+  },
+  {
+    title: "Aerodynamic Design",
+    subtitle: "Sculpted for range and stability.",
+    metric: { value: "0.29", label: "Drag Coefficient" }
+  },
+  {
+    title: "Smart Connectivity",
+    subtitle: "Your scooter, connected to your world.",
+    metric: { value: "5G", label: "IoT Enabled" }
+  },
+  {
+    title: "All-Weather Build",
+    subtitle: "IP67 rated. Ready for any season.",
+    metric: { value: "IP67", label: "Water & Dust Rating" }
+  },
+  {
+    title: "Limitless Range",
+    subtitle: "Go further with 120km true range.",
+    metric: { value: "125 km", label: "True Range" }
+  },
+  {
+    title: "Future Ready",
+    subtitle: "Updates over the air. Always new.",
+    metric: { value: "5 Yr", label: "Battery Warranty" }
+  }
+];
+
+// Linear interpolation for smooth inertia
+const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
+
+// Defined & Visible Energy Flow Component
+const EnergyFlowLine = ({ active }: { active: boolean }) => {
+  return (
+    <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+      <svg
+        className="w-full h-full mobile-adjust-viewbox"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid slice" // Ensures consistent positioning relative to image center
+      >
+        <defs>
+          <filter id="glow-blur" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="0.4" />
+          </filter>
+        </defs>
+
+        {/* Core Electric Line */}
+        <motion.path
+          d="M 45 58 Q 55 58, 68 72" // Simulates flow from battery (mid-chassis) to rear hub
+          fill="transparent"
+          stroke="#4FD1C5" // Muted Electric Cyan
+          strokeWidth="0.4" // ~4px on desktop, clearly visible
+          strokeLinecap="round"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={
+            active
+              ? { pathLength: 1, opacity: 0.6 } // High viz during animation
+              : { pathLength: 0, opacity: 0 }
+          }
+          transition={{ duration: 0.9, ease: "easeOut", delay: 0.2 }} // Fast, torque-like
+        />
+
+        {/* Subtle trailing gradient effect using opacity fade */}
+      </svg>
     </div>
-    <div className="text-[10px] sm:text-xs text-muted-foreground">{label}</div>
-  </motion.div>
-);
+  );
+};
 
 const Hero = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const [enquiryOpen, setEnquiryOpen] = useState(false);
-  const [selectedModel, setSelectedModel] = useState("");
+  const [selectedModel, setSelectedModel] = useState("E-Velco Pro");
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleEnquiryClick = (modelName) => {
-    setSelectedModel(modelName);
-    setEnquiryOpen(true);
-  };
+  // Physics state
+  const position = useRef({ current: 0, target: 0 });
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const animationFrameId = useRef<number>();
+  const wheelTimeout = useRef<NodeJS.Timeout>();
+
+  // Configuration
+  const DRAG_MULTIPLIER = 2.0;
+  const WHEEL_MULTIPLIER = 1.6;
+  const EASE = 0.08;
+
+  const getSlideWidth = () => window.innerWidth;
+
+  const goToSlide = useCallback((index: number) => {
+    const width = getSlideWidth();
+    position.current.target = -(index * width);
+  }, []);
+
+  const snapToNearestSlide = useCallback(() => {
+    const width = getSlideWidth();
+    const maxScroll = -((IMAGES.length - 1) * width);
+    let snapTarget = Math.round(position.current.target / width) * width;
+    snapTarget = Math.max(maxScroll, Math.min(0, snapTarget));
+    position.current.target = snapTarget;
+  }, []);
+
+  // Animation Loop
+  const animate = useCallback(() => {
+    position.current.current = lerp(position.current.current, position.current.target, EASE);
+
+    if (trackRef.current) {
+      const x = position.current.current;
+      trackRef.current.style.transform = `translate3d(${x}px, 0, 0)`;
+
+      const width = getSlideWidth();
+      const newIndex = Math.round(Math.abs(x / width));
+
+      if (newIndex < IMAGES.length) {
+        setActiveIndex((prev) => (prev !== newIndex ? newIndex : prev));
+      }
+
+      // Parallax
+      const images = trackRef.current.querySelectorAll('.hero-image');
+      images.forEach((img, index) => {
+        const slideX = (index * width) + x;
+        const parallaxX = slideX * 0.2;
+        (img as HTMLElement).style.transform = `translate3d(${-parallaxX}px, 0, 0) scale(1.05)`;
+      });
+    }
+
+    animationFrameId.current = requestAnimationFrame(animate);
+  }, []);
+
+  useEffect(() => {
+    animationFrameId.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
+    };
+  }, [animate]);
+
+  // Event Handlers
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault();
+        const width = getSlideWidth();
+        const maxScroll = -((IMAGES.length - 1) * width);
+        position.current.target -= e.deltaX * WHEEL_MULTIPLIER;
+        position.current.target = Math.max(maxScroll, Math.min(0, position.current.target));
+        if (wheelTimeout.current) clearTimeout(wheelTimeout.current);
+        wheelTimeout.current = setTimeout(() => { snapToNearestSlide(); }, 150);
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      isDragging.current = true;
+      startX.current = e.touches[0].clientX;
+      if (wheelTimeout.current) clearTimeout(wheelTimeout.current);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isDragging.current) return;
+      const currentX = e.touches[0].clientX;
+      const delta = (currentX - startX.current) * DRAG_MULTIPLIER;
+      startX.current = currentX;
+      const width = getSlideWidth();
+      const maxScroll = -((IMAGES.length - 1) * width);
+      position.current.target += delta;
+
+      if (position.current.target > 0 || position.current.target < maxScroll) {
+        position.current.target -= delta * 0.4;
+      } else {
+        position.current.target = Math.max(maxScroll, Math.min(0, position.current.target));
+      }
+    };
+
+    const handleTouchEnd = () => {
+      isDragging.current = false;
+      snapToNearestSlide();
+    };
+
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    container.addEventListener("touchstart", handleTouchStart, { passive: true });
+    container.addEventListener("touchmove", handleTouchMove, { passive: true });
+    container.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      container.removeEventListener("wheel", handleWheel);
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
+      container.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [snapToNearestSlide]);
 
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden pt-24 px-4 sm:px-6 lg:px-12">
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5" />
-
-      <div className="relative z-10 w-full max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-
-          {/* LEFT SIDE */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
-            className="space-y-6 sm:space-y-8"
+    <section
+      ref={containerRef}
+      className="relative h-screen w-full overflow-hidden bg-background select-none cursor-grab active:cursor-grabbing"
+    >
+      {/* The Track */}
+      <div
+        ref={trackRef}
+        className="flex h-full w-[600vw] will-change-transform"
+      >
+        {IMAGES.map((src, idx) => (
+          <div
+            key={idx}
+            className="flex-shrink-0 w-screen h-full relative overflow-hidden flex items-center justify-center border-r border-white/5 bg-[#0a0a0a]"
           >
-
-            {/* BADGES */}
-            <div className="flex flex-wrap gap-2 sm:gap-3">
-              <Badge variant="secondary" className="px-3 py-1.5 sm:px-4 sm:py-2 flex items-center text-sm sm:text-base whitespace-nowrap">
-                <Zap className="w-4 h-4 mr-2" />
-                100% Electric
-              </Badge>
-
-              <Badge variant="outline" className="px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base whitespace-nowrap">
-                0% Emissions
-              </Badge>
+            {/* Hero Image */}
+            <div className="absolute inset-0 w-full h-full overflow-hidden">
+              <img
+                src={src}
+                alt={SLIDE_DATA[idx].title}
+                className="hero-image w-full h-full object-cover will-change-transform scale-105"
+                draggable={false}
+              />
+              {/* Contrast Safety Scrim: Essential for light slides */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/20 z-10 pointer-events-none" />
             </div>
 
-            {/* HEADING */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-              The Future of
-              <span className="block gradient-text">Electric Mobility</span>
-            </h1>
+            {/* Energy Flow Line (Active per slide) */}
+            <EnergyFlowLine active={activeIndex === idx} />
 
-            {/* BULLETS */}
-            <ul className="space-y-3 sm:space-y-4 text-base sm:text-lg text-muted-foreground">
-              <li className="flex items-start">
-                <Shield className="w-5 h-5 text-primary mr-3 mt-1 flex-shrink-0" />
-                Smart Wireless Controller (IP64) for responsive and reliable performance
-              </li>
+            {/* Editorial Text Overlay - Top Left */}
+            <div className={`absolute top-28 left-0 w-full px-6 sm:px-12 md:px-24 text-left z-20 transition-opacity duration-1000 ${activeIndex === idx ? "opacity-100 delay-300" : "opacity-0"}`}>
+              <div className="max-w-xl">
+                <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-[#F2F2F2]">
+                  {SLIDE_DATA[idx].title}
+                </h2>
+                <p className="text-lg md:text-xl font-medium text-[#F2F2F2]/80 tracking-wide mt-3 max-w-lg">
+                  {SLIDE_DATA[idx].subtitle}
+                </p>
 
-              <li className="flex items-start">
-                <Zap className="w-5 h-5 text-secondary mr-3 mt-1 flex-shrink-0" />
-                Waterproof BLDC Hub Motor (IP67) engineered for all-weather efficiency
-              </li>
-
-              <li className="flex items-start">
-                <Gauge className="w-5 h-5 text-primary mr-3 mt-1 flex-shrink-0" />
-                Regenerative Braking System that recovers energy & extends range
-              </li>
-
-              <li className="flex items-start">
-                <Shield className="w-5 h-5 text-secondary mr-3 mt-1 flex-shrink-0" />
-                No License Required — Ride Freely Without Any Paperwork
-              </li>
-            </ul>
-
-            {/* CTA */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                size="lg"
-                className="text-base sm:text-lg px-6 sm:px-8 w-full sm:w-auto"
-                onClick={() => handleEnquiryClick("E-Velco Pro")}
-              >
-                Reserve Now
-              </Button>
-
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-base sm:text-lg px-6 sm:px-8 w-full sm:w-auto"
-                onClick={() => (window.location.href = "#products")}
-              >
-                Explore Models
-              </Button>
-            </div>
-
-            <p className="text-sm text-muted-foreground">
-              Starting at{" "}
-              <span className="font-numeric text-2xl font-bold text-foreground">
-                ₹45,000
-              </span>
-              
-            </p>
-          </motion.div>
-
-          {/* RIGHT SIDE */}
-          <div className="relative flex justify-center lg:justify-end">
-            <div className="relative">
-
-              {/* Bigger Image */}
-              <div className="aspect-[4/3] w-80 sm:w-[420px] lg:w-[520px] xl:w-[560px] rounded-2xl overflow-hidden glass">
-                <img src={'https://i.ibb.co/0pdzf2qH/hero.png'} alt="Scooter" className="w-full h-full object-cover" />
-              </div>
-
-              {/* FLOATING SPEC CARDS */}
-              <div className="pointer-events-none">
-                <div className="hidden sm:block absolute -top-6 -left-6">
-                  <SpecCard icon={Zap} label="Range" value="110 KM" />
-                </div>
-
-                <div className="hidden sm:block absolute -top-6 -right-6">
-                  <SpecCard icon={Clock} label="Charge Time" value="45 Min" />
-                </div>
-
-                <div className="hidden sm:block absolute -bottom-6 -left-6">
-                  <SpecCard icon={Shield} label="Warranty" value="3 Year" />
-                </div>
-
-                <div className="hidden sm:block absolute -bottom-6 -right-6">
-                  <SpecCard icon={Gauge} label="License" value="Not Required" />
+                <div className="flex items-center gap-4 pt-8">
+                  <Button
+                    size="lg"
+                    className="rounded-full px-8 h-12 text-base bg-[#F2F2F2] text-black hover:bg-white transition-all font-semibold shadow-none border-none"
+                    onClick={() => {
+                      setSelectedModel("E-Velco Pro");
+                      setEnquiryOpen(true);
+                    }}
+                  >
+                    Reserve Now
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="link"
+                    className="px-0 text-[#F2F2F2] hover:text-white transition-all text-base h-12 decoration-transparent"
+                    onClick={() => {
+                      const productsSection = document.getElementById('products');
+                      if (productsSection) productsSection.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    Explore Models &rarr;
+                  </Button>
                 </div>
               </div>
-
             </div>
+
+            {/* Performance Metric - Bottom Right */}
+            {/* Appears AFTER energy line completes (approx 1.1s delay) */}
+            <div className={`absolute bottom-32 right-6 sm:right-12 md:right-24 z-20 text-right transition-all duration-1000 ease-out ${activeIndex === idx ? "opacity-100 translate-y-0 delay-[1100ms]" : "opacity-0 translate-y-8"}`}>
+              <div className="flex flex-col items-end">
+                <span className="text-4xl md:text-6xl font-normal tracking-tighter text-[#F2F2F2] tabular-nums leading-none">
+                  {SLIDE_DATA[idx].metric.value}
+                </span>
+                <span className="text-sm font-medium tracking-[0.2em] text-[#F2F2F2]/60 uppercase mt-2">
+                  {SLIDE_DATA[idx].metric.label}
+                </span>
+              </div>
+            </div>
+
           </div>
+        ))}
+      </div>
 
-        </div>
+      {/* Minimal Indicators (Bottom Left) */}
+      <div className="absolute bottom-12 left-6 sm:left-12 z-20 flex gap-3">
+        {IMAGES.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => goToSlide(idx)}
+            className={`h-2 rounded-full transition-all duration-500 shadow-sm ${idx === activeIndex ? "w-8 bg-[#F2F2F2]" : "w-2 bg-[#F2F2F2]/40 hover:bg-[#F2F2F2]/60"}`}
+            aria-label={`Go to slide ${idx + 1}`}
+          />
+        ))}
       </div>
 
       <TestRideModal

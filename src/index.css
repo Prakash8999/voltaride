@@ -134,7 +134,12 @@ All colors MUST be HSL.
   }
 
   /* Typography */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-sans;
   }
 
@@ -145,6 +150,7 @@ All colors MUST be HSL.
 }
 
 @layer components {
+
   /* Glassmorphism utility */
   .glass {
     background: var(--glass-bg);
@@ -181,6 +187,7 @@ All colors MUST be HSL.
 }
 
 @layer utilities {
+
   /* Custom animations */
   @keyframes fadeInUp {
     to {
@@ -190,18 +197,24 @@ All colors MUST be HSL.
   }
 
   @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
       transform: translateY(0px);
     }
+
     50% {
       transform: translateY(-20px);
     }
   }
 
   @keyframes pulseGlow {
-    0%, 100% {
+
+    0%,
+    100% {
       box-shadow: 0 0 20px hsl(192 100% 50% / 0.3);
     }
+
     50% {
       box-shadow: 0 0 40px hsl(192 100% 50% / 0.6);
     }
