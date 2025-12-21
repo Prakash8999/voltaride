@@ -8,9 +8,9 @@ const ORIG_IMAGES = [
   "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/11.png", // 0
   "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/12.png", // 1
   "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/13.png", // 2
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/14.png", // 3
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/15.png", // 4
   "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/16.png", // 5
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/15.png", // 4
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/14.png", // 3
 ];
 
 const ORIG_DATA = [
@@ -335,9 +335,9 @@ const Hero = () => {
               </div>
 
               <div className={`absolute bottom-32 right-6 sm:right-12 md:right-24 z-20 text-right transition-all duration-1000 ease-out ${(idx === 0 && activeIndex === ORIG_IMAGES.length - 1) ||
-                  (idx === IMAGES.length - 1 && activeIndex === 0) ||
-                  (idx === activeIndex + 1)
-                  ? "opacity-100 translate-y-0 delay-500" : "opacity-0 translate-y-8"}`}>
+                (idx === IMAGES.length - 1 && activeIndex === 0) ||
+                (idx === activeIndex + 1)
+                ? "opacity-100 translate-y-0 delay-500" : "opacity-0 translate-y-8"}`}>
                 <div className="flex flex-col items-end">
                   <span className="text-4xl md:text-6xl font-normal tracking-tighter text-[#F2F2F2] tabular-nums leading-none">
                     {SLIDE_DATA[idx].metric.value}
