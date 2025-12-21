@@ -4,16 +4,16 @@ import TestRideModal from "./TestRideModal";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
-const IMAGES = [
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/11.png",
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/12.png",
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/13.png",
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/14.png",
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/15.png",
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/16.png",
+const ORIG_IMAGES = [
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/11.png", // 0
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/12.png", // 1
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/13.png", // 2
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/14.png", // 3
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/15.png", // 4
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/16.png", // 5
 ];
 
-const SLIDE_DATA = [
+const ORIG_DATA = [
   {
     title: "Smooth Electric Performance",
     subtitle: "BLDC hub motor built for effortless city rides.",
@@ -24,7 +24,6 @@ const SLIDE_DATA = [
     subtitle: "Sculpted panels for stability and efficiency.",
     metric: { value: "Optimized", label: "Airflow Design" }
   },
-
   {
     title: "Smart Connectivity",
     subtitle: "Your scooter, connected to your world.",
@@ -47,6 +46,19 @@ const SLIDE_DATA = [
   }
 ];
 
+// Create extended arrays for infinite loop: [Last, ...Originals, First]
+const IMAGES = [
+  ORIG_IMAGES[ORIG_IMAGES.length - 1],
+  ...ORIG_IMAGES,
+  ORIG_IMAGES[0]
+];
+
+const SLIDE_DATA = [
+  ORIG_DATA[ORIG_DATA.length - 1],
+  ...ORIG_DATA,
+  ORIG_DATA[0]
+];
+
 // Linear interpolation for smooth inertia
 const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
 
@@ -55,72 +67,118 @@ const Hero = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const [enquiryOpen, setEnquiryOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState("E-Velco Pro");
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0); // This tracks the "Real" index (0-5)
 
   // Physics state
+  // Initial position is -100vw (showing the first real slide, index 1 in the extended array)
   const position = useRef({ current: 0, target: 0 });
   const isDragging = useRef(false);
   const startX = useRef(0);
   const animationFrameId = useRef<number>();
   const wheelTimeout = useRef<NodeJS.Timeout>();
+  const initialized = useRef(false);
 
   // Configuration
   const DRAG_MULTIPLIER = 2.0;
   const WHEEL_MULTIPLIER = 1.6;
   const EASE = 0.08;
 
-  const getSlideWidth = () => window.innerWidth;
-
-  const goToSlide = useCallback((index: number) => {
-    const width = getSlideWidth();
-    position.current.target = -(index * width);
+  // Initialize position on mount to account for window width
+  useEffect(() => {
+    if (!initialized.current) {
+      const width = window.innerWidth;
+      position.current.current = -width; // Start at index 1
+      position.current.target = -width;
+      initialized.current = true;
+    }
   }, []);
 
-  // Snapping with Loop Logic
+  const getSlideWidth = () => window.innerWidth;
+
+  const goToSlide = useCallback((realIndex: number) => {
+    const width = getSlideWidth();
+    // Map real index (0-5) to extended index (1-6)
+    const extendedIndex = realIndex + 1;
+    position.current.target = -(extendedIndex * width);
+  }, []);
+
+  // Snapping logic
   const snapToNearestSlide = useCallback(() => {
     const width = getSlideWidth();
-    const maxScroll = -((IMAGES.length - 1) * width);
-
-    // Determine where we would snap roughly
+    // We snap to any index in the extended array
     let snapTarget = Math.round(position.current.target / width) * width;
-
-    // Check for loop conditions (overshoot)
-    if (position.current.target > width * 0.2) {
-      // Pulled past the start significantly -> wrap to end
-      snapTarget = maxScroll;
-    } else if (position.current.target < maxScroll - width * 0.2) {
-      // Pulled past the end significantly -> wrap to start
-      snapTarget = 0;
-    } else {
-      // Normal clamping
-      snapTarget = Math.max(maxScroll, Math.min(0, snapTarget));
-    }
-
     position.current.target = snapTarget;
   }, []);
 
   // Animation Loop
   const animate = useCallback(() => {
+    // 1. Interpolate
     position.current.current = lerp(position.current.current, position.current.target, EASE);
 
+    // 2. Infinite Loop Jumping logic (Warp)
+    const width = getSlideWidth();
+    const x = position.current.current;
+
+    // Indices: 0 (Fake Last) ... [1..6 Real] ... 7 (Fake First)
+    // Bounds:
+    // Index 0: 0px
+    // Index 1: -width
+    // Index 6: -6 * width
+    // Index 7: -7 * width
+
+    const totalRealSlides = ORIG_IMAGES.length; // 6
+
+    // Check if we are close to the fake anchors to warp smoothly
+    // We warp when we are "resting" or extremely close to the clones? 
+    // Actually, distinct warp is better done when we are exactly at the clone, 
+    // OR we warp the coordinates if we drift too far.
+    // Let's warp if we passed the visual center of index 0 or index 7.
+
+    // Warping to the "Real" equivalent position helps maintain the coordinate space.
+    // Real set is 1 to 6.
+    // If x > -0.5 * width (Approaching Index 0) -> Warp to Index 6
+    // If x < -(totalRealSlides + 0.5) * width (Approaching Index 7) -> Warp to Index 1
+
+    // IMPORTANT: We must adjust BOTH target and current to persist momentum/smoothness?
+    // Actually, usually you warp instantly. If we warp while moving, it might jerk unless precise.
+    // Safer: Warp only if we are effectively "sliding through" the boundary?
+    // Let's rely on the Coordinate Reset.
+
+    if (x >= -0.01) { // Reached absolute start (Fake Last)
+      const resetX = -(totalRealSlides * width);
+      position.current.current = resetX;
+      position.current.target = resetX + (position.current.target - x); // maintain momentum relative
+    } else if (x <= -((totalRealSlides + 1) * width) + 0.01) { // Reached absolute end (Fake First)
+      const resetX = -width;
+      position.current.current = resetX;
+      position.current.target = resetX + (position.current.target - x);
+    }
+
+    // Rerender styling
     if (trackRef.current) {
-      const x = position.current.current;
-      trackRef.current.style.transform = `translate3d(${x}px, 0, 0)`;
+      // Use the updated current after potential warp
+      const finalX = position.current.current;
+      trackRef.current.style.transform = `translate3d(${finalX}px, 0, 0)`;
 
-      const width = getSlideWidth();
-      let newIndex = Math.round(Math.abs(x / width));
+      // Calculate Active "Real" Index for UI
+      // Index 1 is Real 0. 
+      // Current Index = abs(x / width). 
+      const rawIndex = Math.abs(finalX / width);
+      // Map to 0-5
+      let realIndex = Math.round(rawIndex) - 1;
 
-      // Clamp index for state safety, though logic should keep it valid
-      newIndex = Math.max(0, Math.min(IMAGES.length - 1, newIndex));
+      // Handle the clone indices for display
+      if (realIndex < 0) realIndex = totalRealSlides - 1; // Index 0 maps to Last
+      if (realIndex >= totalRealSlides) realIndex = 0; // Index 7 maps to First
 
-      if (newIndex !== activeIndex) {
-        setActiveIndex(newIndex);
+      if (realIndex !== activeIndex) {
+        setActiveIndex(realIndex);
       }
 
       // Parallax
       const images = trackRef.current.querySelectorAll('.hero-image');
       images.forEach((img, index) => {
-        const slideX = (index * width) + x;
+        const slideX = (index * width) + finalX;
         const parallaxX = slideX * 0.2;
         (img as HTMLElement).style.transform = `translate3d(${-parallaxX}px, 0, 0) scale(1.05)`;
       });
@@ -145,30 +203,23 @@ const Hero = () => {
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
         e.preventDefault();
         position.current.target -= e.deltaX * WHEEL_MULTIPLIER;
-
         if (wheelTimeout.current) clearTimeout(wheelTimeout.current);
         wheelTimeout.current = setTimeout(() => { snapToNearestSlide(); }, 150);
       }
     };
 
-    // Unified Drag Handlers for Mouse & Touch
     const handleDragStart = (clientX: number) => {
       isDragging.current = true;
       startX.current = clientX;
-      // Temporarily stop any snap timeout interaction while dragging
       if (wheelTimeout.current) clearTimeout(wheelTimeout.current);
       container.style.cursor = 'grabbing';
     };
 
     const handleDragMove = (clientX: number) => {
       if (!isDragging.current) return;
-
       const delta = (clientX - startX.current) * DRAG_MULTIPLIER;
       startX.current = clientX;
       position.current.target += delta;
-
-      // We do NOT clamp aggressively here to allow the "pull past" overshoot 
-      // which triggers the loop in snapToNearestSlide
     };
 
     const handleDragEnd = () => {
@@ -177,31 +228,18 @@ const Hero = () => {
       container.style.cursor = 'grab';
     };
 
-    // Touch Listeners
     const onTouchStart = (e: TouchEvent) => handleDragStart(e.touches[0].clientX);
     const onTouchMove = (e: TouchEvent) => handleDragMove(e.touches[0].clientX);
     const onTouchEnd = () => handleDragEnd();
-
-    // Mouse Listeners
-    const onMouseDown = (e: MouseEvent) => {
-      e.preventDefault(); // Prevent text selection
-      handleDragStart(e.clientX);
-    };
-    const onMouseMove = (e: MouseEvent) => {
-      e.preventDefault();
-      handleDragMove(e.clientX);
-    };
+    const onMouseDown = (e: MouseEvent) => { e.preventDefault(); handleDragStart(e.clientX); };
+    const onMouseMove = (e: MouseEvent) => { e.preventDefault(); handleDragMove(e.clientX); };
     const onMouseUp = () => handleDragEnd();
-    const onMouseLeave = () => {
-      if (isDragging.current) handleDragEnd();
-    };
+    const onMouseLeave = () => { if (isDragging.current) handleDragEnd(); };
 
     container.addEventListener("wheel", handleWheel, { passive: false });
-
     container.addEventListener("touchstart", onTouchStart, { passive: true });
     container.addEventListener("touchmove", onTouchMove, { passive: true });
     container.addEventListener("touchend", onTouchEnd);
-
     container.addEventListener("mousedown", onMouseDown);
     container.addEventListener("mousemove", onMouseMove);
     container.addEventListener("mouseup", onMouseUp);
@@ -224,84 +262,99 @@ const Hero = () => {
       ref={containerRef}
       className="relative h-screen w-full overflow-hidden bg-background select-none cursor-grab active:cursor-grabbing"
     >
-      {/* The Track */}
       <div
         ref={trackRef}
-        className="flex h-full w-[600vw] will-change-transform"
+        className="flex h-full will-change-transform"
+        // Width = (Originals + 2) * 100vw
+        style={{ width: `${(IMAGES.length) * 100}vw` }}
       >
-        {IMAGES.map((src, idx) => (
-          <div
-            key={idx}
-            className="flex-shrink-0 w-screen h-full relative overflow-hidden flex items-center justify-center border-r border-white/5 bg-[#0a0a0a]"
-          >
-            {/* Hero Image */}
-            <div className="absolute inset-0 w-full h-full overflow-hidden">
-              <img
-                src={src}
-                alt={SLIDE_DATA[idx].title}
-                className="hero-image w-full h-full object-cover will-change-transform scale-105"
-                draggable={false}
-              />
-              {/* Contrast Safety Scrim */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/20 z-10 pointer-events-none" />
-            </div>
+        {IMAGES.map((src, idx) => {
+          // Determine if we need to hide the text/metric for the clone while it's "inactive" to prevent duplicates flashing?
+          // Actually, we want them visible so the loop looks seamless. 
+          // The key prop must be unique, so use index.
 
-            {/* Editorial Text Overlay - Top Left */}
-            <div className={`absolute top-28 left-0 w-full px-6 sm:px-12 md:px-24 text-left z-20 transition-opacity duration-1000 ${activeIndex === idx ? "opacity-100 delay-300" : "opacity-0"}`}>
-              <div className="max-w-xl">
-                <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-[#F2F2F2]">
-                  {SLIDE_DATA[idx].title}
-                </h2>
-                <p className="text-lg md:text-xl font-medium text-[#F2F2F2]/80 tracking-wide mt-3 max-w-lg">
-                  {SLIDE_DATA[idx].subtitle}
-                </p>
+          return (
+            <div
+              key={idx}
+              className="flex-shrink-0 w-screen h-full relative overflow-hidden flex items-center justify-center border-r border-white/5 bg-[#0a0a0a]"
+            >
+              <div className="absolute inset-0 w-full h-full overflow-hidden">
+                <img
+                  src={src}
+                  alt={SLIDE_DATA[idx].title}
+                  className="hero-image w-full h-full object-cover will-change-transform scale-105"
+                  draggable={false}
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/20 z-10 pointer-events-none" />
+              </div>
 
-                <div className="flex items-center gap-4 pt-8">
-                  <Button
-                    size="lg"
-                    className="rounded-full px-8 h-12 text-base bg-[#F2F2F2] text-black hover:bg-white transition-all font-semibold shadow-none border-none"
-                    onClick={() => {
-                      setSelectedModel("E-Velco Pro");
-                      setEnquiryOpen(true);
-                    }}
-                  >
-                    Reserve Now
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="link"
-                    className="px-0 text-[#F2F2F2] hover:text-white transition-all text-base h-12 decoration-transparent"
-                    onClick={() => {
-                      const productsSection = document.getElementById('products');
-                      if (productsSection) productsSection.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                  >
-                    Explore Models &rarr;
-                  </Button>
+              <div className={`absolute top-28 left-0 w-full px-6 sm:px-12 md:px-24 text-left z-20 transition-opacity duration-1000 ${
+                // We show text if this slide is roughly the active one visually.
+                // Since activeIndex is the REAL index (0-5), we need to map idx to real.
+                // Map idx 0 -> Real 5. idx 1 -> Real 0.
+                // BUT, simply relying on activeIndex might flicker during the warp.
+                // Let's use logic: if activeIndex matches the 'content' of this slide.
+                // Slide 0 has content of Last (5). Slide 1 has content of First (0).
+                (idx === 0 && activeIndex === ORIG_IMAGES.length - 1) ||
+                  (idx === IMAGES.length - 1 && activeIndex === 0) ||
+                  (idx === activeIndex + 1)
+                  ? "opacity-100 delay-300" : "opacity-0"
+                }`}>
+                <div className="max-w-xl">
+                  <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-[#F2F2F2]">
+                    {SLIDE_DATA[idx].title}
+                  </h2>
+                  <p className="text-lg md:text-xl font-medium text-[#F2F2F2]/80 tracking-wide mt-3 max-w-lg">
+                    {SLIDE_DATA[idx].subtitle}
+                  </p>
+
+                  <div className="flex items-center gap-4 pt-8">
+                    <Button
+                      size="lg"
+                      className="rounded-full px-8 h-12 text-base bg-[#F2F2F2] text-black hover:bg-white transition-all font-semibold shadow-none border-none"
+                      onClick={() => {
+                        setSelectedModel("E-Velco Pro");
+                        setEnquiryOpen(true);
+                      }}
+                    >
+                      Reserve Now
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="link"
+                      className="px-0 text-[#F2F2F2] hover:text-white transition-all text-base h-12 decoration-transparent"
+                      onClick={() => {
+                        const productsSection = document.getElementById('products');
+                        if (productsSection) productsSection.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      Explore Models &rarr;
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Performance Metric - Bottom Right */}
-            {/* Fade in naturally without energy line delay now */}
-            <div className={`absolute bottom-32 right-6 sm:right-12 md:right-24 z-20 text-right transition-all duration-1000 ease-out ${activeIndex === idx ? "opacity-100 translate-y-0 delay-500" : "opacity-0 translate-y-8"}`}>
-              <div className="flex flex-col items-end">
-                <span className="text-4xl md:text-6xl font-normal tracking-tighter text-[#F2F2F2] tabular-nums leading-none">
-                  {SLIDE_DATA[idx].metric.value}
-                </span>
-                <span className="text-sm font-medium tracking-[0.2em] text-[#F2F2F2]/60 uppercase mt-2">
-                  {SLIDE_DATA[idx].metric.label}
-                </span>
+              <div className={`absolute bottom-32 right-6 sm:right-12 md:right-24 z-20 text-right transition-all duration-1000 ease-out ${(idx === 0 && activeIndex === ORIG_IMAGES.length - 1) ||
+                  (idx === IMAGES.length - 1 && activeIndex === 0) ||
+                  (idx === activeIndex + 1)
+                  ? "opacity-100 translate-y-0 delay-500" : "opacity-0 translate-y-8"}`}>
+                <div className="flex flex-col items-end">
+                  <span className="text-4xl md:text-6xl font-normal tracking-tighter text-[#F2F2F2] tabular-nums leading-none">
+                    {SLIDE_DATA[idx].metric.value}
+                  </span>
+                  <span className="text-sm font-medium tracking-[0.2em] text-[#F2F2F2]/60 uppercase mt-2">
+                    {SLIDE_DATA[idx].metric.label}
+                  </span>
+                </div>
               </div>
-            </div>
 
-          </div>
-        ))}
+            </div>
+          )
+        })}
       </div>
 
-      {/* Minimal Indicators (Bottom Left) */}
       <div className="absolute bottom-12 left-6 sm:left-12 z-20 flex gap-3">
-        {IMAGES.map((_, idx) => (
+        {ORIG_IMAGES.map((_, idx) => (
           <button
             key={idx}
             onClick={() => goToSlide(idx)}
