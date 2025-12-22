@@ -1,0 +1,27 @@
+# Version control
+.git
+.github
+.gitignore
+
+# Dependencies (installed in the container)
+node_modules
+
+# Build outputs and temporary files
+dist
+build
+coverage
+*.log
+npm-debug.log*
+tmp/
+
+# Environment files
+.env
+.env.*
+.aws/
+.npmrc
+
+# Development and OS files
+.vscode
+.eslintcache
+.DS_Store
+Thumbs.db
