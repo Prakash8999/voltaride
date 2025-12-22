@@ -13,6 +13,20 @@ const ORIG_IMAGES = [
   "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/14.png", // 3
 ];
 
+const MOBILE_IMAGE_MAP: Record<string, string> = {
+  "16.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/16_small.jpeg",
+  "12.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/12_small.jpeg",
+  "13.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/13_small.jpeg",
+  "15.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/15_small.jpeg",
+  "14.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/14_small.jpeg"
+};
+
+const getMobileSrc = (desktopSrc: string) => {
+  const filename = desktopSrc.split('/').pop();
+  if (!filename) return desktopSrc;
+  return MOBILE_IMAGE_MAP[filename] || desktopSrc;
+};
+
 const ORIG_DATA = [
   {
     title: "Smooth Electric Performance",
@@ -343,12 +357,15 @@ const Hero = () => {
                   className="flex-shrink-0 w-screen h-full relative overflow-hidden flex items-center justify-center border-r border-white/5 bg-[#0a0a0a]"
                 >
                   <div className="absolute inset-0 w-full h-full overflow-hidden">
-                    <img
-                      src={src}
-                      alt={SLIDE_DATA[idx].title}
-                      className="hero-image w-full h-full object-cover will-change-transform scale-105"
-                      draggable={false}
-                    />
+                    <picture className="absolute inset-0 w-full h-full">
+                      <source media="(max-width: 768px)" srcSet={getMobileSrc(src)} />
+                      <img
+                        src={src}
+                        alt={SLIDE_DATA[idx].title}
+                        className="hero-image w-full h-full object-cover will-change-transform scale-105"
+                        draggable={false}
+                      />
+                    </picture>
                     <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/20 z-10 pointer-events-none" />
                   </div>
 
@@ -368,11 +385,11 @@ const Hero = () => {
                       <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-[#F2F2F2]">
                         {SLIDE_DATA[idx].title}
                       </h2>
-                      <p className="text-lg md:text-xl font-medium text-[#F2F2F2]/80 tracking-wide mt-3 max-w-lg">
+                      <p className="hidden md:block text-lg md:text-xl font-medium text-[#F2F2F2]/80 tracking-wide mt-3 max-w-lg">
                         {SLIDE_DATA[idx].subtitle}
                       </p>
 
-                      <div className="flex items-center gap-4 pt-8">
+                      <div className="hidden md:flex items-center gap-4 pt-8">
                         <Button
                           size="lg"
                           className="rounded-full px-8 h-12 text-base bg-[#F2F2F2] text-black hover:bg-white transition-all font-semibold shadow-none border-none"
@@ -398,12 +415,13 @@ const Hero = () => {
                     </div>
                   </div>
 
-                  <div className={`absolute bottom-32 right-6 sm:right-12 md:right-24 z-20 text-right transition-all duration-1000 ease-out ${(idx === 0 && activeIndex === ORIG_IMAGES.length - 1) ||
+                  {/* Desktop Metric */}
+                  <div className={`hidden md:block absolute bottom-32 right-24 z-20 text-right transition-all duration-1000 ease-out ${(idx === 0 && activeIndex === ORIG_IMAGES.length - 1) ||
                     (idx === IMAGES.length - 1 && activeIndex === 0) ||
                     (idx === activeIndex + 1)
                     ? "opacity-100 translate-y-0 delay-500" : "opacity-0 translate-y-8"}`}>
                     <div className="flex flex-col items-end">
-                      <span className="text-4xl md:text-6xl font-normal tracking-tighter text-[#F2F2F2] tabular-nums leading-none">
+                      <span className="text-6xl font-normal tracking-tighter text-[#F2F2F2] tabular-nums leading-none">
                         {SLIDE_DATA[idx].metric.value}
                       </span>
                       <span className="text-sm font-medium tracking-[0.2em] text-[#F2F2F2]/60 uppercase mt-2">
@@ -412,10 +430,50 @@ const Hero = () => {
                     </div>
                   </div>
 
+                  {/* Mobile Metric & CTA Combined */}
+                  <div className={`md:hidden absolute bottom-24 left-6 right-6 z-20 flex justify-between items-start transition-all duration-1000 ease-out ${(idx === 0 && activeIndex === ORIG_IMAGES.length - 1) ||
+                    (idx === IMAGES.length - 1 && activeIndex === 0) ||
+                    (idx === activeIndex + 1)
+                    ? "opacity-100 translate-y-0 delay-500" : "opacity-0 translate-y-8"}`}>
+
+                    <Button
+                      size="sm"
+                      className="rounded-full h-10 px-6 text-sm bg-[#F2F2F2] text-black hover:bg-white transition-all font-semibold shadow-none border-none mt-1"
+                      onClick={() => {
+                        setSelectedModel("E-Velco Pro");
+                        setEnquiryOpen(true);
+                      }}
+                    >
+                      Reserve Now
+                    </Button>
+
+                    <div className="flex flex-col items-end text-right">
+                      <span className="text-4xl font-normal tracking-tighter text-[#F2F2F2] tabular-nums leading-none">
+                        {SLIDE_DATA[idx].metric.value}
+                      </span>
+                      <span className="text-sm font-medium tracking-[0.2em] text-[#F2F2F2]/60 uppercase mt-2">
+                        {(() => {
+                          const label = SLIDE_DATA[idx].metric.label;
+                          if (label === "Water & Dust Rating") return <>Water &<br />Dust Rating</>;
+                          if (label === "Battery Warranty") return <>Battery<br />Warranty</>;
+                          // Fallback for other long labels
+                          if (label.length > 15) {
+                            const parts = label.split(" ");
+                            const last = parts.pop();
+                            return <>{parts.join(" ")}<br />{last}</>;
+                          }
+                          return label;
+                        })()}
+                      </span>
+                    </div>
+                  </div>
+
                 </div>
               )
             })}
           </div>
+
+
 
           <div className="absolute bottom-12 left-6 sm:left-12 z-20 flex gap-3">
             {ORIG_IMAGES.map((_, idx) => (
