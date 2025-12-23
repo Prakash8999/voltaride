@@ -94,18 +94,16 @@ const Hero = () => {
   const animationFrameId = useRef<number>();
   const wheelTimeout = useRef<NodeJS.Timeout>();
   const initialized = useRef(false);
-  const verticalScroll = useRef(0);
   const heroWrapperRef = useRef<HTMLDivElement>(null);
   const imageElementsRef = useRef<NodeListOf<HTMLImageElement> | null>(null);
-  const lastFrameTime = useRef(0);
   const frameSkipCounter = useRef(0);
+  const verticalScroll = useRef(0);
 
-  // Scroll transformation state (for container effect)
+  // Scroll transformation state (smoothed for animation)
   const scrollTransform = useRef({
-    inset: 0,        // 0 -> maxInset (px)
-    borderRadius: 0, // 0 -> 32px
-    scale: 1,        // 1 -> 0.97
-    verticalCrop: 0  // 0 -> maxCrop (percentage)
+    inset: 0,
+    borderRadius: 0,
+    scale: 1
   });
 
   // Configuration
@@ -159,26 +157,29 @@ const Hero = () => {
     // 1. Interpolate Horizontal (ALWAYS update for smooth carousel)
     position.current.current = lerp(position.current.current, position.current.target, EASE);
 
-    // 2. Interpolate Vertical Scroll for Hero Effect
+    // 2. Smooth Vertical Scroll Animation (elegant lerp for premium feel)
     const targetScrollY = window.scrollY;
-    verticalScroll.current = lerp(verticalScroll.current, targetScrollY, 0.12); // Faster response
+    verticalScroll.current = lerp(verticalScroll.current, targetScrollY, 0.15); // Slower & elegant
 
     // 3. Calculate Scroll-Based Hero Transformation
     const vh = window.innerHeight;
-    const scrollRange = vh * 0.15; // Transform completes faster - within 15% of viewport height
+    const scrollRange = vh * 0.15; // Transform completes within 15% of viewport height
     const rawProgress = Math.min(Math.max(verticalScroll.current / scrollRange, 0), 1);
     const progress = easeOutCubic(rawProgress); // Apply easing for premium feel
 
-    // Target values for transformation (LEFT/RIGHT ONLY - no vertical crop)
-    const maxInset = Math.min(60, window.innerWidth * 0.04); // Increased inset (max 60px or 4vw)
+    // Calculate target transformation values
+    const maxInset = Math.min(60, window.innerWidth * 0.04); // Max 60px or 4vw
     const maxBorderRadius = 28;
     const minScale = 0.97;
 
-    // Lerp towards target values for smooth animation (faster lerp factor)
-    scrollTransform.current.inset = lerp(scrollTransform.current.inset, progress * maxInset, 0.15);
-    scrollTransform.current.borderRadius = lerp(scrollTransform.current.borderRadius, progress * maxBorderRadius, 0.15);
-    scrollTransform.current.scale = lerp(scrollTransform.current.scale, 1 - (progress * (1 - minScale)), 0.15);
-    scrollTransform.current.verticalCrop = 0; // No vertical crop
+    const targetInset = progress * maxInset;
+    const targetBorderRadius = progress * maxBorderRadius;
+    const targetScale = 1 - (progress * (1 - minScale));
+
+    // Smooth lerp to target values for elegant animation
+    scrollTransform.current.inset = lerp(scrollTransform.current.inset, targetInset, 0.15);
+    scrollTransform.current.borderRadius = lerp(scrollTransform.current.borderRadius, targetBorderRadius, 0.15);
+    scrollTransform.current.scale = lerp(scrollTransform.current.scale, targetScale, 0.15);
 
     // Apply wrapper transformations
     if (heroWrapperRef.current) {
