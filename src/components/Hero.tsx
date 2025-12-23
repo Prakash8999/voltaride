@@ -97,6 +97,8 @@ const Hero = () => {
   const verticalScroll = useRef(0);
   const heroWrapperRef = useRef<HTMLDivElement>(null);
   const imageElementsRef = useRef<NodeListOf<HTMLImageElement> | null>(null);
+  const lastFrameTime = useRef(0);
+  const frameSkipCounter = useRef(0);
 
   // Scroll transformation state (for container effect)
   const scrollTransform = useRef({
@@ -146,7 +148,15 @@ const Hero = () => {
 
   // Animation Loop
   const animate = useCallback(() => {
-    // 1. Interpolate Horizontal
+    const width = getSlideWidth();
+    const isMobile = width < 768;
+
+    // Mobile optimization: Skip every other frame for image effects (reduces to ~30fps)
+    // But always update carousel position for smooth dragging
+    frameSkipCounter.current++;
+    const shouldUpdateImages = !isMobile || (frameSkipCounter.current % 2 === 0);
+
+    // 1. Interpolate Horizontal (ALWAYS update for smooth carousel)
     position.current.current = lerp(position.current.current, position.current.target, EASE);
 
     // 2. Interpolate Vertical Scroll for Hero Effect
@@ -183,7 +193,6 @@ const Hero = () => {
     }
 
     // 4. Infinite Loop Jumping logic (Warp)
-    const width = getSlideWidth();
     const x = position.current.current;
 
     // Indices: 0 (Fake Last) ... [1..6 Real] ... 7 (Fake First)
@@ -242,9 +251,8 @@ const Hero = () => {
         setActiveIndex(realIndex);
       }
 
-      // Parallax & Vertical Crop
-      // Only apply heavy parallax effects on desktop (>768px) to smooth out mobile performance
-      if (width >= 768) {
+      // Parallax & Vertical Crop (throttled on mobile for performance)
+      if (shouldUpdateImages) {
         let images = imageElementsRef.current;
         if (!images && trackRef.current) {
           images = trackRef.current.querySelectorAll('.hero-image');
@@ -253,28 +261,30 @@ const Hero = () => {
 
         if (images) {
           const scrollProgress = Math.min(Math.max(verticalScroll.current / window.innerHeight, 0), 1);
-          const objectPositionY = 45 - (scrollProgress * 15); // 45% -> 30% (reduced for container effect)
+          const objectPositionY = 45 - (scrollProgress * 15); // 45% -> 30%
 
           images.forEach((img, index) => {
             const slideX = (index * width) + finalX;
             const normalizedOffset = slideX / width;
-            const parallaxX = slideX * 0.25;
 
-            // Horizontal Crop/Rotation Effect
-            // As slide moves away, shift object-position to look at the "inner" side
-            // Reduced sensitivity from 45 to 25 for smoother visual feel
-            const positionX = Math.max(15, Math.min(85, 50 - (normalizedOffset * 25)));
+            if (isMobile) {
+              // Mobile: Very noticeable cropping effect with GPU-accelerated translateX
+              // High sensitivity (35%) for clearly visible horizontal shift
+              const cropShift = normalizedOffset * 35; // Much more dramatic!
+              const scaleAmount = 1.15; // More scale for better cropping visibility
 
-            // Optimization: Apply styles directly without causing excessive reflows if possible
-            img.style.transform = `translate3d(${-parallaxX}px, 0, 0) scale(1.05)`;
-            img.style.objectPosition = `${positionX}% ${objectPositionY}%`;
+              // Use translateX for GPU acceleration - shift the image horizontally
+              img.style.transform = `translateX(${-cropShift}%) scale(${scaleAmount})`;
+              img.style.objectPosition = `50% ${objectPositionY}%`;
+            } else {
+              // Desktop: Full parallax + cropping with object-position
+              const parallaxX = slideX * 0.25;
+              const positionX = Math.max(15, Math.min(85, 50 - (normalizedOffset * 25)));
+              img.style.transform = `translate3d(${-parallaxX}px, 0, 0) scale(1.05)`;
+              img.style.objectPosition = `${positionX}% ${objectPositionY}%`;
+            }
           });
         }
-      } else {
-        // Mobile fallback: Reset styles once if needed or just keep them static
-        // To ensure no leftover transforms if resizing, we could reset. 
-        // But for pure mobile performance, doing nothing is best.
-        // If the user resizes from desktop -> mobile, artifacts might remain, but that's a rare edge case compared to scroll perf.
       }
     }
 
