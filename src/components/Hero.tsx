@@ -96,6 +96,7 @@ const Hero = () => {
   const initialized = useRef(false);
   const verticalScroll = useRef(0);
   const heroWrapperRef = useRef<HTMLDivElement>(null);
+  const imageElementsRef = useRef<NodeListOf<HTMLImageElement> | null>(null);
 
   // Scroll transformation state (for container effect)
   const scrollTransform = useRef({
@@ -135,6 +136,12 @@ const Hero = () => {
     // We snap to any index in the extended array
     let snapTarget = Math.round(position.current.target / width) * width;
     position.current.target = snapTarget;
+  }, []);
+
+  useEffect(() => {
+    if (trackRef.current) {
+      imageElementsRef.current = trackRef.current.querySelectorAll('.hero-image');
+    }
   }, []);
 
   // Animation Loop
@@ -236,24 +243,39 @@ const Hero = () => {
       }
 
       // Parallax & Vertical Crop
-      const images = trackRef.current.querySelectorAll('.hero-image');
-      const scrollProgress = Math.min(Math.max(verticalScroll.current / window.innerHeight, 0), 1);
-      const objectPositionY = 45 - (scrollProgress * 15); // 45% -> 30% (reduced for container effect)
+      // Only apply heavy parallax effects on desktop (>768px) to smooth out mobile performance
+      if (width >= 768) {
+        let images = imageElementsRef.current;
+        if (!images && trackRef.current) {
+          images = trackRef.current.querySelectorAll('.hero-image');
+          imageElementsRef.current = images as NodeListOf<HTMLImageElement>;
+        }
 
-      images.forEach((img, index) => {
-        const slideX = (index * width) + finalX;
-        const normalizedOffset = slideX / width;
-        const parallaxX = slideX * 0.25;
+        if (images) {
+          const scrollProgress = Math.min(Math.max(verticalScroll.current / window.innerHeight, 0), 1);
+          const objectPositionY = 45 - (scrollProgress * 15); // 45% -> 30% (reduced for container effect)
 
-        // Horizontal Crop/Rotation Effect
-        // As slide moves away, shift object-position to look at the "inner" side
-        // Reduced sensitivity from 45 to 25 for smoother visual feel
-        const positionX = Math.max(15, Math.min(85, 50 - (normalizedOffset * 25)));
+          images.forEach((img, index) => {
+            const slideX = (index * width) + finalX;
+            const normalizedOffset = slideX / width;
+            const parallaxX = slideX * 0.25;
 
-        const resultImg = img as HTMLElement;
-        resultImg.style.transform = `translate3d(${-parallaxX}px, 0, 0) scale(1.05)`;
-        resultImg.style.objectPosition = `${positionX}% ${objectPositionY}%`;
-      });
+            // Horizontal Crop/Rotation Effect
+            // As slide moves away, shift object-position to look at the "inner" side
+            // Reduced sensitivity from 45 to 25 for smoother visual feel
+            const positionX = Math.max(15, Math.min(85, 50 - (normalizedOffset * 25)));
+
+            // Optimization: Apply styles directly without causing excessive reflows if possible
+            img.style.transform = `translate3d(${-parallaxX}px, 0, 0) scale(1.05)`;
+            img.style.objectPosition = `${positionX}% ${objectPositionY}%`;
+          });
+        }
+      } else {
+        // Mobile fallback: Reset styles once if needed or just keep them static
+        // To ensure no leftover transforms if resizing, we could reset. 
+        // But for pure mobile performance, doing nothing is best.
+        // If the user resizes from desktop -> mobile, artifacts might remain, but that's a rare edge case compared to scroll perf.
+      }
     }
 
     animationFrameId.current = requestAnimationFrame(animate);
