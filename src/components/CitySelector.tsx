@@ -127,9 +127,9 @@ const CitySelector = () => {
                   <div>
                     <h4 className="font-semibold text-lg mb-1">Ulhasnagar Experience Center</h4>
                     <p className="text-muted-foreground leading-relaxed">
-                      Office Number 205, Regency Plaza,<br />
-                      Shanti Nagar, Nr Waldhuni Bridge,<br />
-                      Ulhasnagar, Mumbai 421004
+                      Shop No 545, Main Road, O.T Section,<br />
+                      OPP Geeta Medical,<br />
+                      Ulhasnagar, Maharashtra 421004
                     </p>
                   </div>
                 </div>
