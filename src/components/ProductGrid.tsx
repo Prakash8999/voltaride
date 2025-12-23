@@ -9,36 +9,36 @@ import TestRideModal from "@/components/TestRideModal";
 
 // Mock data - replacing Convex query
 const mockModels = [
-  {
-    _id: "1",
-    name: "Ninja Mini",
-    tagline: "BLDC Hub Motor (IP67)",
-    price: "45,000",
-    monthlyEmi: "1,777",
-    image: "https://i.ibb.co/nsFF1mZN/ninja-mini.png",
-    range: 90,
-    topSpeed: 45,
-  },
-  {
-    _id: "2",
-    name: "Ninja 2G",
-    tagline: "Smart Wireless Controller (IP64)",
-    price: "47,500",
-    monthlyEmi: "1,999",
-    image: "https://i.ibb.co/84N622kS/ninja-2g.png",
-    range: 90,
-    topSpeed: 45,
-  },
-  {
-    _id: "3",
-    name: "Ninja Plus+",
-    tagline: "BLDC Hub Motor (IP67)",
-    price: "48,000",
-    monthlyEmi: "2,199",
-    image: "https://i.ibb.co/jvj50j7N/ninjaplus.png",
-    range: 62,
-    topSpeed: 40,
-  },
+  // {
+  //   _id: "1",
+  //   name: "Ninja Mini",
+  //   tagline: "BLDC Hub Motor (IP67)",
+  //   price: "45,000",
+  //   monthlyEmi: "1,777",
+  //   image: "https://i.ibb.co/nsFF1mZN/ninja-mini.png",
+  //   range: 90,
+  //   topSpeed: 45,
+  // },
+  // {
+  //   _id: "2",
+  //   name: "Ninja 2G",
+  //   tagline: "Smart Wireless Controller (IP64)",
+  //   price: "47,500",
+  //   monthlyEmi: "1,999",
+  //   image: "https://i.ibb.co/84N622kS/ninja-2g.png",
+  //   range: 90,
+  //   topSpeed: 45,
+  // },
+  // {
+  //   _id: "3",
+  //   name: "Ninja Plus+",
+  //   tagline: "BLDC Hub Motor (IP67)",
+  //   price: "48,000",
+  //   monthlyEmi: "2,199",
+  //   image: "https://i.ibb.co/jvj50j7N/ninjaplus.png",
+  //   range: 62,
+  //   topSpeed: 40,
+  // },
   {
     _id: "4",
     name: "GTR+",
@@ -124,7 +124,7 @@ export default function ProductGrid() {
   };
 
   return (
-    <section id="products" className="py-20 bg-muted/30">
+    <section id="products" className="py-20 bg-muted/80 backdrop-blur-3xl relative z-10 transition-colors">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -141,7 +141,7 @@ export default function ProductGrid() {
           </p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {models.map((model, i) => (
             <motion.div
               key={model._id}

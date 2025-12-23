@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
@@ -11,13 +12,21 @@ const Header = () => {
   const [dealershipModalOpen, setDealershipModalOpen] = useState(false);
   const [interestModalOpen, setInterestModalOpen] = useState(false);
 
+  const location = useLocation();
+
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      // On Home page, keep transparent until Hero is covered (approx 100vh - header height)
+      // On other pages, use standard shallow threshold
+      const isHome = location.pathname === "/";
+      const threshold = isHome ? (window.innerHeight - 80) : 20;
+      setIsScrolled(window.scrollY > threshold);
     };
+
+    handleScroll(); // Initial check
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [location.pathname]);
 
   const navLinks = [
     { label: "Products", href: "/#products" },
@@ -29,8 +38,8 @@ const Header = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b border-transparent ${isScrolled
-          ? "bg-white/80 backdrop-blur-md border-white/10 py-3 shadow-none"
-          : "bg-transparent py-6"
+        ? "bg-white/80 backdrop-blur-md border-white/10 py-3 shadow-none"
+        : "bg-transparent py-6"
         }`}
     >
       <div className="container-custom">
@@ -70,8 +79,8 @@ const Header = () => {
               size="sm"
               onClick={() => setInterestModalOpen(true)}
               className={`rounded-full px-6 font-medium transition-all duration-300 ${isScrolled
-                  ? ""
-                  : "bg-white text-black hover:bg-white/90"
+                ? ""
+                : "bg-white text-black hover:bg-white/90"
                 }`}
             >
               Book Test Ride
