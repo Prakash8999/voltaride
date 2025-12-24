@@ -133,14 +133,33 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
     scrollContainerRef.current.scrollLeft = scrollLeft - walk;
   };
 
+  const cardRef = useRef<HTMLDivElement>(null);
+
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       className="group relative flex flex-col h-full"
     >
-      <div className="relative flex flex-col h-full bg-white rounded-[2.5rem] p-3 shadow-sm hover:shadow-xl transition-all duration-500 ease-out border border-transparent hover:border-black/5">
+      <motion.div
+        whileInView="focused"
+        initial="default"
+        variants={{
+          default: {
+            boxShadow: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+            borderColor: "transparent"
+          },
+          focused: {
+            boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+            borderColor: "rgba(0,0,0,0.05)",
+            transition: { duration: 0.5, ease: "easeOut" }
+          }
+        }}
+        viewport={{ amount: 0.6, margin: "0px" }}
+        className="relative flex flex-col h-full bg-white rounded-[2.5rem] p-3 transition-all duration-500 ease-out border hover:shadow-xl hover:border-black/5"
+      >
 
         {/* Image Container - Product Frame */}
         <div className="relative w-full aspect-[4/3] bg-[#F4F4F5] rounded-[2rem] overflow-hidden duration-500 ease-out">
@@ -218,24 +237,24 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
           <div className="h-px w-full bg-border/40 my-4" />
 
           {/* Footer: Price & Actions Inline */}
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center justify-between gap-2 md:gap-4">
             {/* Price section aligned left */}
-            <div className="flex flex-col">
-              <p className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">Starting at</p>
-              <span className="text-lg font-bold text-foreground">₹ {model.price}</span>
+            <div className="flex flex-col shrink-0">
+              <p className="text-[9px] md:text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">Starting at</p>
+              <span className="text-base md:text-lg font-bold text-foreground">₹ {model.price}</span>
             </div>
 
             {/* Actions aligned right */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 md:gap-2 overflow-x-auto">
               <Button
                 variant="ghost"
-                className="h-10 px-4 text-sm font-semibold hover:bg-black/5 rounded-xl text-muted-foreground hover:text-foreground transition-colors duration-500 ease-out"
+                className="h-9 md:h-10 px-2.5 md:px-4 text-xs md:text-sm font-semibold hover:bg-black/5 rounded-xl text-muted-foreground hover:text-foreground transition-colors duration-500 ease-out"
                 onClick={() => onEnquireClick(model.name)}
               >
                 Enquire
               </Button>
               <Button
-                className="h-10 px-6 font-semibold shadow-md shadow-primary/20 rounded-xl text-sm"
+                className="h-9 md:h-10 px-4 md:px-6 text-xs md:text-sm font-semibold shadow-md shadow-primary/20 rounded-xl"
                 onClick={() => navigate(`/product/${model._id}`)}
               >
                 Explore
@@ -243,7 +262,7 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 };
