@@ -52,8 +52,7 @@ const FeatureBlock = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.2 }}
-      className={`grid md:grid-cols-2 gap-8 items-center ${
-          isReversed ? "md:flex-row-reverse" : ""
+      className={`grid md:grid-cols-2 gap-8 items-center ${isReversed ? "md:flex-row-reverse" : ""
         }`}
     >
       {/* Content */}
@@ -81,7 +80,7 @@ const FeatureBlock = ({
 
 const Features = () => {
   return (
-    <section id="features" className="section-padding bg-muted/30">
+    <section id="features" className="section-padding bg-[#F8F9FA]">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -110,14 +109,14 @@ const Features = () => {
           viewport={{ once: true }}
           className="grid md:grid-cols-2 gap-6 mt-14"
         >
-         <div className="glass p-8 rounded-2xl space-y-4">
-    <Gauge className="w-10 h-10 text-primary" />
-    <h4 className="text-2xl font-bold">Upslope Assistant System</h4>
-    <p className="text-muted-foreground">
-      Intelligent hill-start assist that prevents rollback on inclines and gives
-      smooth power delivery during upward climbs.
-    </p>
-  </div>
+          <div className="glass p-8 rounded-2xl space-y-4">
+            <Gauge className="w-10 h-10 text-primary" />
+            <h4 className="text-2xl font-bold">Upslope Assistant System</h4>
+            <p className="text-muted-foreground">
+              Intelligent hill-start assist that prevents rollback on inclines and gives
+              smooth power delivery during upward climbs.
+            </p>
+          </div>
           <div className="glass p-8 rounded-2xl space-y-4">
             <Leaf className="w-10 h-10 text-secondary" />
             <h4 className="text-2xl font-bold">100% Sustainable</h4>
