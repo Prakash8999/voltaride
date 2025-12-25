@@ -14,15 +14,16 @@ const ORIG_IMAGES = [
 ];
 
 const MOBILE_IMAGE_MAP: Record<string, string> = {
-  "16.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/16_small.jpeg",
-  "12.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/12_small.jpeg",
-  "13.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/13_small.jpeg",
-  "15.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/15_small.jpeg",
-  "14.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/14_small.jpeg"
+  "aerix_prime_orange_large.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_orange_small.png",
+  "aerix_glide_blue_large.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_blue_small.png",
+  "aerix_titan_white_large.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_titan_white_small.png",
+  "aerix_volt_black_large.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_volt_black_small.png",
+  "aerix_urban_grey_large.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_urban_grey_small.png",
+  "aerix_range_black_large.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_range_black_small.png"
 };
 
 const getMobileSrc = (desktopSrc: string) => {
-  const filename = desktopSrc.split('/').pop();
+  const filename = desktopSrc.split('/').pop()?.split('?')[0];
   if (!filename) return desktopSrc;
   return MOBILE_IMAGE_MAP[filename] || desktopSrc;
 };
@@ -98,6 +99,18 @@ const Hero = () => {
   const imageElementsRef = useRef<NodeListOf<HTMLImageElement> | null>(null);
   const frameSkipCounter = useRef(0);
   const verticalScroll = useRef(0);
+
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Configuration
   const DRAG_MULTIPLIER = 2.0;
@@ -345,7 +358,7 @@ const Hero = () => {
                       <picture className="absolute inset-0 w-full h-full">
                         <source media="(max-width: 768px)" srcSet={getMobileSrc(src)} />
                         <img
-                          src={src}
+                          src={isMobile ? getMobileSrc(src) : src}
                           alt={SLIDE_DATA[idx].title}
                           className="hero-image w-full h-full object-cover will-change-transform scale-105"
                           draggable={false}
