@@ -142,10 +142,8 @@ const Hero = () => {
     const width = getSlideWidth();
     const isMobile = width < 768;
 
-    // Mobile optimization: Skip every other frame for image effects (reduces to ~30fps)
-    // But always update carousel position for smooth dragging
-    frameSkipCounter.current++;
-    const shouldUpdateImages = !isMobile || (frameSkipCounter.current % 2 === 0);
+    // Always update images for smooth 60fps experience on all devices
+    const shouldUpdateImages = true;
 
     // 1. Interpolate Horizontal (ALWAYS update for smooth carousel)
     position.current.current = lerp(position.current.current, position.current.target, EASE);

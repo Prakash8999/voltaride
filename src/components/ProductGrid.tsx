@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { ArrowRight, MessageSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState, useRef, MouseEvent } from "react";
+import { useState, useRef, MouseEvent, useEffect } from "react";
 import TestRideModal from "@/components/TestRideModal";
 
 const mockModels = [
@@ -89,6 +89,19 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
+  // Detect mobile for scroll-trigger focus behavior
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const handleScroll = () => {
     if (scrollContainerRef.current) {
       const scrollPosition = scrollContainerRef.current.scrollLeft;
@@ -129,7 +142,7 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
     if (!isDragging || !scrollContainerRef.current) return;
     e.preventDefault();
     const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // Scroll-fast multiplier
+    const walk = (x - startX); // Natural 1:1 scroll
     scrollContainerRef.current.scrollLeft = scrollLeft - walk;
   };
 
@@ -144,9 +157,9 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
       className="group relative flex flex-col h-full"
     >
       <motion.div
-        whileInView="focused"
-        initial="default"
-        variants={{
+        whileInView={isMobile ? "focused" : undefined}
+        initial={isMobile ? "default" : undefined}
+        variants={isMobile ? {
           default: {
             boxShadow: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
             borderColor: "transparent"
@@ -156,9 +169,9 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
             borderColor: "rgba(0,0,0,0.05)",
             transition: { duration: 0.5, ease: "easeOut" }
           }
-        }}
+        } : {}}
         viewport={{ amount: 0.6, margin: "0px" }}
-        className="relative flex flex-col h-full bg-white rounded-[2.5rem] p-3 transition-all duration-500 ease-out border hover:shadow-xl hover:border-black/5"
+        className="relative flex flex-col h-full bg-white rounded-[2.5rem] p-3 transition-all duration-500 ease-out border shadow-sm hover:shadow-xl hover:border-black/5"
       >
 
         {/* Image Container - Product Frame */}
