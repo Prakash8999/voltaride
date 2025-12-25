@@ -5,12 +5,12 @@ import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ORIG_IMAGES = [
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/16.png", // 5
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/12.png", // 1
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/11.png", // 0
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/13.png", // 2
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/15.png", // 4
-  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/14.png", // 3
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_orange_large.png", // 5
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_blue_large.png", // 1
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_titan_white_large.png", // 0
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_volt_black_large.png", // 3
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_urban_grey_large.png", // 2
+  "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_range_black_large.png", // 4
 ];
 
 const MOBILE_IMAGE_MAP: Record<string, string> = {

@@ -8,72 +8,72 @@ import TestRideModal from "@/components/TestRideModal";
 
 const mockModels = [
   {
-    _id: "4",
-    name: "GTR+",
+    _id: "1",
+    name: "Aerix Enduro",
     tagline: "Smart Wireless Controller (IP64)",
     price: "50,000",
     monthlyEmi: "2,399",
-    images: ["https://i.ibb.co/DD9W8yNQ/gtr.png", "https://i.ibb.co/DD9W8yNQ/gtr.png", "https://i.ibb.co/DD9W8yNQ/gtr.png"],
+    images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_enduro_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_enduro_blue_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_enduro_white_large.png"],
+    range: 90,
+    topSpeed: 45,
+  },
+  {
+    _id: "2",
+    name: "Aerix Glide",
+    tagline: "BLDC Hub Motor (IP67)",
+    price: "56,000",
+    monthlyEmi: "2,599",
+    images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_blue_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_white_large.png"],
+    range: 90,
+    topSpeed: 45,
+  },
+  {
+    _id: "3",
+    name: "Aerix Prime",
+    tagline: "Smart Wireless Controller (IP64)",
+    price: "60,000",
+    monthlyEmi: "2,799",
+    images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_orange_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_white_large.png"],
+    range: 90,
+    topSpeed: 45,
+  },
+  {
+    _id: "4",
+    name: "Aerix Ranger",
+    tagline: "BLDC Hub Motor (IP67)",
+    price: "65,000",
+    monthlyEmi: "2,999",
+    images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_ranger_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_ranger_white_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_range_black_large.png"],
     range: 90,
     topSpeed: 45,
   },
   {
     _id: "5",
-    name: "Cruiser",
+    name: "Aerix Urban",
     tagline: "BLDC Hub Motor (IP67)",
-    price: "56,000",
-    monthlyEmi: "2,599",
-    images: ["https://i.ibb.co/FkDgWfCg/cruiser.png", "https://i.ibb.co/FkDgWfCg/cruiser.png", "https://i.ibb.co/FkDgWfCg/cruiser.png"],
+    price: "64,000",
+    monthlyEmi: "3,199",
+    images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_urban_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_urban_white_large.png"],
     range: 90,
     topSpeed: 45,
   },
   {
     _id: "6",
-    name: "Sharvil",
+    name: "Aerix Titan",
     tagline: "Smart Wireless Controller (IP64)",
-    price: "60,000",
-    monthlyEmi: "2,799",
-    images: ["https://i.ibb.co/twnXPwFD/shravil.png"],
+    price: "70,000",
+    monthlyEmi: "3,299",
+    images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_titan_white_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_titan_gold_large.png"],
     range: 90,
     topSpeed: 45,
   },
   {
     _id: "7",
-    name: "Spimri",
-    tagline: "BLDC Hub Motor (IP67)",
-    price: "65,000",
-    monthlyEmi: "2,999",
-    images: ["https://i.ibb.co/RkwzC5zx/spimri.png"],
-    range: 90,
-    topSpeed: 45,
-  },
-  {
-    _id: "8",
-    name: "E-Velco Pro",
-    tagline: "BLDC Hub Motor (IP67)",
-    price: "64,000",
-    monthlyEmi: "3,199",
-    images: ["https://i.ibb.co/RkVZSKVG/velco.png", "https://i.ibb.co/RkVZSKVG/velco.png", "https://i.ibb.co/RkVZSKVG/velco.png"],
-    range: 90,
-    topSpeed: 45,
-  },
-  {
-    _id: "9",
-    name: "Aurra Pro",
-    tagline: "Smart Wireless Controller (IP64)",
-    price: "70,000",
-    monthlyEmi: "3,299",
-    images: ["https://i.ibb.co/7dYJmTsy/aurra-pro.png", "https://i.ibb.co/7dYJmTsy/aurra-pro.png", "https://i.ibb.co/7dYJmTsy/aurra-pro.png"],
-    range: 90,
-    topSpeed: 45,
-  },
-  {
-    _id: "10",
-    name: "Aerix Loader",
+    name: "Aerix Volt",
     tagline: "Smart Wireless Controller (IP64)",
     price: "75,000",
     monthlyEmi: "3,499",
-    images: ["https://i.ibb.co/0jMsSWn3/loader.png", "https://i.ibb.co/0jMsSWn3/loader.png", "https://i.ibb.co/0jMsSWn3/loader.png"],
+    images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_volt_black_large.png"],
     range: 90,
     topSpeed: 45,
   },
@@ -175,11 +175,11 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
       >
 
         {/* Image Container - Product Frame */}
-        <div className="relative w-full aspect-[4/3] bg-[#F4F4F5] rounded-[2rem] overflow-hidden duration-500 ease-out">
+        <div className="relative w-full aspect-[4/3] rounded-[2rem] overflow-hidden duration-500 ease-out">
 
           {/* Monthly EMI Badge */}
-          <div className="absolute top-3 right-3 z-10">
-            <Badge variant="secondary" className="backdrop-blur-md bg-white/60 hover:bg-white/90 text-foreground font-medium shadow-sm rounded-full px-3 py-1 border-0">
+          <div className="absolute top-5 right-5 z-10">
+            <Badge variant="secondary" className="backdrop-blur-md bg-white/70 hover:bg-white/90 text-foreground font-medium shadow-sm rounded-full px-3 py-1 border-0">
               {/* <span className="text-[10px] uppercase text-muted-foreground mr-1">EMI</span> */}
               ₹{model.monthlyEmi}/mo
             </Badge>
@@ -201,11 +201,11 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
             }}
           >
             {model.images.map((img, idx) => (
-              <div key={idx} className="min-w-full h-full flex items-center justify-center snap-center p-8 pointer-events-none select-none">
+              <div key={idx} className="min-w-full h-full flex items-center justify-center snap-center px-4 pt-4 pointer-events-none select-none">
                 <img
                   src={img}
                   alt={`${model.name} view ${idx + 1}`}
-                  className="w-full h-full object-contain mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="w-full h-full object-cover rounded-[1.8rem] shadow-sm transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                   draggable={false}
                 />
               </div>
@@ -222,9 +222,9 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
                     e.stopPropagation();
                     scrollToImage(idx);
                   }}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${idx === activeImageIndex
-                    ? "w-6 bg-primary"
-                    : "w-1.5 bg-black/10 hover:bg-black/20"
+                  className={`h-1.5 rounded-full transition-all duration-300 shadow-sm ${idx === activeImageIndex
+                    ? "w-6 bg-white"
+                    : "w-1.5 bg-gray-300/80 hover:bg-gray-200"
                     }`}
                   aria-label={`Go to image ${idx + 1}`}
                 />
