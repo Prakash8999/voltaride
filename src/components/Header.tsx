@@ -13,12 +13,13 @@ const Header = () => {
   const [interestModalOpen, setInterestModalOpen] = useState(false);
 
   const location = useLocation();
+  const isHome = location.pathname === "/";
+  // Force "scrolled" look (solid bg, dark text) on non-home pages immediately
+  const isSolid = isScrolled || !isHome;
 
   useEffect(() => {
     const handleScroll = () => {
-      // On Home page, keep transparent until Hero is covered (approx 100vh - header height)
-      // On other pages, use standard shallow threshold
-      const isHome = location.pathname === "/";
+      // Only relevant on Home page really, but nice to track
       const threshold = isHome ? (window.innerHeight - 80) : 20;
       setIsScrolled(window.scrollY > threshold);
     };
@@ -26,7 +27,7 @@ const Header = () => {
     handleScroll(); // Initial check
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [location.pathname]);
+  }, [location.pathname, isHome]);
 
   const navLinks = [
     { label: "Products", href: "/#products" },
@@ -37,9 +38,9 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b border-transparent ${isScrolled
-        ? "bg-white/80 backdrop-blur-md border-white/10 py-3 shadow-none"
-        : "bg-transparent py-6"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b border-transparent ${isSolid
+        ? "bg-white/80 backdrop-blur-md border-white/10 py-3 shadow-sm text-foreground"
+        : "bg-transparent py-6 text-white"
         }`}
     >
       <div className="container-custom">
@@ -52,20 +53,29 @@ const Header = () => {
               alt="Aerix Energy"
               className="h-10 w-10 sm:h-12 sm:w-12 rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
-            <div className={`transition-opacity duration-300 ${isScrolled ? 'opacity-100' : 'opacity-90 text-white'}`}>
-              <span className={`text-xl font-bold tracking-tight ${isScrolled ? 'text-foreground' : 'text-white'}`}>
+            <div className={`transition-opacity duration-300 ${isSolid ? 'opacity-100' : 'opacity-90'}`}>
+              <span className={`text-xl font-bold tracking-tight`}>
                 Aerix
               </span>
             </div>
           </a>
 
           {/* Minimal Desktop Nav (Hidden initially or subtle) */}
-          <nav className={`hidden lg:flex items-center gap-8 ${isScrolled ? 'text-muted-foreground' : 'text-white/80'}`}>
+          <nav className={`hidden lg:flex items-center gap-8 ${isSolid ? 'text-muted-foreground' : 'text-white/80'}`}>
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
                 className="text-sm font-medium hover:text-primary transition-colors"
+                onClick={(e) => {
+                  if (location.pathname !== "/" && link.href.startsWith("/#")) {
+                    // Let default behavior handle navigation to home anchor
+                  } else if (link.href.startsWith("/#")) {
+                    e.preventDefault();
+                    const el = document.querySelector(link.href.substring(1));
+                    el?.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
               >
                 {link.label}
               </a>
@@ -78,7 +88,7 @@ const Header = () => {
             <Button
               size="sm"
               onClick={() => setInterestModalOpen(true)}
-              className={`rounded-full px-6 font-medium transition-all duration-300 ${isScrolled
+              className={`rounded-full px-6 font-medium transition-all duration-300 ${isSolid
                 ? ""
                 : "bg-white text-black hover:bg-white/90"
                 }`}
@@ -89,7 +99,7 @@ const Header = () => {
             {/* Mobile Menu Toggle */}
             <div className="lg:hidden">
               <button
-                className={`p-2 transition-colors ${isScrolled ? 'text-foreground' : 'text-white'}`}
+                className={`p-2 transition-colors`}
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle menu"
               >

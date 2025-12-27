@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { Loader2, X } from "lucide-react";
 
@@ -163,8 +164,8 @@ export default function TestRideModal({
 
   if (!open) return null;
 
-  return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm overflow-hidden">
+  return createPortal(
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm overflow-hidden">
       <div className="glass rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl">
         <div className="sticky top-0 glass border-b border-border px-6 py-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold gradient-text">
@@ -251,16 +252,13 @@ export default function TestRideModal({
                 <SelectValue placeholder="Select a model" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="E-Velco Pro">E-Velco Pro</SelectItem>
-                <SelectItem value="Aerix Energy Loader">Aerix Energy Loader</SelectItem>
-                <SelectItem value="Spimri">Spimri</SelectItem>
-                <SelectItem value="Aurra Pro">Aurra Pro</SelectItem>
-                <SelectItem value="Cruiser">Cruiser</SelectItem>
-                <SelectItem value="Shravil">Shravil</SelectItem>
-                <SelectItem value="Ninja Plus+">Ninja Plus+</SelectItem>
-                <SelectItem value="GTR+">GTR+</SelectItem>
-                <SelectItem value="Ninja Mini">Ninja Mini</SelectItem>
-                <SelectItem value="Ninja 2G">Ninja 2G</SelectItem>
+                <SelectItem value="AERIX ENDURO">AERIX ENDURO</SelectItem>
+                <SelectItem value="AERIX GLIDE">AERIX GLIDE</SelectItem>
+                <SelectItem value="AERIX PRIME">AERIX PRIME</SelectItem>
+                <SelectItem value="AERIX RANGER">AERIX RANGER</SelectItem>
+                <SelectItem value="AERIX URBAN">AERIX URBAN</SelectItem>
+                <SelectItem value="AERIX TITAN">AERIX TITAN</SelectItem>
+                <SelectItem value="AERIX VOLT">AERIX VOLT</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -305,6 +303,7 @@ export default function TestRideModal({
           </Button>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

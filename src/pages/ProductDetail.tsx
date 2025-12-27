@@ -1,714 +1,465 @@
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { motion } from "framer-motion";
-import { ArrowLeft, Battery, Zap, Shield, Check, MessageSquare } from "lucide-react";
-import { useState } from "react";
-import DealershipModal from "@/components/DealershipModal";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, Zap, Gauge, Lightbulb, Cpu, CircleDot, Battery, Shield, Check } from "lucide-react";
+import React, { useState, useEffect } from "react";
 import TestRideModal from "@/components/TestRideModal";
 import Footer from "@/components/Footer";
+import { cn } from "@/lib/utils";
 
 const productData = [
   {
-    id: "8",
-    name: "E-Velco Pro",
-    image_url: "https://i.ibb.co/RkVZSKVG/velco.png",
-    range_km: "70–110",
-    waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
-    smart_wireless_controller: "Smart Wireless Controller (IP64)",
-    battery_options: [
-      {
-        type: "Lead Acid Battery 72V 32Ah",
-        warranty: "1 Year"
-      },
-      {
-        type: "Lithium Battery 60V 45Ah",
-        warranty: "3 Years"
-      }
-    ],
-
-    braking_system: "Front Disc / Rear Disc",
-    key_features: [
-      "Waterproof throttle",
-      "123 gear",
-      "Parking mode",
-      "Cruise control",
-      "USB charging port",
-      "Upslope assistant",
-      "NFC card lock",
-      "Reverse gear",
-      "Central locking",
-      "Anti-theft alarm",
-      "Keyless entry",
-      "Regenerative braking",
-      "Tubeless tyres",
-      "Calling feature",
-      "Anti-fire fuse",
-      "Bluetooth mode",
-      "GPS tracking",
-      "Built-in navigation",
-      "Proximity unlock",
-      "Mobile app connectivity"
-    ],
-    colors: ["Red", "White", "Grey", "Peacock Blue", "Black"],
-    price: "64,000",
-    monthlyEmi: "3,199"
-  },
-  {
-    id: "10",
-    name: "Aerix Loader",
-    image_url: "https://i.ibb.co/0jMsSWn3/loader.png",
-    range_km: "70–110",
-    waterproof_motor: "12-inch Mid-Drive Smart Motor (IP67)",
-    smart_wireless_controller: "60/72V Smart Wireless (IP64)",
-    battery_options: [
-      {
-        type: "Lead Acid Battery 72V 32Ah",
-        warranty: "1 Year"
-      },
-      {
-        type: "Lithium Battery 60V 45Ah",
-        warranty: "3 Years"
-      }
-    ],
-
-    braking_system: "Front Disc / Rear Drum",
-    key_features: [
-      "Waterproof throttle",
-      "123 gear",
-      "Parking mode",
-      "Cruise control",
-      "USB charging port",
-      "Upslope assistant",
-      "Reverse gear",
-      "Central locking",
-      "Anti-theft alarm",
-      "Keyless entry",
-      "Regenerative braking",
-      "Tubeless tyres"
-    ],
-    colors: ["Black"],
-    price: "75,000",
-    monthlyEmi: 3499
-  },
-  {
-    id: "7",
-    name: "Spimri",
-    image_url: "https://i.ibb.co/RkwzC5zx/spimri.png",
-    range_km: "70–110",
-    waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
-    smart_wireless_controller: "72V Smart Wireless (IP64)",
-    battery_options: [
-      {
-        type: "Lead Acid Battery 72V 32Ah",
-        warranty: "1 Year"
-      },
-      {
-        type: "Lithium Battery 60V 45Ah",
-        warranty: "3 Years"
-      }
-    ],
-
-    braking_system: "Front Disc / Rear Drum",
-    key_features: [
-      "Waterproof throttle",
-      "123 gear",
-      "Parking mode",
-      "Cruise control",
-      "USB charging port",
-      "Upslope assistant",
-      "NFC card lock",
-      "Reverse gear",
-      "Central locking",
-      "Anti-theft",
-      "Keyless entry",
-      "Regenerative braking",
-      "Tubeless tyres",
-      "Calling feature",
-      "Anti-fire fuse",
-      "Bluetooth",
-      "GPS tracking",
-      "Built-in navigation",
-      "Proximity unlock",
-      "Mobile app connectivity"
-    ],
-    colors: ["Red", "White", "Dark Grey", "Peacock Blue", "Green"],
-    price: "65,000",
-    monthlyEmi: "2,999"
-  },
-  {
-    id: "9",
-    name: "Aurra Pro",
-    image_url: "https://i.ibb.co/7dYJmTsy/aurra-pro.png",
-    range_km: "70–110",
-    waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
-    smart_wireless_controller: "Smart Wireless Controller (IP64)",
-    battery_options: [
-      {
-        type: "Lead Acid Battery 72V 32Ah",
-        warranty: "1 Year"
-      },
-      {
-        type: "Lithium Battery 60V 45Ah",
-        warranty: "3 Years"
-      }
-    ],
-
-    braking_system: "Front Disc / Rear Drum",
-    key_features: [
-      "Waterproof throttle",
-      "123 gear",
-      "Parking mode",
-      "Cruise control",
-      "USB charging",
-      "Upslope assistant",
-      "NFC lock",
-      "Reverse gear",
-      "Central locking",
-      "Anti-theft alarm",
-      "Keyless entry",
-      "Regenerative braking",
-      "Tubeless tyres",
-      "Calling feature",
-      "Anti-fire fuse",
-      "Bluetooth",
-      "GPS tracking",
-      "Navigation",
-      "Proximity unlock",
-      "Mobile app connectivity"
-    ],
-    colors: ["Ferrari Red", "White", "Black", "Cyan Blue", "Metallic Gold"],
-    price: "70,000",
-    monthlyEmi: "3,299"
-  },
-  {
-    id: "5",
-    name: "Cruiser",
-    image_url: "https://i.ibb.co/FkDgWfCg/cruiser.png",
-    range_km: "70–110",
-    waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
-    smart_wireless_controller: "Smart Wireless Controller (IP64)",
-    battery_options: [
-      {
-        type: "Lead Acid Battery 72V 32Ah",
-        warranty: "1 Year"
-      },
-      {
-        type: "Lithium Battery 60V 45Ah",
-        warranty: "3 Years"
-      }
-    ],
-    braking_system: "Front Disc / Rear Drum",
-    key_features: [
-      "Waterproof throttle",
-      "123 gear",
-      "Parking mode",
-      "Cruise control",
-      "USB charging",
-      "Upslope assistant",
-      "NFC lock",
-      "Reverse gear",
-      "Central locking",
-      "Anti-theft alarm",
-      "Keyless entry",
-      "Regenerative braking",
-      "Tubeless tyres",
-      "Calling feature",
-      "Anti-fire fuse",
-      "Bluetooth",
-      "GPS tracking",
-      "Navigation",
-      "Proximity unlock",
-      "Mobile app connectivity"
-    ],
-    colors: ["Ferrari Red", "Chameleon", "White", "Grey", "Black"],
-    price: "56,000",
-    monthlyEmi: "2,599"
-  },
-  {
-    id: "6",
-    name: "Sharvil",
-    image_url: "https://i.ibb.co/twnXPwFD/shravil.png",
-    range_km: "70–110",
-    waterproof_motor: "12-inch BLDC Hub Motor (IP67)",
-    smart_wireless_controller: "60/72V Smart Wireless (IP64)",
-    battery_options: [
-      {
-        type: "Lead Acid Battery 72V 32Ah",
-        warranty: "1 Year"
-      },
-      {
-        type: "Lithium Battery 60V 45Ah",
-        warranty: "3 Years"
-      }
-    ],
-
-    braking_system: "Front Disc / Rear Drum",
-    key_features: [
-      "Waterproof throttle",
-      "123 gear",
-      "Parking mode",
-      "Cruise control",
-      "USB charging",
-      "Upslope assistant",
-      "NFC lock",
-      "Reverse gear",
-      "Central locking",
-      "Anti-theft alarm",
-      "Keyless entry",
-      "Regenerative braking",
-      "Tubeless tyres",
-      "Calling feature",
-      "Anti-fire fuse",
-      "Bluetooth",
-      "GPS tracking",
-      "Navigation",
-      "Proximity unlock",
-      "Mobile app connectivity"
-    ],
-    colors: ["Red", "White", "Grey", "Black", "Peacock Blue"],
-    price: "60,000",
-    monthlyEmi: "2,799"
-  },
-  {
-    id: "3",
-    name: "Ninja Plus+",
-    image_url: "https://i.ibb.co/jvj50j7N/ninjaplus.png",
-    range_km: "50–75",
-    waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
-    smart_wireless_controller: "Smart Wireless Controller (IP64)",
-    battery_options: [
-      {
-        type: "Lead Acid Battery 72V 32Ah",
-        warranty: "1 Year"
-      },
-      {
-        type: "Lithium Battery 60V 45Ah",
-        warranty: "3 Years"
-      }
-    ],
-
-    braking_system: "Front Drum / Rear Drum",
-    key_features: [
-      "Waterproof throttle",
-      "123 gear",
-      "Parking mode",
-      "Cruise control",
-      "USB charging",
-      "Upslope assistant",
-      "NFC lock",
-      "Reverse gear",
-      "Central locking",
-      "Anti-theft alarm",
-      "Keyless entry",
-      "Regenerative braking",
-      "Tubeless tyres",
-      "Calling feature",
-      "Anti-fire fuse",
-      "Bluetooth",
-      "GPS tracking",
-      "Navigation",
-      "Proximity unlock",
-      "Mobile app connectivity"
-    ],
-    colors: ["Red", "White", "Grey", "Peacock Blue", "Black"],
-    price: "48,000",
-    monthlyEmi: "2,199"
-  },
-  {
-    id: "4",
-    name: "GTR+",
-    image_url: "https://i.ibb.co/DD9W8yNQ/gtr.png",
-    range_km: "70–110",
-    waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
-    smart_wireless_controller: "Smart Wireless Controller (IP64)",
-    battery_options: [
-      {
-        type: "Lead Acid Battery 72V 32Ah",
-        warranty: "1 Year"
-      },
-      {
-        type: "Lithium Battery 60V 45Ah",
-        warranty: "3 Years"
-      }
-    ],
-
-    braking_system: "Front Disc / Rear Drum",
-    key_features: [
-      "Waterproof throttle",
-      "123 gear",
-      "Parking mode",
-      "Cruise control",
-      "USB charging",
-      "Upslope assistant",
-      "NFC lock",
-      "Reverse gear",
-      "Central locking",
-      "Anti-theft alarm",
-      "Keyless entry",
-      "Regenerative braking",
-      "Tubeless tyres",
-      "Calling feature",
-      "Anti-fire fuse",
-      "Bluetooth",
-      "GPS tracking",
-      "Navigation",
-      "Proximity unlock",
-      "Mobile app connectivity"
-    ],
-    colors: ["Red", "Black", "White", "Grey", "Peacock Blue"],
-    price: "50,000",
-    monthlyEmi: "2,399"
-  },
-  {
     id: "1",
-    name: "Ninja Mini",
-    image_url: "https://i.ibb.co/nsFF1mZN/ninja-mini.png",
-    range_km: "70–110",
-    waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
-    smart_wireless_controller: "Smart Wireless Controller (IP64)",
-    battery_options: [
-      {
-        type: "Lead Acid Battery 72V 32Ah",
-        warranty: "1 Year"
-      },
-      {
-        type: "Lithium Battery 60V 45Ah",
-        warranty: "3 Years"
-      }
-    ],
-
-    braking_system: "Front Drum / Rear Drum",
-    key_features: [
-      "Waterproof throttle",
-      "123 gear",
-      "Cruise control",
-      "USB charging",
-      "Reverse gear",
-      "Central locking",
-      "Anti-theft alarm",
-      "Keyless entry",
-      "Regenerative braking",
-      "Tubeless tyres",
-      "Calling feature",
-      "Anti-fire fuse",
-      "Bluetooth",
-      "GPS tracking",
-      "Navigation",
-      "Proximity unlock",
-      "Mobile app connectivity"
-    ],
-    colors: ["Ferrari Red", "White", "Peacock Blue", "Grey", "Black"],
-    price: "45,000",
-    monthlyEmi: "1,777"
+    name: "AERIX ENDURO",
+    motor: "1000W",
+    speed: "45-50 km/h",
+    colors: ["Red", "White", "Grey", "Peacock Blue", "Black"],
+    controller: "32A 12tube",
+    wheels: "10 Inch",
+    headlights: "LED Headlight",
+    meter: "Color Digital Instrument",
+    brake: "Front Disc / Rear Drum",
+    images: {
+      Grey: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_enduro_grey_large.png",
+      "Peacock Blue": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_enduro_blue_large.png",
+      White: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_enduro_white_large.png"
+    },
+    price: "60,000"
   },
   {
     id: "2",
-    name: "Ninja 2G",
-    image_url: "https://i.ibb.co/84N622kS/ninja-2g.png",
-    range_km: "70–110",
-    waterproof_motor: "10-inch BLDC Hub Motor (IP67)",
-    smart_wireless_controller: "Smart Wireless Controller (IP64)",
-    battery_options: [
-      {
-        type: "Lead Acid Battery 72V 32Ah",
-        warranty: "1 Year"
-      },
-      {
-        type: "Lithium Battery 60V 45Ah",
-        warranty: "3 Years"
-      }
-    ],
-
-    braking_system: "Front Drum / Rear Drum",
-    key_features: [
-      "Waterproof throttle",
-      "123 gear",
-      "Cruise control",
-      "USB charging",
-      "Fast charging",
-      "Reverse gear",
-      "Central locking",
-      "Anti-theft alarm",
-      "Keyless entry",
-      "Regenerative braking",
-      "Tubeless tyres",
-      "Calling feature",
-      "Anti-fire fuse",
-      "Bluetooth",
-      "GPS tracking",
-      "Navigation",
-      "Proximity unlock",
-      "Mobile app connectivity"
-    ],
+    name: "AERIX GLIDE",
+    motor: "1000W",
+    speed: "45-50 km/h",
     colors: ["Red", "White", "Grey", "Peacock Blue", "Black"],
-    price: "47,500",
-    monthlyEmi: "1,999"
+    controller: "32A 12TUBE",
+    wheels: "10 Inch",
+    headlights: "LED Headlight",
+    meter: "Color Digital Instrument",
+    brake: "Front Disc / Rear Drum",
+    images: {
+      Grey: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_grey_large.png",
+      "Peacock Blue": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_blue_large.png",
+      White: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_white_large.png"
+    },
+    price: "65,000"
+  },
+  {
+    id: "3",
+    name: "AERIX PRIME",
+    motor: "1200W",
+    speed: "55 km/h",
+    colors: ["Orange", "White", "Grey", "Peacock Blue", "Black"],
+    controller: "60/72V 38A 15TUBE",
+    wheels: "12 Inch",
+    headlights: "LED Headlight",
+    meter: "Color Digital Instrument",
+    brake: "Front Disc / Rear Drum",
+    images: {
+      Orange: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_orange_large.png",
+      Grey: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_grey_large.png",
+      White: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_white_large.png"
+    },
+    price: "90,000"
+  },
+  {
+    id: "4",
+    name: "AERIX RANGER",
+    motor: "1200W",
+    speed: "55 km/h",
+    colors: ["Grey", "White", "Black", "Peacock Blue", "Black"],
+    controller: "38A 15TUBE",
+    wheels: "12 Inch",
+    headlights: "LED Headlight",
+    meter: "Color Digital Instrument",
+    brake: "Front Disc / Rear Drum",
+    images: {
+      Grey: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_ranger_grey_large.png",
+      White: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_ranger_white_large.png",
+      Black: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_range_black_large.png"
+    },
+    price: "1,00,000"
+  },
+  {
+    id: "5",
+    name: "AERIX URBAN",
+    motor: "1000W",
+    speed: "45-50 km/h",
+    colors: ["Red", "White", "Grey", "Peacock Blue", "Black"],
+    controller: "32A 12TUBE",
+    wheels: "10 Inch",
+    headlights: "LED Headlight",
+    meter: "Color Digital Instrument",
+    brake: "Front Disc / Rear Drum",
+    images: {
+      Grey: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_urban_grey_large.png",
+      White: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_urban_white_large.png"
+    },
+    price: "60,000"
+  },
+  {
+    id: "6",
+    name: "AERIX TITAN",
+    motor: "1000W",
+    speed: "45-50 km/h",
+    colors: ["Red", "White", "Grey", "Metallic Gold", "Black"],
+    controller: "32A 12TUBE",
+    wheels: "10 Inch",
+    headlights: "LED Headlight",
+    meter: "Color Digital Instrument",
+    brake: "Front Disc / Rear Drum",
+    images: {
+      White: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_titan_white_large.png",
+      Gold: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_titan_gold_large.png"
+    },
+    price: "70,000"
+  },
+  {
+    id: "7",
+    name: "AERIX VOLT",
+    motor: "1200W",
+    speed: "50 km/h",
+    colors: ["Black", "White", "Grey"],
+    controller: "32A 12TUBE",
+    wheels: "14 Inch",
+    headlights: "LED Headlight",
+    meter: "Color Digital Instrument",
+    brake: "Front Disc / Rear Drum",
+    images: {
+      Black: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_volt_black_large.png"
+    },
+    price: "85,000"
   }
 ];
 
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [dealershipOpen, setDealershipOpen] = useState(false);
-  const [testRideOpen, setTestRideOpen] = useState(false);
-  const [selectedColor, setSelectedColor] = useState<string>("");
   const [enquiryOpen, setEnquiryOpen] = useState(false);
-  const [selectedModel, setSelectedModel] = useState<string>("");
-  const [showMonthly, setShowMonthly] = useState(false);
-
-  const handleEnquiryClick = (modelName: string) => {
-    setSelectedModel(modelName);
-    setEnquiryOpen(true);
-  };
-
-
+  const [selectedColor, setSelectedColor] = useState<string>("");
 
   const product = productData.find(p => p.id === id);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
+  useEffect(() => {
+    if (product && product.colors.length > 0 && !selectedColor) {
+      const defaultColor = product.colors.find(color => color in product.images) || product.colors[0];
+      setSelectedColor(defaultColor);
+    }
+  }, [product, selectedColor]);
+
   if (!product) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Product Not Found</h1>
-          <Button onClick={() => navigate("/")}>Back to Home</Button>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center p-8">
+          <h1 className="text-4xl font-bold mb-4 text-gray-800">Product Not Found</h1>
+          <Button onClick={() => navigate("/")} className="rounded-full">Return Home</Button>
         </div>
       </div>
     );
   }
 
-  if (!selectedColor && product.colors.length > 0) {
-    setSelectedColor(product.colors[0]);
-  }
-
   return (
-    <div className="min-h-screen bg-[#F5F5F5]">
-      <Header
-      />
+    <div className="min-h-screen bg-neutral-100 font-sans selection:bg-primary/10">
+      <Header />
 
-      <div className="pt-20 pb-12">
-        <div className="container mx-auto px-4">
-          {/* Back Button */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="mb-6"
+      <main className="pt-20 pb-12 container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Navigation */}
+        <motion.div
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="mb-6"
+        >
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/")}
+            className="group px-0 hover:bg-transparent hover:text-primary transition-colors"
           >
-            <Button variant="ghost" onClick={() => navigate("/")} className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Products
-            </Button>
+            <ArrowLeft className="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" />
+            Back to Products
+          </Button>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 xl:gap-12 items-start">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="space-y-4 lg:sticky lg:top-24"
+          >
+            <div className="relative aspect-[4/3] bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-500 border border-gray-100 group">
+
+              <AnimatePresence mode="wait">
+                {product.images[selectedColor as keyof typeof product.images] ? (
+                  <motion.div
+                    key={selectedColor}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.05 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    className="relative w-full h-full p-3"
+                  >
+                    <img
+                      src={product.images[selectedColor as keyof typeof product.images]}
+                      alt={`${product.name} in ${selectedColor}`}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="not-available"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="w-full h-full flex flex-col items-center justify-center p-8 text-center"
+                  >
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center mb-6 shadow-lg">
+                      <Battery className="w-10 h-10 text-gray-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">Image Not Available</h3>
+                    <p className="text-muted-foreground max-w-xs text-base">
+                      We don't have a preview for the {selectedColor} color yet, but you can still enquire about it.
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Color badges below image */}
+            <div className="flex flex-wrap gap-2 justify-center px-4">
+              {[...product.colors]
+                .sort((a, b) => {
+                  const hasImageA = a in product.images;
+                  const hasImageB = b in product.images;
+                  if (hasImageA && !hasImageB) return -1;
+                  if (!hasImageA && hasImageB) return 1;
+                  return 0;
+                })
+                .map((color) => {
+                  const hasImage = color in product.images;
+                  return (
+                    <motion.button
+                      key={color}
+                      onClick={() => setSelectedColor(color)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={cn(
+                        "px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
+                        selectedColor === color
+                          ? "bg-primary text-white shadow-lg shadow-primary/30"
+                          : "bg-white text-gray-700 border border-gray-200 hover:border-primary/50 hover:shadow-md",
+                        !hasImage && "opacity-50"
+                      )}
+                    >
+                      {color}
+                    </motion.button>
+                  );
+                })}
+            </div>
           </motion.div>
 
-          {/* Header */}
+          {/* Right Column: Product Info */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex flex-col h-full"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+            <div className="flex items-start justify-between mb-2">
+              <Badge variant="secondary" className="bg-primary/5 text-primary hover:bg-primary/10 transition-colors uppercase tracking-wider font-semibold">
+                Electric Series
+              </Badge>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 mb-4">
               {product.name}
             </h1>
 
-            <div className="flex flex-wrap gap-3 mb-6 max-w-full">
-              <Badge variant="secondary" className="text-base px-4 py-2">
-                <Battery className="h-4 w-4 mr-2" />
-                Range: {product.range_km} km
-              </Badge>
-
-              <Badge
-                variant="outline"
-                className="text-base px-4 py-2 border-green-200 text-green-700 bg-green-50"
-              >
-                <Shield className="h-4 w-4 mr-2" />
-                No License Required
-              </Badge>
+            <div className="flex flex-wrap items-center gap-6 mb-8">
+              <div>
+                <span className="text-lg text-muted-foreground mr-2">Price</span>
+                <span className="text-3xl font-bold">₹ {product.price}</span>
+              </div>
             </div>
 
-            {/* Price */}
-            <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl p-6 border border-primary/10 mb-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
-                <p className="text-lg font-medium text-muted-foreground">Starting at</p>
-
-                <div className="flex items-center gap-3">
-                  <span className="text-sm text-muted-foreground">Show Monthly</span>
-
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={showMonthly}
-                      onChange={() => setShowMonthly(!showMonthly)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:h-5 after:w-5 after:rounded-full after:transition-all peer-checked:after:translate-x-full"></div>
-                  </label>
+            {/* Quick Specs Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-4 bg-white rounded-2xl border border-gray-100 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow">
+                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
+                  <Zap className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground font-medium">Motor</p>
+                  <p className="text-lg font-bold text-gray-900">{product.motor}</p>
                 </div>
               </div>
-
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-                <div className="flex items-baseline gap-2">
-                  <p className="text-4xl font-bold text-muted-foreground">
-                    {showMonthly ? `₹${product.monthlyEmi}` : `₹ ${product.price}`}
-                  </p>
-                  <span className="text-lg text-muted-foreground">
-                    {showMonthly ? "/month" : "total"}
-                  </span>
+              <div className="p-4 bg-white rounded-2xl border border-gray-100 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow">
+                <div className="p-3 bg-orange-50 text-orange-600 rounded-xl">
+                  <Gauge className="w-6 h-6" />
                 </div>
-
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  className="gap-2 text-white font-semibold px-8 py-3"
-                  onClick={() => handleEnquiryClick(product.name)}
-                >
-                  <MessageSquare className="h-5 w-5" />
-                  Enquire Now
-                </Button>
+                <div>
+                  <p className="text-sm text-muted-foreground font-medium">Max Speed</p>
+                  <p className="text-lg font-bold text-gray-900">{product.speed}</p>
+                </div>
               </div>
+            </div>
+
+
+
+            {/* Actions */}
+            <div className="flex gap-4 pt-4 border-t border-gray-100 mt-4">
+              <Button
+                size="lg"
+                className="flex-1 h-14 text-base font-bold rounded-2xl shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300"
+                onClick={() => setEnquiryOpen(true)}
+              >
+                Book a Test Ride
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="flex-1 h-14 text-base font-bold rounded-2xl border-gray-200 hover:bg-gray-50 hover:text-black hover:border-black/10 transition-all"
+                onClick={() => setEnquiryOpen(true)}
+              >
+                Enquire Now
+              </Button>
             </div>
           </motion.div>
+        </div>
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            {/* Left Column - Image */}
+        {/* Key Features Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-16 mb-12"
+        >
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Engineered for Excellence
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Premium components and cutting-edge technology for an unparalleled riding experience
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Motor Power */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="relative p-8 bg-white rounded-3xl border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-500 group"
             >
-              <Card className="overflow-hidden">
-                <div className="">
-                  <img
-                    src={product.image_url}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
+              <div className="absolute -top-5 left-8">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Zap className="w-6 h-6 text-white" />
                 </div>
-              </Card>
-
-              {/* Color Selection */}
+              </div>
               <div className="mt-6">
-                <h3 className="font-semibold mb-3">Available Colors</h3>
-                <div className="flex flex-wrap gap-3">
-                  {product.colors.map((color) => (
-                    <button
-                      key={color}
-                      onClick={() => setSelectedColor(color)}
-                      className={`px-4 py-2 rounded-lg border-2 transition-all ${selectedColor === color
-                        ? "border-primary bg-primary/10"
-                        : "border-border hover:border-primary/50"
-                        }`}
-                    >
-                      {color}
-                    </button>
-                  ))}
-                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Powerful Motor</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {product.motor} motor delivers exceptional acceleration and smooth performance for city commuting and beyond.
+                </p>
               </div>
             </motion.div>
 
-            {/* Right Column - Details */}
+            {/* Speed & Performance */}
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="space-y-6"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="relative p-8 bg-white rounded-3xl border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-500 group"
             >
-              {/* Specifications */}
-              <Card>
-                <CardContent className="p-6 space-y-4">
-                  <h2 className="text-2xl font-bold mb-4">Specifications</h2>
+              <div className="absolute -top-5 left-8">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Gauge className="w-6 h-6 text-white" />
+                </div>
+              </div>
+              <div className="mt-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Top Speed</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Reach speeds up to {product.speed}, perfectly balanced for urban mobility and highway safety standards.
+                </p>
+              </div>
+            </motion.div>
 
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                      <Battery className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
-                      <div>
-                        <p className="font-semibold">Motor</p>
-                        <p className="text-sm text-muted-foreground">{product.waterproof_motor}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <Zap className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
-                      <div>
-                        <p className="font-semibold">Controller</p>
-                        <p className="text-sm text-muted-foreground">{product.smart_wireless_controller}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <Shield className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
-                      <div>
-                        <p className="font-semibold">Braking System</p>
-                        <p className="text-sm text-muted-foreground">{product.braking_system}</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Battery Options */}
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-3">Battery Options</h3>
-
-                  <div className="space-y-3">
-                    {product.battery_options.map((battery, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-start gap-3 p-3 border rounded-lg bg-muted/20"
-                      >
-                        <Check className="h-4 w-4 text-primary mt-1" />
-
-                        <div>
-                          <p className="font-semibold">{battery.type}</p>
-                          <p className="text-sm text-muted-foreground">
-                            Warranty: {battery.warranty}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Key Features */}
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-4">Key Features</h3>
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {product.key_features.map((feature, idx) => (
-                      <div key={idx} className="flex items-start gap-2">
-                        <Check className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-
-
-                {/* <Button size="lg" className="flex-1 py-2 text-xl" onClick={() => handleEnquiryClick(product.name)}
-                >
-                  Book Test Ride
-                </Button> */}
+            {/* Safety Features */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="relative p-8 bg-white rounded-3xl border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-500 group"
+            >
+              <div className="absolute -top-5 left-8">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Shield className="w-6 h-6 text-white" />
+                </div>
+              </div>
+              <div className="mt-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Advanced Braking</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {product.brake} system ensures precise stopping power and enhanced safety in all riding conditions.
+                </p>
               </div>
             </motion.div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+
+        {/* Technical Specifications Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-16"
+        >
+          <div className="flex items-center gap-4 mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">Technical Specifications</h2>
+            <div className="h-px bg-gray-200 flex-1" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <SpecCard icon={<Cpu />} label="Controller" value={product.controller} />
+            <SpecCard icon={<CircleDot />} label="Wheels" value={product.wheels} />
+            <SpecCard icon={<Shield />} label="Braking System" value={product.brake} />
+            <SpecCard icon={<Lightbulb />} label="Headlights" value={product.headlights} />
+            <SpecCard icon={<Gauge />} label="Dashboard" value={product.meter} />
+            <SpecCard icon={<Zap />} label="Motor Type" value={product.motor} />
+          </div>
+        </motion.div >
+
+      </main >
+
       <TestRideModal
         open={enquiryOpen}
         onOpenChange={setEnquiryOpen}
-        preSelectedModel={selectedModel}
+        preSelectedModel={product.name}
         isEnquiry={true}
       />
 
       <Footer />
+    </div >
+  );
+}
 
+function SpecCard({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) {
+  return (
+    <div className="flex items-center gap-5 p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg hover:border-primary/10 transition-all duration-300 group">
+      <div className="p-4 rounded-xl bg-gray-50 text-gray-500 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+        {React.cloneElement(icon as React.ReactElement, { className: "w-6 h-6" })}
+      </div>
+      <div>
+        <p className="text-sm font-medium text-muted-foreground mb-1">{label}</p>
+        <p className="text-lg font-bold text-gray-900">{value}</p>
+      </div>
     </div>
   );
 }

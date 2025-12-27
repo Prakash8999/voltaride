@@ -201,7 +201,7 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
             }}
           >
             {model.images.map((img, idx) => (
-              <div key={idx} className="min-w-full h-full flex items-center justify-center snap-center px-4 pt-4 pointer-events-none select-none">
+              <div key={idx} className="min-w-full h-full flex items-center justify-center snap-center p-0 md:px-4 md:pt-4 pointer-events-none select-none">
                 <img
                   src={img}
                   alt={`${model.name} view ${idx + 1}`}

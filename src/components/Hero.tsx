@@ -19,7 +19,7 @@ const MOBILE_IMAGE_MAP: Record<string, string> = {
   "aerix_titan_white_large.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_titan_white_small.png",
   "aerix_volt_black_large.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_volt_black_small.png",
   "aerix_urban_grey_large.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_urban_grey_small.png",
-  "aerix_range_black_large.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_range_black_small.png"
+  "aerix_range_black_large.png": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_ranger_black_small.png"
 };
 
 const getMobileSrc = (desktopSrc: string) => {

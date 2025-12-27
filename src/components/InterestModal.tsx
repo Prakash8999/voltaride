@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -150,9 +151,9 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
 
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm overflow-hidden">
-      <div className="glass rounded-2xl w-full max-w-md">
+  return createPortal(
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm overflow-hidden">
+      <div className="glass rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div className="glass border-b border-border px-6 py-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">
             Are you interested in getting an Aerix Energy Product?
@@ -220,8 +221,13 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
                 <SelectValue placeholder="Select speed category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="25-max">25 km/h Max</SelectItem>
-                <SelectItem value="45-max">45 km/h Max</SelectItem>
+                <SelectItem value="AERIX ENDURO">AERIX ENDURO</SelectItem>
+                <SelectItem value="AERIX GLIDE">AERIX GLIDE</SelectItem>
+                <SelectItem value="AERIX PRIME">AERIX PRIME</SelectItem>
+                <SelectItem value="AERIX RANGER">AERIX RANGER</SelectItem>
+                <SelectItem value="AERIX URBAN">AERIX URBAN</SelectItem>
+                <SelectItem value="AERIX TITAN">AERIX TITAN</SelectItem>
+                <SelectItem value="AERIX VOLT">AERIX VOLT</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -261,7 +267,8 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
           </Button>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
