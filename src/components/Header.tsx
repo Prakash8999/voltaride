@@ -6,7 +6,11 @@ import { Menu, X } from "lucide-react";
 import DealershipModal from "./DealershipModal";
 import InterestModal from "./InterestModal";
 
-const Header = () => {
+interface HeaderProps {
+  forceTransparent?: boolean;
+}
+
+const Header = ({ forceTransparent = false }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dealershipModalOpen, setDealershipModalOpen] = useState(false);
@@ -14,20 +18,23 @@ const Header = () => {
 
   const location = useLocation();
   const isHome = location.pathname === "/";
-  // Force "scrolled" look (solid bg, dark text) on non-home pages immediately
-  const isSolid = isScrolled || !isHome;
+  // Allow transparency if explicitly requested or on home page
+  const canBeTransparent = isHome || forceTransparent;
+  // Solid if scrolled, or if we are on a page that doesn't allow transparency (and not forced)
+  const isSolid = isScrolled || !canBeTransparent;
 
   useEffect(() => {
     const handleScroll = () => {
-      // Only relevant on Home page really, but nice to track
-      const threshold = isHome ? (window.innerHeight - 80) : 20;
+      // Determine threshold based on where we are
+      // If we are on a transparent-capable page, use a larger threshold
+      const threshold = canBeTransparent ? (window.innerHeight - 80) : 20;
       setIsScrolled(window.scrollY > threshold);
     };
 
     handleScroll(); // Initial check
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [location.pathname, isHome]);
+  }, [location.pathname, canBeTransparent]);
 
   const navLinks = [
     { label: "Products", href: "/#products" },

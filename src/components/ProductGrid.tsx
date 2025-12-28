@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
-import { ArrowRight, MessageSquare } from "lucide-react";
+import { ArrowRight, MessageSquare, Zap, Shield, Smartphone, Globe, Cloud, BarChart3 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useRef, MouseEvent, useEffect } from "react";
 import TestRideModal from "@/components/TestRideModal";
@@ -278,7 +278,97 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
       </motion.div>
     </motion.div>
   );
+
 };
+
+
+const MagicalCard = ({ title, description, icon: Icon }: { title: string, description: string, icon: any }) => {
+  return (
+    <div className="magical-card group/card relative h-64 rounded-xl">
+      {/* Outer Div / Border layer - using explicit dark hex for visibility safety */}
+      <div
+        className="absolute inset-0 bg-[#262626] rounded-xl transition-colors duration-300 group-hover/card:bg-[#404040]"
+      >
+        {/* The Glow Gradient Element - Revealed on Grid Hover */}
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            background: `radial-gradient(800px circle at var(--x) var(--y), rgba(255,255,255,0.2), transparent 40%)`
+          }}
+        />
+      </div>
+
+      {/* Inner Div / Content Content */}
+      <div className="absolute inset-[1px] bg-[#101010] rounded-[11px] flex flex-col justify-end p-6 relative z-10 transition-colors duration-300 overflow-hidden">
+        {/* Inner Glow - only on this card's hover */}
+        <div
+          className="absolute inset-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(600px circle at var(--x) var(--y), rgba(255,255,255,0.1), transparent 40%)`
+          }}
+        />
+
+        <div className="mb-auto relative z-20">
+          <div className="p-3 bg-white/5 rounded-lg w-fit backdrop-blur-sm border border-white/10 group-hover/card:bg-white/10 transition-colors">
+            <Icon className="w-6 h-6 text-white" />
+          </div>
+        </div>
+
+        <h4 className="text-lg font-bold text-white mb-2 relative z-20 translate-y-2 group-hover/card:translate-y-0 transition-transform duration-300">{title}</h4>
+        <p className="text-neutral-400 text-sm relative z-20 opacity-0 group-hover/card:opacity-100 translate-y-4 group-hover/card:translate-y-0 transition-all duration-300 ease-out">
+          {description}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+const MagicalEffectsGrid = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const cards = container.getElementsByClassName("magical-card");
+      for (const card of cards) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        (card as HTMLElement).style.setProperty("--x", `${x}px`);
+        (card as HTMLElement).style.setProperty("--y", `${y}px`);
+      }
+    };
+
+    // Listen on the window or a large container to ensure smooth tracking even when crossing gaps?
+    // Actually tracking on the grid container is standard for this effect unless the gaps are huge.
+    container.addEventListener("mousemove", handleMouseMove as any);
+    return () => {
+      container.removeEventListener("mousemove", handleMouseMove as any);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 max-w-5xl mx-auto group"
+    >
+      {features.map((item, i) => (
+        <MagicalCard key={i} {...item} />
+      ))}
+    </div>
+  );
+};
+
+const features = [
+  { icon: Zap, title: "Super Fast Charging", description: "Charge up to 80% in just 45 minutes with our hyper-charge technology." },
+  { icon: Shield, title: "Advanced Safety", description: "Rated 5-star safety with collision detection and anti-theft tracking." },
+  { icon: Smartphone, title: "Smart Connectivity", description: "Seamlessly connect with your phone for navigation and diagnostics." },
+  { icon: Globe, title: "Eco-Friendly", description: "Zero emissions, 100% recyclable materials, building a greener future." },
+  { icon: Cloud, title: "Cloud Updates", description: "Over-the-air software updates to keep your ride optimized." },
+  { icon: BarChart3, title: "Performance Analytics", description: "Track your rides, efficiency, and battery health in real-time." },
+];
 
 export default function ProductGrid() {
   const models = mockModels;
@@ -319,6 +409,21 @@ export default function ProductGrid() {
               onEnquireClick={handleEnquiryClick}
             />
           ))}
+        </div>
+
+        {/* New Magical Effects Grid Section */}
+        <div className="mt-20 py-16 px-4 md:px-8 bg-black rounded-[2.5rem] relative overflow-hidden shadow-2xl">
+
+          {/* Ambient Background Gradient */}
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.1),transparent_50%)] pointer-events-none" />
+
+          <div className="text-center mb-12 relative z-10">
+            <h3 className="text-3xl font-bold text-white mb-4 tracking-tight">Why Choose Us</h3>
+            <p className="text-neutral-400 max-w-lg mx-auto text-lg">Discover the features that make our electric scooters the best in their class.</p>
+          </div>
+
+          <MagicalEffectsGrid />
+
         </div>
       </div>
 

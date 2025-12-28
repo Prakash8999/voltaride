@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Zap, Gauge, Lightbulb, Cpu, CircleDot, Battery, Shield, Check } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import TestRideModal from "@/components/TestRideModal";
 import Footer from "@/components/Footer";
 import { cn } from "@/lib/utils";
@@ -134,6 +134,12 @@ const productData = [
   }
 ];
 
+// Linear interpolation for smooth inertia
+const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
+
+// Easing function for premium feel
+const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -142,16 +148,255 @@ export default function ProductDetail() {
 
   const product = productData.find(p => p.id === id);
 
+  // Scroll to top on id change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
 
+  // Physics State and Refs for Carousel
+  const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const position = useRef({ current: 0, target: 0 });
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const animationFrameId = useRef<number>();
+  const wheelTimeout = useRef<NodeJS.Timeout>();
+  const initialized = useRef(false);
+  const heroWrapperRef = useRef<HTMLDivElement>(null);
+  const imageElementsRef = useRef<NodeListOf<HTMLImageElement> | null>(null);
+  const verticalScroll = useRef(0);
+
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  );
+
   useEffect(() => {
-    if (product && product.colors.length > 0 && !selectedColor) {
-      const defaultColor = product.colors.find(color => color in product.images) || product.colors[0];
-      setSelectedColor(defaultColor);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Configuration
+  const DRAG_MULTIPLIER = 2.0;
+  const WHEEL_MULTIPLIER = 1.6;
+  const EASE = 0.08;
+
+  // Prepare carousel data
+  const availableColors = product ? product.colors.filter(c => c in product.images) : [];
+
+  // Create slides using available colors
+  // If fewer than 3 images, repeat them to ensure smooth carousel if user keeps scrolling
+  let slidesSource = availableColors.length > 0 ? availableColors : [];
+  if (slidesSource.length > 0 && slidesSource.length < 3) {
+    slidesSource = [...slidesSource, ...slidesSource, ...slidesSource]; // Triple it for safety if very small
+  }
+
+  const origSlides = slidesSource.map((color, idx) => ({
+    image: product?.images[color as keyof typeof product.images],
+    title: product?.name || "Product",
+    subtitle: `${color} Edition`,
+    metric: { value: `₹ ${product?.price}`, label: "Price" },
+    color: color,
+    id: `${color}-${idx}`
+  }));
+
+  // Extended slides for infinite loop: [Last, ...Originals, First]
+  const slides = [
+    origSlides[origSlides.length - 1],
+    ...origSlides,
+    origSlides[0]
+  ];
+
+  // Initialize position
+  useEffect(() => {
+    if (!initialized.current && slides.length > 2) {
+      const width = window.innerWidth;
+      position.current.current = -width; // Start at index 1
+      position.current.target = -width;
+      initialized.current = true;
     }
-  }, [product, selectedColor]);
+  }, [slides.length]);
+
+  const getSlideWidth = () => window.innerWidth;
+
+  const goToSlide = useCallback((realIndex: number) => {
+    const width = getSlideWidth();
+    const extendedIndex = realIndex + 1;
+    position.current.target = -(extendedIndex * width);
+  }, []);
+
+  const snapToNearestSlide = useCallback(() => {
+    const width = getSlideWidth();
+    let snapTarget = Math.round(position.current.target / width) * width;
+    position.current.target = snapTarget;
+  }, []);
+
+  useEffect(() => {
+    if (trackRef.current) {
+      imageElementsRef.current = trackRef.current.querySelectorAll('.hero-image');
+    }
+  }, [product, slides]);
+
+  const animate = useCallback(() => {
+    // Safety check
+    if (!product || slides.length <= 2) return;
+
+    const width = getSlideWidth();
+    const isMobileDevice = width < 768;
+
+    // 1. Interpolate Horizontal
+    position.current.current = lerp(position.current.current, position.current.target, EASE);
+
+    // 2. Vertical Scroll Physics
+    const targetScrollY = window.scrollY;
+    verticalScroll.current = lerp(verticalScroll.current, targetScrollY, 0.07);
+
+    // 3. Pinned Hero Interactions
+    if (heroWrapperRef.current) {
+      heroWrapperRef.current.style.clipPath = `inset(0px 0px 0px 0px)`;
+      heroWrapperRef.current.style.transform = `none`;
+    }
+
+    // 4. Infinite Loop Warp
+    const x = position.current.current;
+    const totalRealSlides = origSlides.length;
+
+    if (x >= -0.01) {
+      const resetX = -(totalRealSlides * width);
+      position.current.current = resetX;
+      position.current.target = resetX + (position.current.target - x);
+    } else if (x <= -((totalRealSlides + 1) * width) + 0.01) {
+      const resetX = -width;
+      position.current.current = resetX;
+      position.current.target = resetX + (position.current.target - x);
+    }
+
+    // Render
+    if (trackRef.current) {
+      const finalX = position.current.current;
+      trackRef.current.style.transform = `translate3d(${finalX}px, 0, 0)`;
+
+      const rawIndex = Math.abs(finalX / width);
+      let realIndex = Math.round(rawIndex) - 1;
+      if (realIndex < 0) realIndex = totalRealSlides - 1;
+      if (realIndex >= totalRealSlides) realIndex = 0;
+
+      if (realIndex !== activeIndex) {
+        setActiveIndex(realIndex);
+        if (origSlides[realIndex]) {
+          setSelectedColor(origSlides[realIndex].color);
+        }
+      }
+
+      // Parallax & Scale
+      let images = imageElementsRef.current;
+      if (!images && trackRef.current) {
+        images = trackRef.current.querySelectorAll('.hero-image');
+        imageElementsRef.current = images as NodeListOf<HTMLImageElement>;
+      }
+
+      if (images) {
+        const scrollProgress = Math.min(Math.max(verticalScroll.current / window.innerHeight, 0), 1);
+        const scrollScaleInfo = 1.12 - (scrollProgress * 0.04);
+        const scaleVal = Math.max(1.08, scrollScaleInfo);
+        const parallaxY = scrollProgress * 25;
+
+        images.forEach((img, index) => {
+          const slideX = (index * width) + finalX;
+          const normalizedOffset = slideX / width;
+
+          if (isMobileDevice) {
+            const cropShift = normalizedOffset * 35;
+            img.style.transform = `translateX(${-cropShift}%) translateY(${parallaxY}px) scale(${scaleVal + 0.05})`;
+            img.style.objectPosition = `50% 50%`;
+          } else {
+            const parallaxX = slideX * 0.25;
+            img.style.transform = `translate3d(${-parallaxX}px, ${parallaxY}px, 0) scale(${scaleVal})`;
+            const positionX = Math.max(15, Math.min(85, 50 - (normalizedOffset * 25)));
+            img.style.objectPosition = `${positionX}% 50%`;
+          }
+        });
+      }
+    }
+
+    animationFrameId.current = requestAnimationFrame(animate);
+
+  }, [activeIndex, origSlides, product, slides.length]);
+
+  useEffect(() => {
+    animationFrameId.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
+    };
+  }, [animate]);
+
+  // Event Listeners
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault();
+        position.current.target -= e.deltaX * WHEEL_MULTIPLIER;
+        if (wheelTimeout.current) clearTimeout(wheelTimeout.current);
+        wheelTimeout.current = setTimeout(() => { snapToNearestSlide(); }, 150);
+      }
+    };
+
+    const handleDragStart = (clientX: number) => {
+      isDragging.current = true;
+      startX.current = clientX;
+      if (wheelTimeout.current) clearTimeout(wheelTimeout.current);
+      container.style.cursor = 'grabbing';
+    };
+
+    const handleDragMove = (clientX: number) => {
+      if (!isDragging.current) return;
+      const delta = (clientX - startX.current) * DRAG_MULTIPLIER;
+      startX.current = clientX;
+      position.current.target += delta;
+    };
+
+    const handleDragEnd = () => {
+      isDragging.current = false;
+      snapToNearestSlide();
+      container.style.cursor = 'grab';
+    };
+
+    const onTouchStart = (e: TouchEvent) => handleDragStart(e.touches[0].clientX);
+    const onTouchMove = (e: TouchEvent) => handleDragMove(e.touches[0].clientX);
+    const onTouchEnd = () => handleDragEnd();
+    const onMouseDown = (e: MouseEvent) => { e.preventDefault(); handleDragStart(e.clientX); };
+    const onMouseMove = (e: MouseEvent) => { e.preventDefault(); handleDragMove(e.clientX); };
+    const onMouseUp = () => handleDragEnd();
+    const onMouseLeave = () => { if (isDragging.current) handleDragEnd(); };
+
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    container.addEventListener("touchstart", onTouchStart, { passive: true });
+    container.addEventListener("touchmove", onTouchMove, { passive: true });
+    container.addEventListener("touchend", onTouchEnd);
+    container.addEventListener("mousedown", onMouseDown);
+    container.addEventListener("mousemove", onMouseMove);
+    container.addEventListener("mouseup", onMouseUp);
+    container.addEventListener("mouseleave", onMouseLeave);
+
+    return () => {
+      container.removeEventListener("wheel", handleWheel);
+      container.removeEventListener("touchstart", onTouchStart);
+      container.removeEventListener("touchmove", onTouchMove);
+      container.removeEventListener("touchend", onTouchEnd);
+      container.removeEventListener("mousedown", onMouseDown);
+      container.removeEventListener("mousemove", onMouseMove);
+      container.removeEventListener("mouseup", onMouseUp);
+      container.removeEventListener("mouseleave", onMouseLeave);
+    };
+  }, [snapToNearestSlide]);
+
 
   if (!product) {
     return (
@@ -164,180 +409,157 @@ export default function ProductDetail() {
     );
   }
 
+  // Handle case with no images
+  if (origSlides.length === 0) {
+    // Fallback to simple view if no images
+    return (
+      <div className="min-h-screen bg-neutral-100 font-sans selection:bg-primary/10">
+        <Header forceTransparent={true} />
+        <main className="pt-32 pb-12 container mx-auto px-4 text-center">
+          <h1 className="text-4xl font-bold">{product.name}</h1>
+          <p className="mt-4">Images coming soon.</p>
+          <Button onClick={() => navigate("/")} className="mt-8">Back</Button>
+        </main>
+        <Footer />
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-neutral-100 font-sans selection:bg-primary/10">
-      <Header />
+      <Header forceTransparent={true} />
 
-      <main className="pt-20 pb-12 container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Navigation */}
-        <motion.div
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="mb-6"
-        >
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/")}
-            className="group px-0 hover:bg-transparent hover:text-primary transition-colors"
+      {/* FULL SCREEN CAROUSEL SECTION */}
+      <section className="relative w-full h-screen z-0">
+        <div className="relative h-full w-full overflow-hidden">
+          {/* Back Button Overlay */}
+          <div className="absolute top-24 left-6 sm:left-12 z-50 pointer-events-none">
+            <motion.button
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1 }}
+              onClick={() => navigate("/")}
+              className="flex items-center gap-2 text-white/80 hover:text-white pointer-events-auto transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5 shadow-sm" />
+              <span className="font-medium shadow-sm text-shadow">Back</span>
+            </motion.button>
+          </div>
+
+          <div
+            ref={heroWrapperRef}
+            className="absolute inset-0 will-change-transform origin-center"
+            style={{ clipPath: 'inset(0% 0% 0% 0% round 0px)' }}
           >
-            <ArrowLeft className="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" />
-            Back to Products
-          </Button>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 xl:gap-12 items-start">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="space-y-4 lg:sticky lg:top-24"
-          >
-            <div className="relative aspect-[4/3] bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-500 border border-gray-100 group">
-
-              <AnimatePresence mode="wait">
-                {product.images[selectedColor as keyof typeof product.images] ? (
-                  <motion.div
-                    key={selectedColor}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1.05 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="relative w-full h-full p-3"
+            <div
+              ref={containerRef}
+              className="relative h-full w-full overflow-hidden bg-zinc-900 select-none cursor-grab active:cursor-grabbing"
+            >
+              <div
+                ref={trackRef}
+                className="flex h-full will-change-transform"
+                style={{ width: `${(slides.length) * 100}vw` }}
+              >
+                {slides.map((slide, idx) => (
+                  <div
+                    key={idx}
+                    className="flex-shrink-0 w-screen h-full relative overflow-hidden flex items-center justify-center border-r border-white/5 bg-[#0a0a0a]"
                   >
-                    <img
-                      src={product.images[selectedColor as keyof typeof product.images]}
-                      alt={`${product.name} in ${selectedColor}`}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"
-                    />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="not-available"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="w-full h-full flex flex-col items-center justify-center p-8 text-center"
-                  >
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center mb-6 shadow-lg">
-                      <Battery className="w-10 h-10 text-gray-400" />
+                    <div className="absolute inset-0 w-full h-full overflow-hidden">
+                      <img
+                        src={slide?.image}
+                        alt={slide?.title}
+                        className="hero-image w-full h-full object-cover will-change-transform scale-105"
+                        draggable={false}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/40 z-10 pointer-events-none" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">Image Not Available</h3>
-                    <p className="text-muted-foreground max-w-xs text-base">
-                      We don't have a preview for the {selectedColor} color yet, but you can still enquire about it.
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
 
-            {/* Color badges below image */}
-            <div className="flex flex-wrap gap-2 justify-center px-4">
-              {[...product.colors]
-                .sort((a, b) => {
-                  const hasImageA = a in product.images;
-                  const hasImageB = b in product.images;
-                  if (hasImageA && !hasImageB) return -1;
-                  if (!hasImageA && hasImageB) return 1;
-                  return 0;
-                })
-                .map((color) => {
-                  const hasImage = color in product.images;
-                  return (
-                    <motion.button
-                      key={color}
-                      onClick={() => setSelectedColor(color)}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className={cn(
-                        "px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-                        selectedColor === color
-                          ? "bg-primary text-white shadow-lg shadow-primary/30"
-                          : "bg-white text-gray-700 border border-gray-200 hover:border-primary/50 hover:shadow-md",
-                        !hasImage && "opacity-50"
-                      )}
-                    >
-                      {color}
-                    </motion.button>
-                  );
-                })}
-            </div>
-          </motion.div>
+                    {/* Content Overlay */}
+                    <div className={`absolute top-1/2 -translate-y-1/2 left-0 w-full px-6 sm:px-12 md:px-24 text-left z-20 transition-opacity duration-1000 ${(idx === 0 && activeIndex === origSlides.length - 1) ||
+                      (idx === slides.length - 1 && activeIndex === 0) ||
+                      (idx === activeIndex + 1)
+                      ? "opacity-100 delay-300" : "opacity-0"
+                      }`}>
+                      <div className="max-w-xl">
+                        <Badge className="mb-4 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border-none px-3 py-1">
+                          {product.motor} / {slide?.color}
+                        </Badge>
+                        <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-2">
+                          {slide?.title}
+                        </h2>
+                        <p className="text-xl text-white/80 font-medium mb-8">
+                          {slide?.subtitle}
+                        </p>
 
-          {/* Right Column: Product Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex flex-col h-full"
-          >
-            <div className="flex items-start justify-between mb-2">
-              <Badge variant="secondary" className="bg-primary/5 text-primary hover:bg-primary/10 transition-colors uppercase tracking-wider font-semibold">
-                Electric Series
-              </Badge>
-            </div>
+                        <div className="flex flex-col sm:flex-row gap-4">
+                          <Button
+                            size="lg"
+                            className="rounded-full px-8 h-12 text-base bg-white text-black hover:bg-gray-200 border-none font-bold"
+                            onClick={() => setEnquiryOpen(true)}
+                          >
+                            Book Test Ride
+                          </Button>
+                          <Button
+                            size="lg"
+                            variant="outline"
+                            className="rounded-full px-8 h-12 text-base text-white border-white/30 hover:bg-white/10 hover:text-white bg-transparent"
+                            onClick={() => {
+                              document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                          >
+                            Learn More
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 mb-4">
-              {product.name}
-            </h1>
+                    {/* Metric Overlay */}
+                    <div className={`absolute bottom-32 right-6 sm:right-12 md:right-24 z-20 text-right transition-all duration-1000 ease-out ${(idx === 0 && activeIndex === origSlides.length - 1) ||
+                      (idx === slides.length - 1 && activeIndex === 0) ||
+                      (idx === activeIndex + 1)
+                      ? "opacity-100 translate-y-0 delay-500" : "opacity-0 translate-y-8"
+                      }`}>
+                      <div className="flex flex-col items-end">
+                        <span className="text-4xl md:text-6xl font-normal tracking-tighter text-white tabular-nums leading-none">
+                          {slide?.metric.value}
+                        </span>
+                        <span className="text-sm font-medium tracking-[0.2em] text-white/60 uppercase mt-2">
+                          {slide?.metric.label}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-            <div className="flex flex-wrap items-center gap-6 mb-8">
-              <div>
-                <span className="text-lg text-muted-foreground mr-2">Price</span>
-                <span className="text-3xl font-bold">₹ {product.price}</span>
+              {/* Pagination Dots */}
+              <div className="absolute bottom-12 left-6 sm:left-12 z-20 flex gap-3">
+                {origSlides.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => goToSlide(idx)}
+                    className={`h-2 rounded-full transition-all duration-500 shadow-sm ${idx === activeIndex % origSlides.length ? "w-8 bg-white" : "w-2 bg-white/40 hover:bg-white/60"
+                      }`}
+                    aria-label={`Go to color ${idx + 1}`}
+                  />
+                ))}
               </div>
             </div>
-
-            {/* Quick Specs Grid */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-white rounded-2xl border border-gray-100 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow">
-                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
-                  <Zap className="w-6 h-6" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground font-medium">Motor</p>
-                  <p className="text-lg font-bold text-gray-900">{product.motor}</p>
-                </div>
-              </div>
-              <div className="p-4 bg-white rounded-2xl border border-gray-100 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow">
-                <div className="p-3 bg-orange-50 text-orange-600 rounded-xl">
-                  <Gauge className="w-6 h-6" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground font-medium">Max Speed</p>
-                  <p className="text-lg font-bold text-gray-900">{product.speed}</p>
-                </div>
-              </div>
-            </div>
-
-
-
-            {/* Actions */}
-            <div className="flex gap-4 pt-4 border-t border-gray-100 mt-4">
-              <Button
-                size="lg"
-                className="flex-1 h-14 text-base font-bold rounded-2xl shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300"
-                onClick={() => setEnquiryOpen(true)}
-              >
-                Book a Test Ride
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="flex-1 h-14 text-base font-bold rounded-2xl border-gray-200 hover:bg-gray-50 hover:text-black hover:border-black/10 transition-all"
-                onClick={() => setEnquiryOpen(true)}
-              >
-                Enquire Now
-              </Button>
-            </div>
-          </motion.div>
+          </div>
         </div>
+      </section>
+
+      {/* Main Content Below Hero */}
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 bg-neutral-100 pt-16">
 
         {/* Key Features Section */}
         <motion.div
+          id="features"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-16 mb-12"
+          className="mb-24"
         >
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -419,7 +641,7 @@ export default function ProductDetail() {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-16"
+          className="mb-24"
         >
           <div className="flex items-center gap-4 mb-8">
             <h2 className="text-3xl font-bold text-gray-900">Technical Specifications</h2>
