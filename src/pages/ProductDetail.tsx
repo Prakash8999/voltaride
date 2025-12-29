@@ -112,7 +112,7 @@ const productData = [
     brake: "Front Disc / Rear Drum",
     images: {
       White: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_titan_white_large.png",
-      Gold: "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_titan_gold_large.png"
+      "Metallic Gold": "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_titan_gold_large.png"
     },
     price: "70,000"
   },
@@ -189,17 +189,21 @@ export default function ProductDetail() {
   const availableColors = product ? product.colors.filter(c => c in product.images) : [];
 
   // Create slides using available colors
-  // If fewer than 3 images, repeat them to ensure smooth carousel if user keeps scrolling
-  let slidesSource = availableColors.length > 0 ? availableColors : [];
-  if (slidesSource.length > 0 && slidesSource.length < 3) {
-    slidesSource = [...slidesSource, ...slidesSource, ...slidesSource]; // Triple it for safety if very small
-  }
+  const slidesSource = availableColors.length > 0 ? availableColors : [];
+
+  const featureList = [
+    { value: product?.motor, label: "Powerful Motor" },
+    { value: "Digital", label: "LED Dashboard" },
+    { value: product?.speed, label: "Top Speed" },
+    { value: product?.wheels, label: "Premium Wheels" },
+    { value: "Disc/Drum", label: "Safety Brakes" }
+  ];
 
   const origSlides = slidesSource.map((color, idx) => ({
     image: product?.images[color as keyof typeof product.images],
     title: product?.name || "Product",
     subtitle: `${color} Edition`,
-    metric: { value: `₹ ${product?.price}`, label: "Price" },
+    feature: featureList[idx % featureList.length],
     color: color,
     id: `${color}-${idx}`
   }));
@@ -311,7 +315,8 @@ export default function ProductDetail() {
 
           if (isMobileDevice) {
             const cropShift = normalizedOffset * 35;
-            img.style.transform = `translateX(${-cropShift}%) translateY(${parallaxY}px) scale(${scaleVal + 0.05})`;
+            // Mobile: Fixed scale to prevent uneven zooming sensation during scroll
+            img.style.transform = `translateX(${-cropShift}%) translateY(${parallaxY}px) scale(1.15)`;
             img.style.objectPosition = `50% 50%`;
           } else {
             const parallaxX = slideX * 0.25;
@@ -476,23 +481,23 @@ export default function ProductDetail() {
                     </div>
 
                     {/* Content Overlay */}
-                    <div className={`absolute top-1/2 -translate-y-1/2 left-0 w-full px-6 sm:px-12 md:px-24 text-left z-20 transition-opacity duration-1000 ${(idx === 0 && activeIndex === origSlides.length - 1) ||
+                    <div className={`absolute bottom-24 md:bottom-auto md:top-1/2 md:-translate-y-1/2 left-0 w-full px-6 sm:px-12 md:px-24 text-left z-20 transition-opacity duration-1000 ${(idx === 0 && activeIndex === origSlides.length - 1) ||
                       (idx === slides.length - 1 && activeIndex === 0) ||
                       (idx === activeIndex + 1)
                       ? "opacity-100 delay-300" : "opacity-0"
                       }`}>
                       <div className="max-w-xl">
                         <Badge className="mb-4 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border-none px-3 py-1">
-                          {product.motor} / {slide?.color}
+                          {slide?.color}
                         </Badge>
-                        <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-2">
+                        <h2 className="hidden md:block text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-2">
                           {slide?.title}
                         </h2>
-                        <p className="text-xl text-white/80 font-medium mb-8">
+                        <p className="hidden md:block text-xl text-white/80 font-medium mb-8">
                           {slide?.subtitle}
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-4">
+                        <div className="hidden md:flex flex-col sm:flex-row gap-4">
                           <Button
                             size="lg"
                             className="rounded-full px-8 h-12 text-base bg-white text-black hover:bg-gray-200 border-none font-bold"
@@ -522,10 +527,10 @@ export default function ProductDetail() {
                       }`}>
                       <div className="flex flex-col items-end">
                         <span className="text-4xl md:text-6xl font-normal tracking-tighter text-white tabular-nums leading-none">
-                          {slide?.metric.value}
+                          {slide?.feature.value}
                         </span>
                         <span className="text-sm font-medium tracking-[0.2em] text-white/60 uppercase mt-2">
-                          {slide?.metric.label}
+                          {slide?.feature.label}
                         </span>
                       </div>
                     </div>
@@ -550,6 +555,39 @@ export default function ProductDetail() {
         </div>
       </section>
 
+      {/* Mobile Buttons Section - Below Image */}
+      <div className="md:hidden px-6 pt-6 pb-8 bg-white space-y-6">
+        <div>
+          <div className="flex justify-between items-start">
+            <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+            <Badge variant="secondary" className="bg-neutral-100 text-neutral-800 border-none">
+              {product.colors.length} Colors
+            </Badge>
+          </div>
+          <p className="text-xl font-bold text-primary mt-1">Starting at ₹{product.price}</p>
+        </div>
+
+        <div className="space-y-3">
+          <Button
+            size="lg"
+            className="w-full h-14 text-lg rounded-xl bg-black text-white hover:bg-neutral-800 shadow-lg"
+            onClick={() => setEnquiryOpen(true)}
+          >
+            Book Test Ride
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="w-full h-14 text-lg rounded-xl border-neutral-200 hover:bg-neutral-50"
+            onClick={() => {
+              document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            Learn More
+          </Button>
+        </div>
+      </div>
+
       {/* Main Content Below Hero */}
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 bg-neutral-100 pt-16">
 
@@ -568,6 +606,10 @@ export default function ProductDetail() {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Premium components and cutting-edge technology for an unparalleled riding experience
             </p>
+            <div className="mt-6 inline-flex items-center gap-3 bg-white px-8 py-4 rounded-full shadow-sm border border-gray-100">
+              <span className="text-gray-500 font-medium uppercase tracking-wide text-sm">Starting Price</span>
+              <span className="text-3xl font-bold text-primary">₹{product.price}</span>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

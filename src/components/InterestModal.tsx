@@ -218,7 +218,7 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
               required
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select speed category" />
+                <SelectValue placeholder="Select Product" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="AERIX ENDURO">AERIX ENDURO</SelectItem>

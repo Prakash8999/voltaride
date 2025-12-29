@@ -32,32 +32,44 @@ const ORIG_DATA = [
   {
     title: "Smooth Electric Performance",
     subtitle: "BLDC hub motor built for effortless city rides.",
-    metric: { value: "45 km/h", label: "Top Speed" }
+    metric: { value: "45 km/h", label: "Top Speed" },
+    modelName: "AERIX PRIME",
+    color: "Orange"
   },
   {
     title: "Aerodynamic Design",
     subtitle: "Sculpted panels for stability and efficiency.",
-    metric: { value: "Optimized", label: "Airflow Design" }
+    metric: { value: "Optimized", label: "Airflow Design" },
+    modelName: "AERIX GLIDE",
+    color: "Peacock Blue"
   },
   {
     title: "Smart Connectivity",
     subtitle: "Your scooter, connected to your world.",
-    metric: { value: "Smart", label: "Connected Tech" }
+    metric: { value: "Smart", label: "Connected Tech" },
+    modelName: "AERIX TITAN",
+    color: "White"
   },
   {
     title: "All-Weather Build",
     subtitle: "IP67 rated. Ready for any season.",
-    metric: { value: "IP67", label: "Water & Dust Rating" }
+    metric: { value: "IP67", label: "Water & Dust Rating" },
+    modelName: "AERIX VOLT",
+    color: "Black"
   },
   {
     title: "Limitless Range",
     subtitle: "Go further with 110km true range.",
-    metric: { value: "110 km", label: "True Range" }
+    metric: { value: "110 km", label: "True Range" },
+    modelName: "AERIX URBAN",
+    color: "Grey"
   },
   {
     title: "Future Ready",
     subtitle: "Updates over the air. Always new.",
-    metric: { value: "3 Yr", label: "Battery Warranty" }
+    metric: { value: "3 Yr", label: "Battery Warranty" },
+    modelName: "AERIX RANGER",
+    color: "Black"
   }
 ];
 
@@ -84,7 +96,8 @@ const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [enquiryOpen, setEnquiryOpen] = useState(false);
-  const [selectedModel, setSelectedModel] = useState("E-Velco Pro");
+  const [selectedModel, setSelectedModel] = useState("AERIX PRIME");
+  const [selectedColor, setSelectedColor] = useState("Orange");
   const [activeIndex, setActiveIndex] = useState(0); // This tracks the "Real" index (0-5)
 
   // Physics state
@@ -385,11 +398,12 @@ const Hero = () => {
                             size="lg"
                             className="rounded-full px-8 h-12 text-base bg-[#F2F2F2] text-black hover:bg-white transition-all font-semibold shadow-none border-none"
                             onClick={() => {
-                              setSelectedModel("E-Velco Pro");
+                              setSelectedModel(SLIDE_DATA[idx].modelName);
+                              setSelectedColor(SLIDE_DATA[idx].color);
                               setEnquiryOpen(true);
                             }}
                           >
-                            Reserve Now
+                            Enquiry Now
                           </Button>
                           <Button
                             size="lg"
@@ -431,11 +445,12 @@ const Hero = () => {
                         size="sm"
                         className="rounded-full h-10 px-6 text-sm bg-[#F2F2F2] text-black hover:bg-white transition-all font-semibold shadow-none border-none mt-1"
                         onClick={() => {
-                          setSelectedModel("E-Velco Pro");
+                          setSelectedModel(SLIDE_DATA[idx].modelName);
+                          setSelectedColor(SLIDE_DATA[idx].color);
                           setEnquiryOpen(true);
                         }}
                       >
-                        Reserve Now
+                        Enquiry Now
                       </Button>
 
                       <div className="flex flex-col items-end text-right">
@@ -479,6 +494,7 @@ const Hero = () => {
               open={enquiryOpen}
               onOpenChange={setEnquiryOpen}
               preSelectedModel={selectedModel}
+              preSelectedColor={selectedColor}
               isEnquiry={true}
             />
           </div>

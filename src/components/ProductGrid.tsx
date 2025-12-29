@@ -16,6 +16,7 @@ const mockModels = [
     images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_enduro_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_enduro_blue_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_enduro_white_large.png"],
     range: 90,
     topSpeed: 45,
+    color: "Grey"
   },
   {
     _id: "2",
@@ -26,6 +27,7 @@ const mockModels = [
     images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_blue_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_white_large.png"],
     range: 90,
     topSpeed: 45,
+    color: "Peacock Blue"
   },
   {
     _id: "3",
@@ -36,6 +38,7 @@ const mockModels = [
     images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_orange_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_white_large.png"],
     range: 90,
     topSpeed: 45,
+    color: "Orange"
   },
   {
     _id: "4",
@@ -46,6 +49,7 @@ const mockModels = [
     images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_ranger_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_ranger_white_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_range_black_large.png"],
     range: 90,
     topSpeed: 45,
+    color: "Grey"
   },
   {
     _id: "5",
@@ -56,6 +60,7 @@ const mockModels = [
     images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_urban_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_urban_white_large.png"],
     range: 90,
     topSpeed: 45,
+    color: "Grey"
   },
   {
     _id: "6",
@@ -66,6 +71,7 @@ const mockModels = [
     images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_titan_white_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_titan_gold_large.png"],
     range: 90,
     topSpeed: 45,
+    color: "White"
   },
   {
     _id: "7",
@@ -76,10 +82,11 @@ const mockModels = [
     images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_volt_black_large.png"],
     range: 90,
     topSpeed: 45,
+    color: "Black"
   },
 ];
 
-const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], onEnquireClick: (name: string) => void }) => {
+const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], onEnquireClick: (name: string, color?: string) => void }) => {
   const navigate = useNavigate();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -262,7 +269,7 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
               <Button
                 variant="ghost"
                 className="h-9 md:h-10 px-2.5 md:px-4 text-xs md:text-sm font-semibold hover:bg-black/5 rounded-xl text-muted-foreground hover:text-foreground transition-colors duration-500 ease-out"
-                onClick={() => onEnquireClick(model.name)}
+                onClick={() => onEnquireClick(model.name.toUpperCase(), (model as any).color)}
               >
                 Enquire
               </Button>
@@ -374,14 +381,16 @@ export default function ProductGrid() {
   const models = mockModels;
   const [enquiryOpen, setEnquiryOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string>("");
+  const [selectedColor, setSelectedColor] = useState<string>("");
 
-  const handleEnquiryClick = (modelName: string) => {
+  const handleEnquiryClick = (modelName: string, color?: string) => {
     setSelectedModel(modelName);
+    setSelectedColor(color || "");
     setEnquiryOpen(true);
   };
 
   return (
-    <section id="products" className="py-24 bg-[#F8F9FA] relative z-10 text-foreground">
+    <section id="products" className="pt-24 pb-8 bg-[#F8F9FA] relative z-10 text-foreground">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -412,27 +421,16 @@ export default function ProductGrid() {
         </div>
 
         {/* New Magical Effects Grid Section */}
-        <div className="mt-20 py-16 px-4 md:px-8 bg-black rounded-[2.5rem] relative overflow-hidden shadow-2xl">
-
-          {/* Ambient Background Gradient */}
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.1),transparent_50%)] pointer-events-none" />
-
-          <div className="text-center mb-12 relative z-10">
-            <h3 className="text-3xl font-bold text-white mb-4 tracking-tight">Why Choose Us</h3>
-            <p className="text-neutral-400 max-w-lg mx-auto text-lg">Discover the features that make our electric scooters the best in their class.</p>
-          </div>
-
-          <MagicalEffectsGrid />
-
-        </div>
+        {/*  */}
       </div>
 
       <TestRideModal
         open={enquiryOpen}
         onOpenChange={setEnquiryOpen}
         preSelectedModel={selectedModel}
+        preSelectedColor={selectedColor}
         isEnquiry={true}
       />
-    </section>
+    </section >
   );
 }

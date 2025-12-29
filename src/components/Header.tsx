@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import DealershipModal from "./DealershipModal";
 import InterestModal from "./InterestModal";
+import TestRideModal from "./TestRideModal";
 
 interface HeaderProps {
   forceTransparent?: boolean;
@@ -46,11 +47,11 @@ const Header = ({ forceTransparent = false }: HeaderProps) => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b border-transparent ${isSolid
-        ? "bg-white/80 backdrop-blur-md border-white/10 py-3 shadow-sm text-foreground"
-        : "bg-transparent py-6 text-white"
-        }`}
+        ? "bg-white/80 backdrop-blur-md border-white/10 py-3 shadow-sm"
+        : "bg-transparent py-2 md:py-6"
+        } ${isSolid || mobileMenuOpen ? "text-foreground" : "text-white"}`}
     >
-      <div className="container-custom">
+      <div className="container-custom relative z-50">
         <div className="flex items-center justify-between">
 
           {/* Logo */}
@@ -60,7 +61,7 @@ const Header = ({ forceTransparent = false }: HeaderProps) => {
               alt="Aerix Energy"
               className="h-10 w-10 sm:h-12 sm:w-12 rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
-            <div className={`transition-opacity duration-300 ${isSolid ? 'opacity-100' : 'opacity-90'}`}>
+            <div className={`transition-opacity duration-300 ${isSolid || mobileMenuOpen ? 'opacity-100' : 'opacity-90'}`}>
               <span className={`text-xl font-bold tracking-tight`}>
                 Aerix
               </span>
@@ -95,7 +96,7 @@ const Header = ({ forceTransparent = false }: HeaderProps) => {
             <Button
               size="sm"
               onClick={() => setInterestModalOpen(true)}
-              className={`rounded-full px-6 font-medium transition-all duration-300 ${isSolid
+              className={`rounded-full px-6 font-medium transition-all duration-300 ${isSolid || mobileMenuOpen
                 ? ""
                 : "bg-white text-black hover:bg-white/90"
                 }`}
@@ -160,7 +161,9 @@ const Header = ({ forceTransparent = false }: HeaderProps) => {
       </AnimatePresence>
 
       <DealershipModal isOpen={dealershipModalOpen} onClose={() => setDealershipModalOpen(false)} />
-      <InterestModal isOpen={interestModalOpen} onClose={() => setInterestModalOpen(false)} />
+      {/* <InterestModal isOpen={interestModalOpen} onClose={() => setInterestModalOpen(false)} /> */}
+      <TestRideModal open={interestModalOpen} onOpenChange={setInterestModalOpen} isEnquiry={false} />
+
     </header>
   );
 };

@@ -20,11 +20,11 @@ const Footer = () => {
     {
       title: "Products",
       links: [
-        { label: "E-Velco Pro", action: () => navigate("/product/1") },
-        { label: "Aerix Energy Loader", action: () => navigate("/product/2") },
-        { label: "Spimri", action: () => navigate("/product/3") },
-        { label: "Aurra Pro", action: () => navigate("/product/4") },
-        { label: "Cruiser", action: () => navigate("/product/5") },
+        { label: "Aerix Enduro", action: () => navigate("/product/1") },
+        { label: "Aerix Glide", action: () => navigate("/product/2") },
+        { label: "Aerix Prime", action: () => navigate("/product/3") },
+        { label: "Aerix Ranger", action: () => navigate("/product/4") },
+        { label: "Aerix Urban", action: () => navigate("/product/5") },
       ],
     },
     {
