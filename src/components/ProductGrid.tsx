@@ -19,48 +19,26 @@ const mockModels = [
     color: "Grey"
   },
   {
-    _id: "2",
-    name: "Aerix Glide",
-    tagline: "BLDC Hub Motor (IP67)",
-    price: "56,000",
-    monthlyEmi: "2,599",
-    images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_blue_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_white_large.png"],
-    range: 90,
-    topSpeed: 45,
-    color: "Peacock Blue"
-  },
-  {
-    _id: "3",
-    name: "Aerix Prime",
-    tagline: "Smart Wireless Controller (IP64)",
-    price: "60,000",
-    monthlyEmi: "2,799",
-    images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_orange_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_white_large.png"],
-    range: 90,
-    topSpeed: 45,
-    color: "Orange"
-  },
-  {
-    _id: "4",
-    name: "Aerix Ranger",
-    tagline: "BLDC Hub Motor (IP67)",
-    price: "65,000",
-    monthlyEmi: "2,999",
-    images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_ranger_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_ranger_white_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_range_black_large.png"],
-    range: 90,
-    topSpeed: 45,
-    color: "Grey"
-  },
-  {
     _id: "5",
     name: "Aerix Urban",
     tagline: "BLDC Hub Motor (IP67)",
-    price: "64,000",
+    price: "60,000",
     monthlyEmi: "3,199",
     images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_urban_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_urban_white_large.png"],
     range: 90,
     topSpeed: 45,
     color: "Grey"
+  },
+  {
+    _id: "2",
+    name: "Aerix Glide",
+    tagline: "BLDC Hub Motor (IP67)",
+    price: "65,000",
+    monthlyEmi: "2,599",
+    images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_blue_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_glide_white_large.png"],
+    range: 90,
+    topSpeed: 45,
+    color: "Peacock Blue"
   },
   {
     _id: "6",
@@ -73,17 +51,42 @@ const mockModels = [
     topSpeed: 45,
     color: "White"
   },
+
   {
     _id: "7",
     name: "Aerix Volt",
     tagline: "Smart Wireless Controller (IP64)",
-    price: "75,000",
+    price: "85,000",
     monthlyEmi: "3,499",
     images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_volt_black_large.png"],
     range: 90,
     topSpeed: 45,
     color: "Black"
   },
+  {
+    _id: "3",
+    name: "Aerix Prime",
+    tagline: "Smart Wireless Controller (IP64)",
+    price: "90,000",
+    monthlyEmi: "2,799",
+    images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_orange_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_prime_white_large.png"],
+    range: 90,
+    topSpeed: 45,
+    color: "Orange"
+  },
+  {
+    _id: "4",
+    name: "Aerix Ranger",
+    tagline: "BLDC Hub Motor (IP67)",
+    price: "100000",
+    monthlyEmi: "2,999",
+    images: ["https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_ranger_grey_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_ranger_white_large.png", "https://pub-81175f420062419ca38eb19499a88ee5.r2.dev/images/aerix_range_black_large.png"],
+    range: 90,
+    topSpeed: 45,
+    color: "Grey"
+  },
+
+
 ];
 
 const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], onEnquireClick: (name: string, color?: string) => void }) => {
