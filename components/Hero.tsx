@@ -114,11 +114,12 @@ const Hero = () => {
   const frameSkipCounter = useRef(0);
   const verticalScroll = useRef(0);
 
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== 'undefined' ? window.innerWidth < 768 : false
-  );
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Set initial value on mount
+    setIsMobile(window.innerWidth < 768);
+
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
