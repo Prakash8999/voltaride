@@ -6,7 +6,7 @@ import heroScooter from "@/assets/hero-scooter.jpg";
 
 const ScooterPlane = () => {
   const meshRef = useRef<THREE.Mesh>(null);
-  const texture = useTexture(heroScooter);
+  const texture = useTexture(heroScooter.src);
   const [isDragging, setIsDragging] = useState(false);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [lastMouse, setLastMouse] = useState({ x: 0, y: 0 });

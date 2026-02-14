@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import { toast } from "sonner";
 import { Loader2, X, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -237,7 +238,7 @@ export default function TestRideModal({
         honeypot: formData.honeypot,
       };
 
-      const res = await fetch(`${import.meta.env.VITE_EMAIL_API}/api/email/send`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_EMAIL_API}/api/email/send`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -428,11 +429,17 @@ export default function TestRideModal({
 
           <div className="relative z-10 w-full flex flex-col items-center">
             {displayImage ? (
-              <img
-                src={displayImage}
-                alt={formData.product}
-                className="w-full h-auto max-h-[350px] object-contain drop-shadow-2xl transition-all duration-700 ease-out hover:scale-105 rounded-2xl"
-              />
+              <div className="relative w-full h-[350px]">
+                <Image
+                  src={displayImage}
+                  alt={formData.product || "Product"}
+                  fill
+                  className="object-contain drop-shadow-2xl transition-all duration-700 ease-out hover:scale-105 rounded-2xl"
+                  priority
+                  quality={85}
+                  sizes="(max-width: 768px) 0vw, 50vw"
+                />
+              </div>
             ) : (
               <div className="w-full h-64 flex items-center justify-center text-neutral-400 border-2 border-dashed border-neutral-300 rounded-xl">
                 <span className="text-lg font-medium">Select a model to view</span>

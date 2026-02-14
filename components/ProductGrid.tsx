@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { ArrowRight, MessageSquare, Zap, Shield, Smartphone, Globe, Cloud, BarChart3 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { useState, useRef, MouseEvent, useEffect } from "react";
+import Image from "next/image";
 import TestRideModal from "@/components/TestRideModal";
 
 const mockModels = [
@@ -90,7 +91,7 @@ const mockModels = [
 ];
 
 const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], onEnquireClick: (name: string, color?: string) => void }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -211,12 +212,16 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
             }}
           >
             {model.images.map((img, idx) => (
-              <div key={idx} className="min-w-full h-full flex items-center justify-center snap-center p-0 md:px-4 md:pt-4 pointer-events-none select-none">
-                <img
+              <div key={idx} className="min-w-full h-full flex items-center justify-center snap-center p-0 md:px-4 md:pt-4 pointer-events-none select-none relative">
+                <Image
                   src={img}
                   alt={`${model.name} view ${idx + 1}`}
-                  className="w-full h-full object-cover rounded-[1.8rem] shadow-sm transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                  fill
+                  className="object-cover rounded-[1.8rem] shadow-sm transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                   draggable={false}
+                  priority={idx === 0}
+                  quality={85}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
             ))}
@@ -278,7 +283,7 @@ const ProductCard = ({ model, onEnquireClick }: { model: typeof mockModels[0], o
               </Button>
               <Button
                 className="h-9 md:h-10 px-4 md:px-6 text-xs md:text-sm font-semibold shadow-md shadow-primary/20 rounded-xl"
-                onClick={() => navigate(`/product/${model._id}`)}
+                onClick={() => router.push(`/product/${model._id}`)}
               >
                 Explore
               </Button>

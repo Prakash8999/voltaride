@@ -82,7 +82,7 @@ const InterestModal = ({ isOpen, onClose }: InterestModalProps) => {
         honeypot: formData.honeypot,
       };
 
-      const res = await fetch(`${import.meta.env.VITE_EMAIL_API}/api/email/send`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_EMAIL_API}/api/email/send`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
@@ -17,8 +18,8 @@ const Header = ({ forceTransparent = false }: HeaderProps) => {
   const [dealershipModalOpen, setDealershipModalOpen] = useState(false);
   const [interestModalOpen, setInterestModalOpen] = useState(false);
 
-  const location = useLocation();
-  const isHome = location.pathname === "/";
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   // Allow transparency if explicitly requested or on home page
   const canBeTransparent = isHome || forceTransparent;
   // Solid if scrolled, or if we are on a page that doesn't allow transparency (and not forced)
@@ -35,7 +36,7 @@ const Header = ({ forceTransparent = false }: HeaderProps) => {
     handleScroll(); // Initial check
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [location.pathname, canBeTransparent]);
+  }, [pathname, canBeTransparent]);
 
   const navLinks = [
     { label: "Products", href: "/#products" },
@@ -56,11 +57,17 @@ const Header = ({ forceTransparent = false }: HeaderProps) => {
 
           {/* Logo */}
           <a href="/" className="flex items-center gap-3 group">
-            <img
-              src="/logo.jpg"
-              alt="Aerix Energy"
-              className="h-10 w-10 sm:h-12 sm:w-12 rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
-            />
+            <div className="relative h-10 w-10 sm:h-12 sm:w-12">
+              <Image
+                src="/logo.jpg"
+                alt="Aerix Energy"
+                fill
+                className="rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
+                priority
+                quality={90}
+                sizes="(max-width: 640px) 40px, 48px"
+              />
+            </div>
             <div className={`transition-opacity duration-300 ${isSolid || mobileMenuOpen ? 'opacity-100' : 'opacity-90'}`}>
               <span className={`text-xl font-bold tracking-tight`}>
                 Aerix

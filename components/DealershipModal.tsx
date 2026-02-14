@@ -92,7 +92,7 @@ const DealershipModal = ({ isOpen, onClose }: DealershipModalProps) => {
         honeypot: formData.honeypot,
       };
 
-      const res = await fetch(`${import.meta.env.VITE_EMAIL_API}/api/email/send`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_EMAIL_API}/api/email/send`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -134,7 +134,7 @@ const DealershipModal = ({ isOpen, onClose }: DealershipModalProps) => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
     };
-    
+
     if (isOpen) {
       document.addEventListener("keydown", handleKeyDown);
       // Store current scroll position and prevent body scroll
@@ -143,7 +143,7 @@ const DealershipModal = ({ isOpen, onClose }: DealershipModalProps) => {
       document.body.style.top = `-${scrollY}px`;
       document.body.style.width = "100%";
     }
-    
+
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       // Restore body scroll and position

@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import TestRideModal from "./TestRideModal";
 import { cn } from "@/lib/utils";
@@ -368,15 +369,16 @@ const Hero = () => {
                     className="flex-shrink-0 w-screen h-full relative overflow-hidden flex items-center justify-center border-r border-white/5 bg-[#0a0a0a]"
                   >
                     <div className="absolute inset-0 w-full h-full overflow-hidden">
-                      <picture className="absolute inset-0 w-full h-full">
-                        <source media="(max-width: 768px)" srcSet={getMobileSrc(src)} />
-                        <img
-                          src={isMobile ? getMobileSrc(src) : src}
-                          alt={SLIDE_DATA[idx].title}
-                          className="hero-image w-full h-full object-cover will-change-transform scale-105"
-                          draggable={false}
-                        />
-                      </picture>
+                      <Image
+                        src={isMobile ? getMobileSrc(src) : src}
+                        alt={SLIDE_DATA[idx].title}
+                        fill
+                        className="hero-image object-cover will-change-transform scale-105"
+                        draggable={false}
+                        priority={idx <= 2}
+                        quality={90}
+                        sizes="100vw"
+                      />
                       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/20 z-10 pointer-events-none" />
                     </div>
 

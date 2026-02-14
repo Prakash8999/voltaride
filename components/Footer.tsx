@@ -5,7 +5,7 @@ import TestRideModal from "./TestRideModal";
 import ServiceCentersModal from "./ServiceCentersModal";
 import ContactUsModal from "./ContactUsModal";
 import WarrantyModal from "./WarrantyModal";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 const Footer = () => {
   const [dealershipModalOpen, setDealershipModalOpen] = useState(false);
@@ -13,18 +13,18 @@ const Footer = () => {
   const [serviceCentersModalOpen, setServiceCentersModalOpen] = useState(false);
   const [contactUsModalOpen, setContactUsModalOpen] = useState(false);
   const [warrantyModalOpen, setWarrantyModalOpen] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
 
 
   const footerSections = [
     {
       title: "Products",
       links: [
-        { label: "Aerix Enduro", action: () => navigate("/product/1") },
-        { label: "Aerix Glide", action: () => navigate("/product/2") },
-        { label: "Aerix Prime", action: () => navigate("/product/3") },
-        { label: "Aerix Ranger", action: () => navigate("/product/4") },
-        { label: "Aerix Urban", action: () => navigate("/product/5") },
+        { label: "Aerix Enduro", action: () => router.push("/product/1") },
+        { label: "Aerix Glide", action: () => router.push("/product/2") },
+        { label: "Aerix Prime", action: () => router.push("/product/3") },
+        { label: "Aerix Ranger", action: () => router.push("/product/4") },
+        { label: "Aerix Urban", action: () => router.push("/product/5") },
       ],
     },
     {
